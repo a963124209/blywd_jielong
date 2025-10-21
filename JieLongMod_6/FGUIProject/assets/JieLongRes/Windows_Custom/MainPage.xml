@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="1920,1080" overflow="hidden">
+  <controller name="hide_shadow" pages="0,,1," selected="0"/>
+  <controller name="show_info" pages="0,,1," selected="0"/>
+  <displayList>
+    <loader id="n30_qr8k" name="bg" xy="0,0" size="1920,1080" url="ui://7l8qp3zoqr8k2u" fill="scaleFree" clearOnPublish="true">
+      <relation target="" sidePair="width-width,height-height,center-center,middle-middle"/>
+    </loader>
+    <image id="n25_jlzz" name="loader_title" src="l8z431" fileName="Images_Custom/ui_text_title_s2.png" xy="1065,88" size="850,385" group="n33_qr8k">
+      <gearLook controller="show_info" pages="1" values="0,0,0,1" default="1,0,0,1" tween="true"/>
+    </image>
+    <graph id="n31_qr8k" name="frame_back_1" xy="0,0" pivot="0.5,0" size="1920,130" group="n33_qr8k" scale="1,0" type="rect" fillColor="#ff000000">
+      <gearSize controller="hide_shadow" pages="0,1" values="1920,130,1,0|1920,130,1,1" tween="true"/>
+      <relation target="" sidePair="width-width,center-center,top-top"/>
+    </graph>
+    <graph id="n32_qr8k" name="frame_back_2" xy="0,950" pivot="0.5,1" size="1920,130" group="n33_qr8k" scale="1,0" alpha="0.6" type="rect" fillColor="#ff000000">
+      <gearSize controller="hide_shadow" pages="0,1" values="1920,130,1,0|1920,130,1,1" tween="true"/>
+      <relation target="" sidePair="width-width,center-center,bottom-bottom"/>
+    </graph>
+    <group id="n33_qr8k" name="group_shadow" xy="0,0" size="1920,1080"/>
+    <list id="n13_jlzz" name="list_menu" xy="-3,861" size="1920,153" layout="row" colGap="40" defaultItem="ui://7l8qp3zojlzzn" align="center">
+      <gearXY controller="show_info" pages="0,1" values="-3,861|0,1080" tween="true"/>
+      <relation target="" sidePair="width-width,center-center,middle-middle%"/>
+      <item title="开始游戏"/>
+      <item title="读取游戏"/>
+      <item title="游戏模组"/>
+      <item title="退出游戏"/>
+    </list>
+    <list id="n16_jlzz" name="list_other" xy="1763,0" size="110,858" lineGap="20" colGap="40" defaultItem="ui://7l8qp3zojlzz1t" align="center" vAlign="bottom">
+      <gearXY controller="show_info" pages="0,1" values="1763,0|1920,0" tween="true"/>
+      <relation target="" sidePair="width-width,center-center,middle-middle%"/>
+      <item icon="ui://7l8qp3zojlzz1w"/>
+      <item icon="ui://7l8qp3zojlzz1v"/>
+      <item icon="ui://7l8qp3zoqr8k2z"/>
+    </list>
+  </displayList>
+</component>

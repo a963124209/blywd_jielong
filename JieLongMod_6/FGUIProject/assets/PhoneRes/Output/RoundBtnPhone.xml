@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="64,64" pivot="0.5,0.5" anchor="true" extention="Button">
+  <controller name="button" pages="0,up,1,down,2,over,3,selectedOver" selected="0"/>
+  <displayList>
+    <image id="n5_wdd1" name="bg" src="tno21h" fileName="Images/icon_phone.png" xy="7,7" size="50,50" alpha="0.7"/>
+    <image id="n2_maw8" name="light" src="tno21i" fileName="Images/ui_round_btn_light_mask.png" xy="32,32" pivot="0.5,0.5" anchor="true">
+      <gearDisplay controller="button" pages="2,3"/>
+      <relation target="" sidePair="width-width,height-height"/>
+    </image>
+    <image id="n3_maw8" name="dark" src="tno21j" fileName="Images/ui_round_btn_dark_mask.png" xy="2,2">
+      <gearDisplay controller="button" pages="1"/>
+      <relation target="" sidePair="width-width,height-height"/>
+    </image>
+    <image id="n6_tno2" name="unreadBadge" src="tno2k" fileName="Images/ui_blank_round_bg1.png" xy="41,3" size="20,20" color="#ff0000">
+      <gearDisplay controller="button" pages="0,1,2,3"/>
+    </image>
+    <richtext id="n7_tno2" name="unreadCount" xy="41,3" size="20,22" fontSize="14" color="#ffffff" align="center" vAlign="middle" ubb="true" autoSize="none" text="5"/>
+    <image id="n4_ydt9" name="sel_frame" src="tno21k" fileName="Images/cm_itemslot_focus.png" xy="-6,-6" size="76,76" visible="false">
+      <relation target="" sidePair="width-width,height-height"/>
+    </image>
+  </displayList>
+  <Button/>
+</component>

@@ -1,0 +1,242 @@
+-- ProfilePageBinder.lua
+-- 个人设置页面绑定器
+require("Phone/Utils")
+local PhoneDataManager = require("Phone/PhoneDataManager")
+
+---@class ProfilePageBinder 个人设置页面绑定器
+---@field component FairyGUI.GComponent 页面组件
+---@field title FairyGUI.GTextField 标题
+---@field headerBg FairyGUI.GObject 头部背景
+---@field avatar FairyGUI.GComponent 头像
+---@field userName FairyGUI.GTextField 用户名
+---@field userId FairyGUI.GTextField 用户ID
+---@field btnPay FairyGUI.GButton 支付按钮
+---@field btnFriend FairyGUI.GButton 通讯录按钮
+---@field btnMoment FairyGUI.GButton 朋友圈按钮
+---@field btnSettings FairyGUI.GButton 设置按钮
+---@field btnCollect FairyGUI.GButton 退出按钮
+---@field onPayClicked function|nil 支付按钮回调
+---@field onFriendClicked function|nil 通讯录按钮回调
+---@field onMomentClicked function|nil 朋友圈按钮回调
+---@field onSettingsClicked function|nil 设置按钮回调
+---@field onCollectClicked function|nil 退出按钮回调
+local ProfilePageBinder = {}
+ProfilePageBinder.__index = ProfilePageBinder
+
+---创建个人设置页面绑定器实例
+---@param component FairyGUI.GComponent 个人设置页面组件
+---@return ProfilePageBinder 绑定器实例
+function ProfilePageBinder.New(component)
+    local self = setmetatable({}, ProfilePageBinder)
+    
+    -- 组件引用
+    self.component = component
+    
+    -- 标题
+    self.title = component:GetChild("title").asTextField
+    
+    -- 头部背景
+    self.headerBg = component:GetChild("headerBg")
+    
+    -- 用户信息
+    self.avatar = component:GetChild("avatar").asCom
+    self.userName = component:GetChild("userName").asTextField
+    self.userId = component:GetChild("userId").asTextField
+    
+    -- 功能按钮
+    self.btnPay = component:GetChild("btnPay").asButton
+    self.btnFriend = component:GetChild("btnFriend").asButton
+    self.btnMoment = component:GetChild("btnMoment").asButton
+    self.btnSettings = component:GetChild("btnSettings").asButton
+    self.btnCollect = component:GetChild("btnCollect").asButton
+    
+    -- 回调函数
+    self.onPayClicked = nil
+    self.onFriendClicked = nil
+    self.onMomentClicked = nil
+    self.onSettingsClicked = nil
+    self.onCollectClicked = nil
+    
+    -- 绑定按钮事件
+    self.btnPay.onClick:Add(function()
+        self:OnPayClicked()
+    end)
+    
+    self.btnFriend.onClick:Add(function()
+        self:OnFriendClicked()
+    end)
+    
+    self.btnMoment.onClick:Add(function()
+        self:OnMomentClicked()
+    end)
+    
+    self.btnSettings.onClick:Add(function()
+        self:OnSettingsClicked()
+    end)
+    
+    self.btnCollect.onClick:Add(function()
+        self:OnCollectClicked()
+    end)
+    
+    return self
+end
+
+---支付按钮点击事件
+function ProfilePageBinder:OnPayClicked()
+    PlayButtonSound()
+    
+    -- 触发自定义回调
+    if self.onPayClicked then
+        self.onPayClicked()
+    end
+end
+
+---通讯录按钮点击事件
+function ProfilePageBinder:OnFriendClicked()
+    PlayButtonSound()
+    
+    -- 触发自定义回调
+    if self.onFriendClicked then
+        self.onFriendClicked()
+    end
+end
+
+---朋友圈按钮点击事件
+function ProfilePageBinder:OnMomentClicked()
+    PlayButtonSound()
+    
+    -- 触发自定义回调
+    if self.onMomentClicked then
+        self.onMomentClicked()
+    end
+end
+
+---设置按钮点击事件
+function ProfilePageBinder:OnSettingsClicked()
+    PlayButtonSound()
+    
+    -- TODO: 打开设置界面
+    -- 可能包括：消息通知、隐私设置、账号管理等
+    
+    -- 触发自定义回调
+    if self.onSettingsClicked then
+        self.onSettingsClicked()
+    end
+end
+
+---退出按钮点击事件
+function ProfilePageBinder:OnCollectClicked()
+    PlayButtonSound()
+
+    -- 触发自定义回调
+    if self.onCollectClicked then
+        self.onCollectClicked()
+    end
+end
+
+---加载用户信息
+function ProfilePageBinder:LoadUserInfo()
+    local profile = PhoneDataManager.Profile.get()
+    
+    if self.userName ~= nil then
+        self.userName.text = profile.nickname or "用户名"
+    end
+    
+    local player = CS.GameCoreHelper.GetPlayerRole()
+    self.userId.text = "姓名: " .. player:GetRoleName()
+
+    self.avatar.icon = GetAvatarUrl(player.roleID)
+end
+
+---设置用户信息
+---@param userName string 用户名
+---@param userId string 用户ID或姓名
+---@param avatarUrl string 头像URL
+function ProfilePageBinder:SetUserInfo(userName, userId, avatarUrl)
+    -- 更新UI
+    if self.userName then
+        self.userName.text = userName or "用户名"
+    end
+    
+    if self.userId then
+        self.userId.text = userId or "姓名: 大漠旅人"
+    end
+    
+    -- TODO: 设置头像
+    -- if self.avatar and avatarUrl then
+    --     self.avatar.url = avatarUrl
+    -- end
+    
+    -- 保存到数据管理器
+    local profile = PhoneDataManager.Profile.get()
+    profile.nickname = userName
+    profile.realName = userId
+    profile.avatarUrl = avatarUrl
+    PhoneDataManager.Profile.save(profile)
+end
+
+---设置按钮回调
+---@param callbacks table 回调函数表
+function ProfilePageBinder:SetCallbacks(callbacks)
+    if callbacks then
+        self.onPayClicked = callbacks.onPayClicked
+        self.onFriendClicked = callbacks.onFriendClicked
+        self.onMomentClicked = callbacks.onMomentClicked
+        self.onSettingsClicked = callbacks.onSettingsClicked
+        self.onCollectClicked = callbacks.onCollectClicked
+    end
+end
+
+---启用/禁用按钮
+---@param buttonName string 按钮名称 ("Pay"|"Friend"|"Moment"|"Settings"|"Collect")
+---@param enabled boolean 是否启用
+function ProfilePageBinder:SetButtonEnabled(buttonName, enabled)
+    local btn = self["btn" .. buttonName]
+    if btn then
+        btn.enabled = enabled
+    end
+end
+
+---显示/隐藏按钮
+---@param buttonName string 按钮名称 ("Pay"|"Friend"|"Moment"|"Settings"|"Collect")
+---@param visible boolean 是否显示
+function ProfilePageBinder:SetButtonVisible(buttonName, visible)
+    local btn = self["btn" .. buttonName]
+    if btn then
+        btn.visible = visible
+    end
+end
+
+---获取用户昵称（静态方法）
+---@return string 用户昵称
+function ProfilePageBinder.GetNickname()
+    local profile = PhoneDataManager.Profile.get()
+    return profile.nickname or ""
+end
+
+---设置用户昵称
+---@param nickname string 新昵称
+function ProfilePageBinder:SetNickname(nickname)
+    PhoneDataManager.Profile.setNickname(nickname)
+    
+    if self.userName then
+        self.userName.text = nickname
+    end
+end
+
+---获取用户设置（静态方法）
+---@param key string 设置键
+---@return any 设置值
+function ProfilePageBinder.GetSetting(key)
+    local settings = PhoneDataManager.Settings.get()
+    return settings[key]
+end
+
+---设置用户设置（静态方法）
+---@param key string 设置键
+---@param value any 设置值
+function ProfilePageBinder.SetSetting(key, value)
+    PhoneDataManager.Settings.set(key, value)
+end
+
+return ProfilePageBinder

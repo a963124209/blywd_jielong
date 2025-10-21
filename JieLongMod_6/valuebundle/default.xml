@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<root xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<include file="B宝箱信息表_Chests_jielong.xlsx" />
+	<include file="C传承_Legacy.xlsx" />
+	<include file="C触发器_Triggers_jielong.xlsx" />
+	<include file="J剧情内文字翻译.xlsx" />
+	<include file="D单位模型定义接力第一棒.xlsx" />
+	<include file="D道具列表接力第一棒.xlsx" />
+	<include file="J技能列表接力第一棒.xlsx" />
+	<include file="J技能页接力第一棒.xlsx" />
+	<include file="J角色属性字段接力第一棒.xlsx" />
+	<include file="J剧本设定接力第一棒.xlsx" />
+	<include file="R人物立绘信息接力第一棒.xlsx" />
+	<include file="J剧情接力第一棒.xlsx" />
+	<include file="R人物列表接力第一棒.xlsx" />
+	<include file="Y音频播放列表.xlsx" />
+	<include file="Y音频项目表.xlsx" />
+	<include file="Y音频资源表.xlsx" />
+	<include file="D地图列表.xlsx" />
+	<include file="D地点列表_Places_jielong.xlsx" />
+	<include file="D大地图单位模型表.xlsx" />
+	<include file="B兵种单位表.xlsx" />
+	<include file="K卡牌定义.xlsx" />
+	<include file="Y野怪投放适配表.xlsx" />
+	<include file="D地图插件.xlsx" />
+	<include file="S商人列表随便观.xlsx" />
+	<include file="C插件设置表_Plugins.xlsx" />
+	<include file="Y游戏内文字_Strings.xlsx" />
+	<include file="Z阵营势力表_Camps.xlsx" />
+	<include file="J爵位等级_NobilityRanks.xlsx" />
+	<include file="Z战斗中剧情事件_BattleEvents.xlsx" />
+	<include file="S设施列表_Buildings.xlsx" />
+	<include file="X项目效果_Projects.xlsx" />
+	<include file="Y野外建筑点配置_BuildingSpots.xlsx" />
+</root>

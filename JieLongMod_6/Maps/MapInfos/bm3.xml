@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<blend_map xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" map_type="0" min_x="-490" min_y="-400" max_x="230" max_y="680" map_weather="" map_audio="" map_enter_cmd="" max_obj_id="4" max_area_id="6" max_se_id="1" max_layer_id="3" min_index_x="0" min_index_y="0" max_index_x="0" max_index_y="0" seige_type="0">
+  <layer name="New Layer" tag_layer_group="0" index_id="2" pos_type="0" iso_grid_size="128" offset_x="0" offset_y="0" visible="1" is_locked="0" />
+  <layer name="Default Layer" tag_layer_group="1" index_id="1" pos_type="0" iso_grid_size="128" offset_x="0" offset_y="0" visible="1" is_locked="0" />
+  <tex_tile tile_key="0,0" index_x="0" index_y="0" need_info_file="1" def_blend_weight="0.001" def_tex_id="1" def_tex_sx="1" def_tex_sy="1" def_tex_rot="0" />
+  <tv_map_datas>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</tv_map_datas>
+  <map_area area_id="1" bind_info_type="99" center_map_x="-208.666656" center_map_y="121.333321" width="2000" height="2000" rotate="0" aabb_state="1" aabb_min_x="-139" aabb_min_y="-75" aabb_max_x="141" aabb_max_y="76">
+    <pts_info>-94,-140;136,88;72,142;-134,-93</pts_info>
+    <properties>
+      <property name="control_id" value="[@str=MapEditor_AreaInfo_5]!!!注意!!!" />
+    </properties>
+  </map_area>
+</blend_map>

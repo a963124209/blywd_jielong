@@ -1,0 +1,196 @@
+require("GameUtils")
+
+----------------------------------------------变量缓存--------------------------------------------------
+local GameCoreHelper = CS.GameCoreHelper
+local GameUtils = CS.GameUtils
+
+
+VAL_ID_SELECT_CAMP_ID_CODE = "camp_id_code_"
+---* 打开势力选择框，势力ID值存储在[%str_val:camp_id_code_NUM%]中，“NUM”对应选择项[%result_code%]值
+---* “NUM”对应选择项[%result_code%]值，如[%str_val:camp_id_code_1%]存储了[%result_code%][=]1时的势力ID
+---* 若势力不存在，则不会出现在选项中
+---* 格式：RUN_SCRIPT_FUNC*Lua文件名称#SelectCampByCondition#对话角色ID;对话内容;选项格式;取消文本;势力ID列表;势力查询表达式
+---* 对话角色ID:当不为空时使用SELECT指令，当为空时使用CMD_SELECT指令
+---* 势力ID列表：以|分隔，可为空
+---* 势力查询表达式：以地点为tagCamp用于筛选势力，然后获取势力ID（为防止在事件层调用时直接转换指令，需要将“$”或“%”换成“?”，如：[?tagcamp:id?]）。该搜索结果与【势力ID列表】叠加显示
+---* 选项格式：游戏内文字Key，势力名称会作为参数{0}。为空时不设置格式，仅显示势力名称
+---* 取消文本：不为空时出现相应的取消选项，code值为0
+---* 示例：RUN_SCRIPT_FUNC*YHSelectLogics#SelectCampByCondition#主角;请选择势力;;取消;自建势力
+---* 示例：RUN_SCRIPT_FUNC*YHSelectLogics#SelectCampByCondition#主角;请选择势力;;取消;;[?tagcamp:id?][<>][?player:campid?]&[?tagcamp:active_state?][=]1&[?tagcamp:is_story_camp?][=]0
+function SelectCampByCondition(_contextArgVal, _StrArgs)
+    local paramList = SplitStr(_StrArgs, ";")
+
+    local dialogueRoleID = paramList[1]
+    local dialogueStr = paramList[2]
+    local optionFormat = paramList[3]
+    local cancelStr = paramList[4] or ""
+    local campInfo = paramList[5] or ""
+    local cdtGroupStr = paramList[6] or ""
+    cdtGroupStr = string.gsub(cdtGroupStr,"?", "$")
+    
+    local tagCampList = SplitStr(campInfo, ";")
+    local allGameCampList = GameCoreHelper.GetAllGameCamps()
+    if not IsEmptyOrNilStr(cdtGroupStr) then
+        for k, curCamp in pairs(allGameCampList) do
+            local argVal = GameCoreHelper.CreateEmptyRuntimeArgVal()
+            argVal.CurTagCamp = curCamp
+            if GameUtils.checkConditionGroup(cdtGroupStr, argVal, false) then
+                for k2, curMapID in pairs(tagCampList) do
+                    if curCamp.CampID == curMapID then goto cacheCampInfoContinue end
+                end
+                table.insert(tagCampList, curCamp.CampID)
+            end
+            ::cacheCampInfoContinue::
+        end
+    end
+    local CMD_SELECT = ""
+    if not IsEmptyOrNilStr(dialogueRoleID) then
+        CMD_SELECT = "SELECT*" .. dialogueRoleID .. "#" .. dialogueStr .."#"
+    else
+        CMD_SELECT = "CMD_SELECT*" .. dialogueStr .."#"
+    end
+
+    local curCode = 0
+    for k, tagCampID in pairs(tagCampList) do
+        local tagCamp = GameCoreHelper.GetGameCamp(tagCampID)
+        if tagCamp then 
+            local optionStr = tagCamp:GetCampName()
+            if optionFormat ~= "" then
+                optionStr = StringFormat(GameCoreHelper.GetGameString(optionFormat), optionStr)
+            end
+            curCode = curCode + 1
+            CMD_SELECT = CMD_SELECT .. curCode .. ":" .. optionStr .. ";"
+            GameCoreHelper.SetStrVar(VAL_ID_SELECT_CAMP_ID_CODE .. curCode, curCampID)
+        end
+    end
+
+    if not IsEmptyOrNilStr(cancelStr) then
+        CMD_SELECT = CMD_SELECT .. "0:" .. cancelStr
+    end
+    GameCoreHelper.RunCmd(CMD_SELECT)
+end
+
+VAL_ID_SELECT_MAP_ID_CODE = "map_id_code_"
+---* 作用：打开地图选择框，地图ID值存储在[%str_val:map_id_code_NUM%]中
+---* “NUM”对应选择项[%result_code%]值，如[%str_val:map_id_code_1%]存储了[%result_code%][=]1时的地图ID
+---* 若地图不存在，则不会出现在选项中
+---* 格式：RUN_SCRIPT_FUNC*Lua文件名称#SelectMapByCondition#对话角色ID;对话内容;选项格式;取消文本;地图ID列表;地点查询表达式
+---* 对话角色ID:当不为空时使用SELECT指令，当为空时使用CMD_SELECT指令
+---* 地图ID列表：以|分隔，可为空
+---* 地点查询表达式：以地点为tagPlace用于筛选地点，然后获取地点所在的地图ID（为防止在事件层调用时直接转换指令，需要将“$”或“%”换成“?”，如：[?tagplace:id?]）。该搜索结果与【地图ID列表】叠加显示
+---* 选项格式：游戏内文字Key，地图名称会作为参数{0}。为空时不设置格式，仅显示地图名称
+---* 取消文本：不为空时出现相应的取消选项，code值为0
+---* 示例：RUN_SCRIPT_FUNC*MapSelectLogics#SelectMapByCondition#主角;请选择地图;;取消;沙盒红石城
+---* 示例：RUN_SCRIPT_FUNC*MapSelectLogics#SelectMapByCondition#;请选择目前可以旅行的地图。;;取消;;[?tagplace:camp_rl?][<>]1&[?tagplace:is_stronghold?][=]1&[?tagplace:player_dist?][>]0&[?tagplace:mapid?][<>]沙盒火魔之地
+function SelectMapByCondition(_contextArgVal, _StrArgs)
+    local paramList = SplitStr(_StrArgs, ";")
+
+    local dialogueRoleID = paramList[1]
+    local dialogueStr = paramList[2]
+    local optionFormat = paramList[3]
+    local cancelStr = paramList[4] or ""
+    local mapInfo = paramList[5] or ""
+    local cdtGroupStr = paramList[6] or ""
+    cdtGroupStr = string.gsub(cdtGroupStr,"?", "$")
+    
+    local tagMapList = SplitStr(mapInfo, ";")
+    local allGamePlaceList = GameCoreHelper.GetAllGamePlaces()
+    if not IsEmptyOrNilStr(cdtGroupStr) then
+        for k, curPlace in pairs(allGamePlaceList) do
+            local argVal = GameCoreHelper.CreateEmptyRuntimeArgVal()
+            argVal.CurTagPlace = curPlace
+            if GameUtils.checkConditionGroup(cdtGroupStr, argVal, false) then
+                for k2, curMapID in pairs(tagMapList) do
+                    if curPlace.PlaceMapID == curMapID then goto cacheCampInfoContinue end
+                end
+                table.insert(tagMapList, curPlace.PlaceMapID)
+            end
+            ::cacheCampInfoContinue::
+        end
+    end
+    local CMD_SELECT = ""
+    if not IsEmptyOrNilStr(dialogueRoleID) then
+        CMD_SELECT = "SELECT*" .. dialogueRoleID .. "#" .. dialogueStr .."#"
+    else
+        CMD_SELECT = "CMD_SELECT*" .. dialogueStr .."#"
+    end
+
+    local curCode = 0
+    local allMapPojo = GameCoreHelper.GetAllList_GameMapPojo()
+    for k, curMapID in pairs(tagMapList) do
+        for k2, curMapPojo in pairs(allMapPojo) do
+            if curMapPojo.mapID == curMapID then
+                local optionStr = curMapPojo.displayName
+                if optionFormat ~= "" then
+                    optionStr = StringFormat(GameCoreHelper.GetGameString(optionFormat), optionStr)
+                end
+                curCode = curCode + 1
+                CMD_SELECT = CMD_SELECT .. curCode .. ":" .. optionStr .. ";"
+                GameCoreHelper.SetStrVar(VAL_ID_SELECT_MAP_ID_CODE .. curCode, curMapID)
+                goto cacheCampInfoContinue2
+            end
+        end
+        ::cacheCampInfoContinue2::
+    end
+
+    if not IsEmptyOrNilStr(cancelStr) then
+        CMD_SELECT = CMD_SELECT .. "0:" .. cancelStr
+    end
+    GameCoreHelper.RunCmd(CMD_SELECT)
+end
+
+
+VAL_ID_SELECT_SKILLPAGE_ID_CODE = "skillpage_id_code_"
+---* 作用：打开技能页选择框，技能页ID值存储在[%str_val:skillpage_id_code_NUM%]中
+---* “NUM”对应选择项[%result_code%]值，如[%str_val:skillpage_id_code_1%]存储了[%result_code%][=]1时的技能页ID
+---* 若技能页不存在，则不会出现在选项中
+---* 格式：RUN_SCRIPT_FUNC*Lua文件名称#SelectBySkillPagesInfo#对话角色ID;对话内容;选项格式;取消文本;技能页信息
+---* 技能页信息：以|分隔
+---* 选项格式：游戏内文字Key，技能页名称会作为参数{0}。为空时不设置格式，仅显示技能页名称
+---* 取消文本：不为空时出现相应的取消选项，code值为0
+---* 示例：RUN_SCRIPT_FUNC*YHSelectLogics#SelectBySkillPagesInfo#主角;请选择技能页;取消;T枪术|T荒沙战法
+function SelectBySkillPagesInfo(_contextArgVal, _StrArgs)
+    local paramList = SplitStr(_StrArgs, ";")
+
+    local dialogueRoleID = paramList[1]
+    local dialogueStr = paramList[2]
+    local optionFormat = paramList[3]
+    local cancelStr = paramList[4] or ""
+    local pageSkillsInfo = paramList[5]
+    
+    local CMD_SELECT = ""
+    if not IsEmptyOrNilStr(dialogueRoleID) then
+        CMD_SELECT = "SELECT*" .. dialogueRoleID .. "#" .. dialogueStr .."#"
+    else
+        CMD_SELECT = "CMD_SELECT*" .. dialogueStr .."#"
+    end
+    local curCode = 0
+    local skillPagesList = SplitStr(pageSkillsInfo, "|")
+    for key, pageid in ipairs(skillPagesList) do
+        local tagPage = GameCoreHelper.GetSkillPageInfo(pageid)
+        if tagPage then
+            curCode = curCode + 1
+            local optionStr = tagPage.display_name
+            if optionFormat ~= "" then
+                optionStr = StringFormat(GameCoreHelper.GetGameString(optionFormat), optionStr)
+            end
+            CMD_SELECT = CMD_SELECT .. curCode .. ":" .. optionStr .. ";"
+            GameCoreHelper.SetStrVar(VAL_ID_SELECT_SKILLPAGE_ID_CODE .. curCode, pageid)
+        end
+    end
+    if not IsEmptyOrNilStr(cancelStr) then
+        CMD_SELECT = CMD_SELECT .. "0:" .. cancelStr
+    end
+    GameCoreHelper.RunCmd(CMD_SELECT)
+end
+
+--根据地图ID获取地图对象
+function GetMapPojoByMapID(mapID)
+    local allMapPojo = GameCoreHelper.GetAllList_GameMapPojo()
+    for k, curMapPojo in pairs(allMapPojo) do
+        if curMapPojo.mapID == mapID then
+            return curMapPojo
+        end
+    end
+    return nil
+end

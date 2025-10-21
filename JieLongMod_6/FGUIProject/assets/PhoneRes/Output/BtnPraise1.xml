@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="40,40" extention="Button">
+  <controller name="button" pages="0,up,1,down,2,over,3,selectedOver,4,disabled,5,selectedDisabled" selected="5"/>
+  <displayList>
+    <image id="n10_kfa5" name="btn_icon" src="tno2t" fileName="Images/cm_icon_thumb_up.png" xy="20,20" pivot="0.5,0.5" anchor="true" size="32,32" aspect="true" scale="1.2,1.2" color="#00ff66">
+      <gearSize controller="button" pages="0,1,2,3,4" values="32,32,1,1|32,32,1.2,1.2|32,32,1,1|32,32,1.2,1.2|32,32,1,1" default="32,32,1.2,1.2"/>
+      <gearLook controller="button" pages="0,4" values="0.35,0,0,0|0.3,0,0,0" default="1,0,0,0"/>
+      <gearColor controller="button" pages="1,5" values="#00ff66|#00ff66" default="#ffffff"/>
+      <relation target="" sidePair="width-width,height-height"/>
+    </image>
+  </displayList>
+  <Button mode="Check"/>
+</component>

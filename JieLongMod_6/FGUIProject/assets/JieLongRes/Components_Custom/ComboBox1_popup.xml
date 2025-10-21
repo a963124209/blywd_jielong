@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="150,200">
+  <displayList>
+    <image id="n0_qr8k" name="n0" src="l8z430" fileName="Images_Custom/ui_cmb_pop_s1.png" xy="0,0" size="150,200" color="#333333">
+      <relation target="" sidePair="width-width,height-height"/>
+    </image>
+    <list id="n1_qr8k" name="list" xy="0,0" size="150,200" overflow="scroll" scrollBar="hidden" defaultItem="ui://7l8qp3zoqr8k2m">
+      <relation target="" sidePair="width-width"/>
+    </list>
+  </displayList>
+  <relation target="n1_qr8k" sidePair="height-height"/>
+</component>

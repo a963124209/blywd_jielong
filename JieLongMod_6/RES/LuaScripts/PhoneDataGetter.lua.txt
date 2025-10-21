@@ -1,0 +1,17 @@
+local phoneDataMgr = require("Phone/PhoneDataManager")
+
+--- Lua获取变量
+---@param valKey string 变量名
+---@param contextArgVal RuntimeArgVals 传入参数
+function GetPhoneLuaIntVal(valKey, contextArgVal)
+    if valKey == "phone_is_friend" then
+        local roleId = contextArgVal.CurTagRoleID
+        local character = phoneDataMgr.Character.get(roleId)
+        if character ~= nil and character.isFriend then
+            return 1
+        else
+            return 0
+        end
+    end
+    return 0
+end

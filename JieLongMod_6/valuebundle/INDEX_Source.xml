@@ -1,0 +1,35 @@
+﻿<?xml version="1.0"?>
+<root xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<convert reg="chest_info_pojo_new.xml" from="B宝箱信息表_Chests_jielong.xlsx" />
+	<convert reg="legacy_pojo_new.xml" from="C传承_Legacy.xlsx" />
+	<convert reg="event_trigger_pojo_new.xml" from="C触发器_Triggers_jielong.xlsx" />
+	<convert reg="scriptstring_pojo.xml" from="J剧情内文字翻译.xlsx" need_translate="true" />
+	<convert reg="rolemodel_pojo_new.xml" from="D单位模型定义接力第一棒.xlsx" />
+	<convert reg="game_item_pojo_new.xml" from="D道具列表接力第一棒.xlsx"/>
+	<convert reg="skill_info_pojo_new.xml" from="J技能列表接力第一棒.xlsx" />
+	<convert reg="skill_page_pojo_new.xml" from="J技能页接力第一棒.xlsx" />
+	<convert reg="statu_field_pojo_new.xml" from="J角色属性字段接力第一棒.xlsx" />
+	<convert reg="story_mode_pojo_new.xml" from="J剧本设定接力第一棒.xlsx" />	
+	<convert reg="character_new.xml" from="R人物立绘信息接力第一棒.xlsx" />
+	<convert reg="storyevent_pojo_new.xml" from="J剧情接力第一棒.xlsx" />
+	<convert reg="role_template_pojo_new.xml" from="R人物列表接力第一棒.xlsx" />
+	<convert from="Y音频播放列表.xlsx" reg="audio_playlist_pojo_new.xml"/>
+	<convert from="Y音频项目表.xlsx" reg="audio_item_pojo_new.xml"/>
+	<convert from="Y音频资源表.xlsx" reg="audio_sub_item_pojo_new.xml"/>
+	<convert reg="gamemap_pojo_new.xml" from="D地图列表.xlsx"/>
+	<convert reg="place_pojo_new.xml" from="D地点列表_Places_jielong.xlsx" />
+	<convert reg="mu_model_pojo_new.xml" from="D大地图单位模型表.xlsx"/>
+	<convert reg="soldierunit_pojo_new.xml" from="B兵种单位表.xlsx"/>
+	<convert reg="card_def_pojo_new.xml" from="K卡牌定义.xlsx"/>
+	<convert reg="monster_info_pojo_new.xml" from="Y野怪投放适配表.xlsx" />
+	<convert reg="mapplugin_pojo.xml" from="D地图插件.xlsx" />
+	<convert reg="merchant_pojo_new.xml" from="S商人列表随便观.xlsx" />
+	<convert reg="plugin_info_pojo_new.xml" from="C插件设置表_Plugins.xlsx" />
+	<convert reg="string_pojo_new.xml" from="Y游戏内文字_Strings.xlsx" />	
+	<convert reg="gamecamp_pojo_new.xml" from="Z阵营势力表_Camps.xlsx" />	
+	<convert reg="nobility_ranks_pojo.xml" from="J爵位等级_NobilityRanks.xlsx" />
+	<convert reg="battleevent_pojo_new.xml" from="Z战斗中剧情事件_BattleEvents.xlsx" />
+	<convert reg="building_pojo_new.xml" from="S设施列表_Buildings.xlsx" />
+	<convert reg="project_effect_pojo_new.xml" from="X项目效果_Projects.xlsx" />
+	<convert reg="map_building_spot_new.xml" from="Y野外建筑点配置_BuildingSpots.xlsx"  />
+</root>

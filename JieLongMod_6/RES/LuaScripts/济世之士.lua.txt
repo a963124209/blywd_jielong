@@ -1,0 +1,54 @@
+﻿require("gui/WindowUtils")
+
+local global = {}
+
+local function RunCmd(cmdStr, contextArgs)
+    local _contextArgs = contextArgs
+    local _cmdStr = cmdStr:gsub("^%s*(.-)%s*$", "%1"):gsub("\t", "")
+    CS.GameCoreHelper.RunCmd(_cmdStr, _contextArgs)
+end
+local SetIntVar = CS.GameCoreHelper.SetIntVar
+local GetIntVar = CS.GameCoreHelper.GetIntVar
+local SetStrVar = CS.GameCoreHelper.SetStrVar
+local GetStrVar = CS.GameCoreHelper.GetStrVar
+
+
+
+---* 视频播放页面初始化
+function onInit()
+	print("加载界面")
+	CS.FairyGUI.Timers.inst:Add(103, 0, onClickExit);--"200"为时间,单位秒
+
+	global.contentPane = self.contentPane
+
+
+	---* 通用关闭按钮
+	---@type FairyGUI.GButton
+	global.buttonClose = global.contentPane:GetChild("frame"):GetChild("closeButton").asButton
+	global.buttonClose.onClick:Add(onClickExit)
+	
+	global.loader = global.contentPane:GetChild("Video").asLoader;
+
+
+	---* 此处写视频地址
+	global.obj = CS.HanSquirrel.ResourceManager.ResourceLoader.Spawn("Assets/BuildSource/video/济世之士.prefab")
+	global.player = global.obj:GetComponent("VideoPlayer");
+	global.rawImage  = global.obj:GetComponent("RawImage");
+	
+	global.NTexture = CS.FairyGUI.NTexture.Empty
+	global.NTexture:Reload(global.rawImage.texture)
+	global.loader.image.texture = global.NTexture
+end
+
+function onClickExit()
+	CS.FairyGUI.Timers.inst:Remove(onClickExit);--移除计时器
+	if global.obj ~= nil then
+		CS.UnityEngine.GameObject.Destroy(global.obj)
+	end
+	self:Hide()
+end
+
+function onClickPlay()
+
+	
+end

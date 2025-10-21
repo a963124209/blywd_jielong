@@ -1,0 +1,350 @@
+-- MomentsPageBinder.lua
+-- 朋友圈页面绑定器
+
+local PhoneDataManager = require("Phone/PhoneDataManager")
+require("Phone/Utils")
+local PhoneTriggerManager = require("Phone/PhoneTriggerManager")
+local GUIPopupOptions = require("Phone/GUIPopupOptions")
+
+---@class MomentsPageBinder 朋友圈页面绑定器
+---@field component FairyGUI.GComponent 页面组件
+---@field title FairyGUI.GTextField 标题
+---@field headerBg FairyGUI.GObject 头部背景
+---@field userName FairyGUI.GTextField 用户名
+---@field avatar FairyGUI.GComponent 头像
+---@field momentsList FairyGUI.GList 朋友圈列表
+---@field allMoments table 所有朋友圈动态
+---@field onCommentClicked function|nil 评论点击回调
+local MomentsPageBinder = {}
+MomentsPageBinder.__index = MomentsPageBinder
+
+---创建朋友圈页面绑定器实例
+---@param component FairyGUI.GComponent 朋友圈页面组件
+---@return MomentsPageBinder 绑定器实例
+function MomentsPageBinder.New(component)
+    local self = setmetatable({}, MomentsPageBinder)
+    
+    -- 组件引用
+    self.component = component
+    
+    -- 标题
+    self.title = component:GetChild("title").asTextField
+    
+    -- 头部背景
+    self.headerBg = component:GetChild("headerBg")
+    
+    -- 用户信息
+    self.userName = component:GetChild("userName").asTextField
+    self.avatar = component:GetChild("avatar").asCom
+    
+    -- 朋友圈列表
+    self.momentsList = component:GetChild("momentsList").asList
+    
+    -- 数据缓存
+    self.allMoments = {}
+    self.onCommentClicked = nil
+    
+    -- 绑定渲染器
+    self.momentsList.itemRenderer = function(index, item)
+        self:RenderMomentsItem(index, item)
+    end
+
+    self.momentsList:SetVirtual()
+
+    self.momentsList.numItems = 0
+
+    return self
+end
+
+---渲染朋友圈列表项
+---@param index number 列表索引
+---@param item FairyGUI.GObject 列表项对象
+function MomentsPageBinder:RenderMomentsItem(index, item)
+    local moment = self.allMoments[index + 1] -- Lua索引从1开始
+    if not moment then return end
+    
+    local itemCom = item.asCom
+    
+    -- 获取发布者信息
+    local character = PhoneDataManager.Character.get(moment.ownerId)
+    if not character then return end
+    
+    -- 设置头像
+    local avatar = itemCom:GetChild("avatar")
+    if avatar ~= nil then
+        avatar.icon = GetAvatarUrl(character.uid)
+    end
+    
+    -- 设置用户名
+    local nameText = itemCom:GetChild("userName")
+    if nameText then
+        nameText.text = GetRoleName(character.uid)
+    end
+    
+    -- 设置内容
+    local contentText = itemCom:GetChild("content")
+    if contentText then
+        contentText.text = moment.content or ""
+    end
+    
+    -- 设置时间
+    local timeText = itemCom:GetChild("timeText").asRichTextField
+    if timeText then
+        timeText.text = MomentsPageBinder.FormatTime(moment.timestamp)
+    end
+    
+    -- 设置点赞列表
+    local likeList = itemCom:GetChild("likesText").asRichTextField
+    if likeList and moment.likes then
+        MomentsPageBinder.RenderLikes(likeList, moment.likes)
+    end
+    
+    -- 设置评论列表
+    local commentList = itemCom:GetChild("commentsList")
+    if commentList and moment.comments then
+        MomentsPageBinder.RenderComments(commentList.asList, moment.comments, moment)
+
+        local commentBg = itemCom:GetChild("commentsBg")
+        if commentList.numItems == 0 then
+            commentList.visible = false
+            commentBg.visible = false
+        else
+            commentList.visible = true
+            commentBg.visible = true
+        end
+    end
+    
+    -- 绑定点赞按钮
+    local btnLike = itemCom:GetChild("btnLike").asButton
+    if btnLike then
+        btnLike.changeStateOnClick = false
+        btnLike.onClick:Set(function()
+            local like = self:OnLikeClicked(moment)
+            btnLike.selected = like
+
+            if likeList and moment.likes then
+                MomentsPageBinder.RenderLikes(likeList, moment.likes)
+            end
+
+            if like then
+                ChangeFov(moment.ownerId, 1, false)
+            else
+                ChangeFov(moment.ownerId, -1, false)
+            end
+        end)
+        
+        -- 设置点赞状态
+        local isLiked = MomentsPageBinder.CheckIfLiked(moment, "主角")
+        -- 根据isLiked设置按钮样式
+        btnLike.selected = isLiked
+    end
+end
+
+---格式化时间戳（静态方法）
+---@param timestamp number 时间戳
+---@return string 格式化后的时间字符串
+function MomentsPageBinder.FormatTime(timestamp)
+    if not timestamp or timestamp == 0 then
+        return ""
+    end
+    
+    -- 这里使用的是浮点数天数，每个数字代表 1 天
+    local currentTime = CS.WorldManager.Instance.curGameTime
+    local diff = currentTime - timestamp
+    
+    if diff < 1 then
+        return "刚刚"
+    elseif diff < 2 then
+        return "昨天"
+    else
+        -- x天前
+        return math.floor(diff) .. " 天前"
+    end
+end
+
+---渲染点赞列表（静态方法）
+---@param likeText FairyGUI.GTextField 点赞文本组件
+---@param likes table 点赞用户UID数组
+function MomentsPageBinder.RenderLikes(likeText, likes)
+    if not likes or #likes == 0 then
+        likeText.text = ""
+        return
+    end
+    
+    local names = {}
+    for _, uid in ipairs(likes) do
+        table.insert(names, GetRoleName(uid))
+    end
+    
+    likeText.text = table.concat(names, "、")
+end
+
+---渲染评论列表（静态方法）
+---@param commentList FairyGUI.GList 评论列表组件
+---@param comments table 评论数组
+---@param moment table 朋友圈动态数据
+function MomentsPageBinder.RenderComments(commentList, comments, moment)
+    commentList.numItems = 0
+    commentList.numItems = #comments
+    for i = 0, #comments - 1 do
+        local commentItem = commentList:GetChildAt(i).asLabel
+        if commentItem ~= nil then
+            local comment = comments[i + 1]
+            -- 设置评论内容
+            local commenterName = GetRoleName(comment.uid)
+            commentItem.title = string.format("%s: %s", commenterName, comment.content)
+        end
+    end
+
+    if moment.triggerId and moment.triggerId ~= "" then
+        -- 获取所有回复选项
+        local roleId = moment.ownerId
+        ---@type PhoneTrigger[]
+        local triggers = PhoneTriggerManager.getCommentTriggers(moment.triggerId, moment.ownerId)
+        local options = {}
+        for _, v in ipairs(triggers) do
+            table.insert(options, {
+                label = v.bindArgs,
+                action = function()
+                    StartCoroutine(function()
+                        PhoneDataManager.Character.setMomentTriggerUsed(moment.ownerId, moment.id)
+
+                        local info = PhoneTriggerManager.buildTriggerInfo(roleId)
+                        info.momentId = moment.id
+                        local context = PhoneTriggerManager.createTriggerContext(info)
+                        v.event(context)
+                    end)
+                end
+            })
+        end
+
+        if #options > 0 then
+            -- 添加回复按钮
+            local btn = commentList:AddItemFromPool("ui://PhoneRes/BtnComment").asButton
+            btn.onClick:Set(function()
+                ---@type FairyGUI.GObject
+                local popup = CS.GUIHelper.CreateFGUIObj("PhoneRes", "PopupComments")
+                
+                -- 创建弹出菜单实例
+                GUIPopupOptions.New(popup, options)
+                
+                CS.FairyGUI.GRoot.inst:ShowPopup(popup, btn, CS.FairyGUI.PopupDirection.Up)
+            end)
+        end
+    end
+
+    commentList:ResizeToFit()
+end
+
+---检查是否已点赞（静态方法）
+---@param moment table 朋友圈动态数据
+---@param userUid string 用户UID
+---@return boolean 是否已点赞
+function MomentsPageBinder.CheckIfLiked(moment, userUid)
+    if not moment.likes or not userUid then
+        return false
+    end
+    
+    for _, uid in ipairs(moment.likes) do
+        if uid == userUid then
+            return true
+        end
+    end
+    return false
+end
+
+---点赞按钮点击事件
+---@param moment table 朋友圈动态数据
+function MomentsPageBinder:OnLikeClicked(moment)
+    PlayButtonSound()
+
+    -- 切换点赞状态
+    local like = PhoneDataManager.Character.toggleLike(moment.ownerId, moment.id, "主角")
+    return like
+end
+
+---评论按钮点击事件
+---@param moment table 朋友圈动态数据
+function MomentsPageBinder:OnCommentClicked(moment)
+    PlayButtonSound()
+    
+    -- 触发回调
+    if self.onCommentClicked then
+        self.onCommentClicked(moment)
+    end
+end
+
+---设置当前用户信息
+function MomentsPageBinder:SetUserInfo()
+    local profile = PhoneDataManager.Profile.get()
+    
+    if self.userName ~= nil then
+        self.userName.text = profile.nickname or "用户名"
+    end
+
+    if self.avatar ~= nil then
+        self.avatar.icon = GetAvatarUrl("主角")
+    end
+end
+
+---加载所有朋友圈动态
+function MomentsPageBinder:LoadAllMoments()
+    self.allMoments = {}
+    
+    -- 从所有角色中收集朋友圈动态
+    local characters = PhoneDataManager.Character.getAll()
+    for _, character in ipairs(characters) do
+        local role = CS.GameCoreHelper.GetRole(character.uid)
+        if role ~= nil and character.moments then
+            for _, moment in ipairs(character.moments) do
+                table.insert(self.allMoments, moment)
+            end
+        end
+    end
+    
+    -- 按时间倒序排序
+    table.sort(self.allMoments, function(a, b)
+        return (a.timestamp or 0) > (b.timestamp or 0)
+    end)
+    
+    self:RefreshList()
+end
+
+---刷新朋友圈列表
+function MomentsPageBinder:RefreshList()
+    if self.momentsList then
+        self.momentsList.numItems = #self.allMoments
+    end
+end
+
+---清空朋友圈列表
+function MomentsPageBinder:ClearList()
+    if self.momentsList then
+        self.momentsList.numItems = 0
+        self.allMoments = {}
+    end
+end
+
+---滚动到顶部
+---@param animate boolean 是否播放动画
+function MomentsPageBinder:ScrollToTop(animate)
+    if self.momentsList then
+        self.momentsList.scrollPane:ScrollTop(animate)
+    end
+end
+
+---滚动到底部
+---@param animate boolean 是否播放动画
+function MomentsPageBinder:ScrollToBottom(animate)
+    if self.momentsList then
+        self.momentsList.scrollPane:ScrollBottom(animate)
+    end
+end
+
+---设置评论点击回调
+---@param callback function 回调函数，参数为moment
+function MomentsPageBinder:SetCommentClickCallback(callback)
+    self.onCommentClicked = callback
+end
+
+return MomentsPageBinder

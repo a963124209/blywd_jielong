@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="600,720">
+  <displayList>
+    <text id="n1_cnt" name="title" xy="20,20" size="560,50" fontSize="28" color="#ffffff" align="center" vAlign="middle" autoSize="none" text="通讯录"/>
+    <image id="n2_cnt" name="searchBg" src="tno2m" fileName="Images/ui_infobox_s1_bg.png" xy="20,88" size="560,50"/>
+    <text id="n3_cnt" name="searchText" xy="30,93" size="540,40" fontSize="20" color="#999999" vAlign="middle" autoSize="none" text="" input="true" prompt="搜索"/>
+    <list id="n4_cnt" name="contactList" xy="10,147" size="580,563" overflow="scroll" lineGap="2" defaultItem="ui://qrms65xvtno2g" autoClearItems="true">
+      <relation target="" sidePair="width-width,height-height"/>
+      <item/>
+      <item/>
+      <item/>
+      <item/>
+      <item/>
+      <item/>
+      <item/>
+      <item/>
+      <item/>
+      <item/>
+      <item/>
+      <item/>
+    </list>
+  </displayList>
+</component>

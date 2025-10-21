@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<packageDescription id="qrms65xv">
+  <resources>
+    <component id="tno21" name="FriendCall.xml" path="/Output/" exported="true"/>
+    <image id="tno22" name="ui_rolebox_box_s1_bg.png" path="/Images/" scale="9grid" scale9grid="16,16,32,32"/>
+    <component id="tno23" name="Bg.xml" path="/Output/"/>
+    <image id="tno24" name="bg.png" path="/SingletonImage/"/>
+    <image id="tno25" name="ui_blank_image_0.png" path="/Images/" scale="9grid" scale9grid="8,8,16,16"/>
+    <component id="tno26" name="ListItemFuncBtnShort1Switch.xml" path="/Buttons/"/>
+    <image id="tno27" name="ui_btn_listfunc_short_s1_n.png" path="/Images/"/>
+    <image id="tno28" name="ui_btn_lightmask_s1.png" path="/Images/"/>
+    <image id="tno29" name="ui_btn_darkmask_s1.png" path="/Images/"/>
+    <image id="tno2a" name="ui_infobar_selframe_s1.png" path="/Images/" scale="9grid" scale9grid="24,24,16,16"/>
+    <image id="tno2b" name="joystick_arrow_down.png" path="/Images/icons/" exported="true"/>
+    <image id="tno2c" name="joystick_arrow_left.png" path="/Images/icons/" exported="true"/>
+    <image id="tno2d" name="joystick_arrow_right.png" path="/Images/icons/" exported="true"/>
+    <image id="tno2e" name="joystick_arrow_up.png" path="/Images/icons/" exported="true"/>
+    <component id="tno2f" name="MessageListView.xml" path="/Output/" exported="true"/>
+    <component id="tno2g" name="MessageListItem.xml" path="/Output/" exported="true"/>
+    <component id="tno2h" name="AvatarCom.xml" path="/Output/" exported="true"/>
+    <image id="tno2i" name="ui_headbox64_s1_bg.png" path="/Images/" scale="9grid" scale9grid="16,16,32,32"/>
+    <component id="tno2j" name="Avatar.xml" path="/Output/"/>
+    <image id="tno2k" name="ui_blank_round_bg1.png" path="/Images/"/>
+    <component id="tno2l" name="ContactPage.xml" path="/Output/" exported="true"/>
+    <image id="tno2m" name="ui_infobox_s1_bg.png" path="/Images/" scale="9grid" scale9grid="120,24,16,16"/>
+    <component id="tno2n" name="MomentsPage.xml" path="/Output/" exported="true"/>
+    <image id="tno2o" name="ui_listblank_line_1.png" path="/Images/" scale="9grid" scale9grid="3,3,13,3"/>
+    <component id="tno2p" name="MomentsListItem.xml" path="/Output/" exported="true"/>
+    <image id="tno2q" name="ui_infobox_s2_bg.png" path="/Images/" scale="9grid" scale9grid="8,8,14,14"/>
+    <component id="tno2r" name="MomentsCommentItem.xml" path="/Output/" exported="true"/>
+    <component id="tno2s" name="BtnPraise1.xml" path="/Output/"/>
+    <image id="tno2t" name="cm_icon_thumb_up.png" path="/Images/"/>
+    <component id="tno2u" name="ProfilePage.xml" path="/Output/" exported="true"/>
+    <component id="tno2v" name="ListItemFuncBtnWide1.xml" path="/Buttons/" exported="true"/>
+    <image id="tno2w" name="ui_btn_listfunc_wide_s1_n.png" path="/Images/" scale="9grid" scale9grid="5,5,251,37"/>
+    <component id="tno2x" name="ChatPage.xml" path="/Output/" exported="true"/>
+    <image id="tno2y" name="bg2.png" path="/SingletonImage/"/>
+    <component id="tno2z" name="MBtnPageLeft1.xml" path="/CharCustomizer/"/>
+    <image id="tno210" name="mui_arrow_left1_btn.png" path="/Images/mui_Images/"/>
+    <image id="tno211" name="cm_itemslot_on.png" path="/Images/" scale9grid="24,24,48,48"/>
+    <component id="tno212" name="ChatMessageItem.xml" path="/Output/" exported="true"/>
+    <image id="tno213" name="ui_talkbubble_style1_left.png" path="/Images/" scale="9grid" scale9grid="20,32,31,32"/>
+    <image id="tno214" name="ui_talkbubble_style1_right.png" path="/Images/" scale="9grid" scale9grid="10,32,31,32"/>
+    <component id="tno215" name="NormalFuncBtnS3.xml" path="/Buttons/"/>
+    <image id="tno216" name="ui_btn_func_s4_n.png" path="/Images/" scale="9grid" scale9grid="10,10,146,19"/>
+    <image id="tno217" name="ui_btn_func_s3_n.png" path="/Images/" scale="9grid" scale9grid="10,10,146,19"/>
+    <component id="tno218" name="MessagePage.xml" path="/Output/" exported="true"/>
+    <component id="tno219" name="Phone.xml" path="/Output/" exported="true"/>
+    <image id="tno21a" name="ui_info_page_box_frame.png" path="/Images/" scale="9grid" scale9grid="20,20,327,520"/>
+    <component id="tno21b" name="CloseBtnRoundS1.xml" path="/Buttons/" exported="true"/>
+    <image id="tno21c" name="ui_btn_closeround_s1_n.png" path="/Images/"/>
+    <image id="tno21d" name="ui_btn_closeround_s2_n.png" path="/Images/"/>
+    <image id="tno21e" name="ui_btn_closeround_s3_n.png" path="/Images/"/>
+    <component id="tno21g" name="RoundBtnPhone.xml" path="/Output/" exported="true"/>
+    <image id="tno21h" name="icon_phone.png" path="/Images/"/>
+    <image id="tno21i" name="ui_round_btn_light_mask.png" path="/Images/"/>
+    <image id="tno21j" name="ui_round_btn_dark_mask.png" path="/Images/"/>
+    <image id="tno21k" name="cm_itemslot_focus.png" path="/Images/" scale="9grid" scale9grid="28,28,40,40"/>
+    <component id="tno21l" name="MomentsImageItem.xml" path="/Output/" exported="true"/>
+    <image id="tno21m" name="ui_item_slot_s1_n.png" path="/Images/" scale="9grid" scale9grid="20,20,37,37"/>
+    <folder id="/SingletonImage/" name="SingletonImage" path="/" atlas="alone"/>
+    <component id="tno21n" name="PopupOptions.xml" path="/Buttons/" exported="true"/>
+    <component id="tno21o" name="BtnComment.xml" path="/Buttons/" exported="true"/>
+    <component id="tno21p" name="PopupComments.xml" path="/Buttons/" exported="true"/>
+  </resources>
+  <publish name=""/>
+</packageDescription>

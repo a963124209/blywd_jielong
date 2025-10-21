@@ -1,0 +1,328 @@
+此文件记录了需要依赖其他资源的资源
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/buildings/moon_building_city_center.prefab
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/gamemap_res/blendmap_tilesets/valley_buildings/valley_moonhouse06.png
+	Assets/Scripts/GameEffects/eftSimPointLight.cs
+	Assets/SharedScripts/ClickablePolyObj.cs
+	Assets/SharedScripts/MapBlockAreaPoly.cs
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/buildings/suibianguan_city_center.prefab
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/gamemap_res/blendmap_tilesets/附属建筑1/户外-B (23).png
+	Assets/Scripts/GameEffects/eftSimPointLight.cs
+	Assets/SharedScripts/ClickablePolyObj.cs
+	Assets/SharedScripts/MapBlockAreaPoly.cs
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/Prefabs/哲.prefab
+	Assets/DynamicBone/Scripts/DynamicBone.cs
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/哲/体.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/哲/体.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/哲/发.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/哲/哲1.fbx
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/哲/夏装.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/哲/眼镜.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/哲/眼镜.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/哲/颜.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/哲/颜.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/哲/髮.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+	Assets/Shaders/MyGameBlend.shader
+	Assets/SharedScripts/BuModelAdaptorInfo.cs
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/Prefabs/战斗修女.prefab
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/战斗修女/Materials/sm_armour_mp_dlc2_set1_arml_difout.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/战斗修女/Materials/sm_armour_mp_dlc2_set1_arml_difout.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/战斗修女/Materials/sm_armour_mp_dlc2_set1_armr_difout.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/战斗修女/Materials/sm_armour_mp_dlc2_set1_armr_difout.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/战斗修女/Materials/sm_armour_mp_dlc2_set1_bp_difout.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/战斗修女/Materials/sm_armour_mp_dlc2_set1_bp_difout.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/战斗修女/Materials/sm_armour_mp_dlc2_set1_helmet_difout.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/战斗修女/Materials/sm_armour_mp_dlc2_set1_legl_difout.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/战斗修女/Materials/sm_armour_mp_dlc2_set1_legl_difout.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/战斗修女/Materials/sm_armour_mp_dlc2_set1_legr_difout.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/战斗修女/Materials/sm_armour_mp_dlc2_set1_legr_difout.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/战斗修女/Materials/sm_armour_mp_dlc2_set1_shldrl_difout.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/战斗修女/Materials/sm_armour_mp_dlc2_set1_shldrr_difout.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/战斗修女/Materials/sm_armour_mp_dlc2_set1_torso_difout.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/战斗修女/战斗修女.FBX
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/MyGameBlendNoOutline.shader
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+	Assets/SharedScripts/BuModelAdaptorInfo.cs
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/Prefabs/玲.prefab
+	Assets/DynamicBone/Scripts/DynamicBone.cs
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/玲/体.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/玲/体.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/玲/发.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/玲/夏装.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/玲/夏装.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/玲/时尚.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/玲/时尚.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/玲/玲1.fbx
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/玲/眼镜.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/玲/眼镜.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/玲/颜.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/玲/颜.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/玲/髮.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+	Assets/Shaders/MyGameBlend.shader
+	Assets/SharedScripts/BuModelAdaptorInfo.cs
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/哲/体.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/哲/体.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+	Assets/Shaders/MyGameBlend.shader
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/哲/发.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/哲/髮.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+	Assets/Shaders/MyGameBlend.shader
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/哲/哲.fbx
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/哲/体.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/哲/夏装.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/哲/头套.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/哲/眼镜.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/哲/颜.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/哲/髮.png
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/哲/哲1.fbx
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/哲/体.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/哲/夏装.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/哲/眼镜.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/哲/颜.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/哲/髮.png
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/哲/时尚.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/哲/头套.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+	Assets/Shaders/MyGameBlend.shader
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/哲/眼镜.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/哲/眼镜.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+	Assets/Shaders/MyGameBlend.shader
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/哲/颜.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/哲/颜.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+	Assets/Shaders/MyGameBlend.shader
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/战斗修女/战斗修女.FBX
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/战斗修女/Materials/sm_armour_mp_dlc2_set1_arml_difout.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/战斗修女/Materials/sm_armour_mp_dlc2_set1_arml_difout.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/战斗修女/Materials/sm_armour_mp_dlc2_set1_armr_difout.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/战斗修女/Materials/sm_armour_mp_dlc2_set1_armr_difout.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/战斗修女/Materials/sm_armour_mp_dlc2_set1_bp_difout.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/战斗修女/Materials/sm_armour_mp_dlc2_set1_bp_difout.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/战斗修女/Materials/sm_armour_mp_dlc2_set1_helmet_difout.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/战斗修女/Materials/sm_armour_mp_dlc2_set1_legl_difout.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/战斗修女/Materials/sm_armour_mp_dlc2_set1_legl_difout.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/战斗修女/Materials/sm_armour_mp_dlc2_set1_legr_difout.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/战斗修女/Materials/sm_armour_mp_dlc2_set1_legr_difout.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/战斗修女/Materials/sm_armour_mp_dlc2_set1_shldrl_difout.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/战斗修女/Materials/sm_armour_mp_dlc2_set1_shldrr_difout.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/战斗修女/Materials/sm_armour_mp_dlc2_set1_torso_difout.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/MyGameBlendNoOutline.shader
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/战斗修女/Materials/sm_armour_mp_dlc2_set1_arml_difout.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/战斗修女/Materials/sm_armour_mp_dlc2_set1_arml_difout.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/MyGameBlendNoOutline.shader
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/战斗修女/Materials/sm_armour_mp_dlc2_set1_armr_difout.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/战斗修女/Materials/sm_armour_mp_dlc2_set1_armr_difout.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/MyGameBlendNoOutline.shader
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/战斗修女/Materials/sm_armour_mp_dlc2_set1_bp_difout.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/战斗修女/Materials/sm_armour_mp_dlc2_set1_bp_difout.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/MyGameBlendNoOutline.shader
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/战斗修女/Materials/sm_armour_mp_dlc2_set1_helmet_difout.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/战斗修女/Materials/sm_armour_mp_dlc2_set1_armr_difout.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/MyGameBlendNoOutline.shader
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/战斗修女/Materials/sm_armour_mp_dlc2_set1_legl_difout.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/战斗修女/Materials/sm_armour_mp_dlc2_set1_legl_difout.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/MyGameBlendNoOutline.shader
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/战斗修女/Materials/sm_armour_mp_dlc2_set1_legr_difout.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/战斗修女/Materials/sm_armour_mp_dlc2_set1_legr_difout.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/MyGameBlendNoOutline.shader
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/战斗修女/Materials/sm_armour_mp_dlc2_set1_shldrl_difout.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/战斗修女/Materials/sm_armour_mp_dlc2_set1_legr_difout.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/MyGameBlendNoOutline.shader
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/战斗修女/Materials/sm_armour_mp_dlc2_set1_shldrr_difout.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/战斗修女/Materials/sm_armour_mp_dlc2_set1_legr_difout.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/MyGameBlendNoOutline.shader
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/战斗修女/Materials/sm_armour_mp_dlc2_set1_torso_difout.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/战斗修女/Materials/sm_armour_mp_dlc2_set1_bp_difout.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/MyGameBlendNoOutline.shader
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/玲/体.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/玲/体.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+	Assets/Shaders/MyGameBlend.shader
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/玲/发.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/玲/髮.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+	Assets/Shaders/MyGameBlend.shader
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/玲/夏装.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/玲/夏装.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+	Assets/Shaders/MyGameBlend.shader
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/玲/头套.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/玲/头套.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+	Assets/Shaders/MyGameBlend.shader
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/玲/时尚.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/玲/时尚.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+	Assets/Shaders/MyGameBlend.shader
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/玲/玲1.fbx
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/玲/体.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/玲/夏装.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/玲/时尚.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/玲/眼镜.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/玲/颜.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/玲/髮.png
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/玲/眼镜.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/玲/眼镜.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+	Assets/Shaders/MyGameBlend.shader
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/玲/颜.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/玲/颜.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+	Assets/Shaders/MyGameBlend.shader
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/video/今日卦象宜下山.prefab
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/video/CG.renderTexture
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/video/今日卦象宜下山.mp4
+	Packages/com.unity.ugui/Runtime/UI/Core/RawImage.cs
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/video/决战武道之巅.prefab
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/video/CG.renderTexture
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/video/决战武道之巅.mp4
+	Packages/com.unity.ugui/Runtime/UI/Core/RawImage.cs
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/video/欢迎来到随便观.prefab
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/video/CG.renderTexture
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/video/欢迎来到随便观.mp4
+	Packages/com.unity.ugui/Runtime/UI/Core/RawImage.cs
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/video/济世之士.prefab
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/video/CG.renderTexture
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/video/济世之士.mp4
+	Packages/com.unity.ugui/Runtime/UI/Core/RawImage.cs
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/video/玄鸟归巢之时.prefab
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/video/CG.renderTexture
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/video/玄鸟归巢之时.mp4
+	Packages/com.unity.ugui/Runtime/UI/Core/RawImage.cs
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/role_models/hero_models/TestModel/matTestModel01.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/MyGameBlendNoOutline.shader
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/role_models/hero_models/TestModel/texTestModel01.png
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/role_models/hero_models/TestModel/matTestModel02.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/MyGameBlendNoOutline.shader
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/role_models/hero_models/TestModel/texTestModel02.png
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/role_models/Prefabs/prefabTestModel1.prefab
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/MyGameBlendNoOutline.shader
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/role_models/hero_models/TestModel/matTestModel01.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/role_models/hero_models/TestModel/matTestModel02.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/role_models/hero_models/TestModel/modelTestModel1.FBX
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/role_models/hero_models/TestModel/texTestModel01.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/role_models/hero_models/TestModel/texTestModel02.png
+	Assets/SharedScripts/BuModelAdaptorInfo.cs
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG_Bow07.prefab
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/MyGameBlendNoOutline.shader
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Materials/Bow01_D.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Meshes/Bow01.FBX
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Textures/Bow01_D.tga
+	Assets/SharedScripts/ModelTransformController.cs
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG_Polearm11.prefab
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/MyGameBlendNoOutline.shader
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Materials/Polearm03_D.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Meshes/Polearm03.FBX
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Textures/Polearm03_D.tga
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG_Shield05.prefab
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/MyGameBlendNoOutline.shader
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Materials/Shield04_D.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Meshes/Shield04.FBX
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Textures/Shield04_D.tga
+	Assets/SharedScripts/ModelTransformController.cs
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG_Staff06.prefab
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/MyGameBlendNoOutline.shader
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Materials/Staff02_D.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Meshes/Staff02.FBX
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Textures/Staff02_D.tga
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG_Sword19.prefab
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/MyGameBlendNoOutline.shader
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Materials/Sword01_D.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Meshes/Sword01.FBX
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Textures/Sword01_D.tga
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG_TH_Mace06.prefab
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/MyGameBlendNoOutline.shader
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Materials/TH_Mace01_D.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Meshes/TH_Mace01.FBX
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Textures/TH_Mace01_D.tga
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG_TH_Sword06.prefab
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/MyGameBlendNoOutline.shader
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Materials/TH_Sword01_D.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Meshes/TH_Sword01.FBX
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Textures/TH_Sword01_D.tga
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Materials/Bow01_D.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/MyGameBlendNoOutline.shader
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Textures/Bow01_D.tga
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Materials/Polearm03_D.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/MyGameBlendNoOutline.shader
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Textures/Polearm03_D.tga
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Materials/Shield04_D.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/MyGameBlendNoOutline.shader
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Textures/Shield04_D.tga
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Materials/Staff02_D.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/MyGameBlendNoOutline.shader
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Textures/Staff02_D.tga
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Materials/Sword01_D.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/MyGameBlendNoOutline.shader
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Textures/Sword01_D.tga
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Materials/TH_Mace01_D.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/MyGameBlendNoOutline.shader
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Textures/TH_Mace01_D.tga
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Materials/TH_Sword01_D.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/MyGameBlendNoOutline.shader
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Textures/TH_Sword01_D.tga
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Meshes/Bow01.FBX
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/MyGameBlendNoOutline.shader
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Materials/Bow01_D.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Textures/Bow01_D.tga
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Meshes/Polearm03.FBX
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/MyGameBlendNoOutline.shader
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Materials/Polearm03_D.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Textures/Polearm03_D.tga
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Meshes/Shield04.FBX
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/MyGameBlendNoOutline.shader
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Materials/Shield04_D.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Textures/Shield04_D.tga
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Meshes/Staff02.FBX
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/MyGameBlendNoOutline.shader
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Materials/Staff02_D.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Textures/Staff02_D.tga
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Meshes/Sword01.FBX
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/MyGameBlendNoOutline.shader
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Materials/Sword01_D.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Textures/Sword01_D.tga
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Meshes/TH_Mace01.FBX
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/MyGameBlendNoOutline.shader
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Materials/TH_Mace01_D.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Textures/TH_Mace01_D.tga
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Meshes/TH_Sword01.FBX
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/MyGameBlendNoOutline.shader
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/Shaders/texMyModShaderMat.png
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Materials/TH_Sword01_D.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/官方例子/weapon_models/MYFG-Weapon Pack/Weapon Pack-D/Textures/TH_Sword01_D.tga

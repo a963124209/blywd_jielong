@@ -1,0 +1,17 @@
+{
+  "multilan": "true",
+  "type": "story",
+  "name": "随便观异世振兴记",
+  "desc": "接力MOD 第一棒【雨中吻你】第二棒【阎三更】",
+  "tags": "Scenarios;Maps;Items;Characters;Skills;Appearance;BattleUnits;Rules;Audios;Cheating;English",
+  "start_scene": "1",
+  "include_main_game": "1",
+  "homepage_gui": "JieLongRes#MainPage#gui/JLHomeScene",
+  "audioControllerAdditional": "",
+  "language": "english",
+  "translate_target": "",
+  "dependency": "",
+  "build_version": "1.1.19",
+  "homepage_background": "",
+  "mod_uuid": "67c362fd814e3"
+}

@@ -1,0 +1,12 @@
+﻿--RUN_SCRIPT_FUNC*plasticTest#AudioClose#0
+function AudioClose(contextArgVal,val)
+    -- 0关闭  1最大
+    local volume = val;
+
+    print(volume)
+    CS.AudioManager.Instance.SoundVolum = volume; --音效
+    CS.AudioManager.Instance.MusicVolum = volume; --音乐
+    CS.AudioManager.Instance.AmbianceVolum = volume; --场景
+
+    CS.AudioManager.Instance:UpdateAudioVolum(); --刷新
+end

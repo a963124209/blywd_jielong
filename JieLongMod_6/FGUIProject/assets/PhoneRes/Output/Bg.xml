@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="600,800" overflow="hidden" extention="Label">
+  <displayList>
+    <loader id="n0_wdd1" name="icon" xy="-100,0" size="800,800" aspect="true" url="ui://qrms65xvtno24" fill="scaleMatchHeight">
+      <relation target="" sidePair="height-height,center-center"/>
+    </loader>
+  </displayList>
+</component>

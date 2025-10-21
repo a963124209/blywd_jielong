@@ -1,0 +1,3 @@
+此文件记录了 自定义资源文件夹 所依赖的外部资源。
+Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/Prefabs/哲.prefab [na#2hncg47mgltyk36bsb0dkrskzn#0.1.bundle]
+	Assets/Shaders/MyGameBlend.shader

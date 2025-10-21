@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="800,512" extention="Label" initName="frame">
+  <displayList>
+    <image id="n0_hr84" name="bg" src="jlzz1" fileName="Images/common_windowframe_1.png" xy="0,0" size="800,512">
+      <relation target="" sidePair="width-width,height-height"/>
+    </image>
+    <image id="n6_hr84" name="dark_bg" src="jlzz2" fileName="Images/common_win_header_darkbg_0.png" xy="5,5" size="790,53">
+      <relation target="" sidePair="width-width,center-center"/>
+    </image>
+    <image id="n5_hr84" name="header_gradient" src="jlzz3" fileName="Images/common_win_header_gradient_1.png" xy="5,5" size="790,54">
+      <relation target="" sidePair="width-width,center-center"/>
+    </image>
+    <image id="n7_hr84" name="header_tribals_l" src="jlzz4" fileName="Images/common_win_tribals_l.png" xy="5,5" size="338,51">
+      <relation target="" sidePair="left-left,top-top"/>
+    </image>
+    <image id="n8_hr84" name="header_tribals_r" src="jlzz5" fileName="Images/common_win_tribals_r.png" xy="457,5" size="338,50" aspect="true">
+      <relation target="" sidePair="right-right,top-top"/>
+    </image>
+    <image id="n11_hr84" name="header_line_l" src="jlzz6" fileName="Images/common_win_header_borderline_side.png" xy="5,56" pivot="0,0.5" anchor="true" size="790,4">
+      <relation target="" sidePair="width-width,top-top"/>
+    </image>
+    <text id="n1_hr84" name="title" xy="400,32" pivot="0.5,0.5" anchor="true" size="698,44" fontSize="22" color="#b9b3ab" align="center" vAlign="middle" autoSize="none" shadowColor="#191613" shadowOffset="2,2" singleLine="true" text="Title">
+      <relation target="" sidePair="width-width"/>
+    </text>
+    <graph id="n4_hr84" name="contentArea" xy="400,286" pivot="0.5,0.5" anchor="true" size="780,430">
+      <relation target="" sidePair="width-width,height-height"/>
+    </graph>
+    <component id="n2_hr84" name="closeButton" src="jlzz7" fileName="Components/WindowCloseBtn1.xml" xy="769,30">
+      <relation target="" sidePair="right-right,top-top"/>
+    </component>
+  </displayList>
+</component>

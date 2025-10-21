@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="160,64" extention="Button">
+  <controller name="button" pages="0,up,1,down,2,over,3,selectedOver" selected="0"/>
+  <displayList>
+    <image id="n0_gtbb" name="n0" src="jlzzh" fileName="Images/cm_actionbar2_bg.png" xy="0,0" size="64,64">
+      <gearColor controller="button" pages="2" values="#ff0000" default="#ffffff" tween="true"/>
+      <relation target="" sidePair="width-width%,height-height%"/>
+    </image>
+    <image id="n1_gtbb" name="n1" src="jlzzi" fileName="Images/cm_btn_close_1.png" xy="-11,-10" size="86,83">
+      <gearDisplay controller="button" pages="1,3"/>
+      <relation target="" sidePair="width-width%,height-height%"/>
+    </image>
+    <text id="n2_gtbb" name="title" xy="70,10" size="63,42" font="STHupo" fontSize="30" color="#ffffff" ubb="true" vars="true" strokeColor="#333333" shadowColor="#333333" shadowOffset="1,1" singleLine="true" text="Title"/>
+  </displayList>
+  <Button mode="Check"/>
+</component>

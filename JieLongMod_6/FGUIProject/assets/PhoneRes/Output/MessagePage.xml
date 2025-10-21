@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="600,720" overflow="hidden">
+  <displayList>
+    <component id="n9_msg" name="listView" src="tno2f" fileName="Output/MessageListView.xml" xy="0,0" size="600,720">
+      <relation target="" sidePair="width-width,height-height"/>
+    </component>
+  </displayList>
+</component>

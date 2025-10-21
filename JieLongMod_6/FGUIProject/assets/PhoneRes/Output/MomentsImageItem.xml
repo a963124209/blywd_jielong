@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="160,160" extention="Button">
+  <displayList>
+    <image id="n0_momimg" name="imageBg" src="tno21m" fileName="Images/ui_item_slot_s1_n.png" xy="0,0" size="160,160"/>
+    <loader id="n1_momimg" name="imageLoader" xy="5,5" size="150,150" url="" align="center" vAlign="middle" fill="scaleFree"/>
+  </displayList>
+  <Button/>
+</component>

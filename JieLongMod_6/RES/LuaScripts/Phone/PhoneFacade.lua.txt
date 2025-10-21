@@ -1,0 +1,60 @@
+local phoneDataManager = require("Phone/PhoneDataManager")
+local phoneTriggerManager = require("Phone/PhoneTriggerManager")
+local database = require("Phone/Database")
+local databaseRole = require("Phone/DatabaseRole")
+local databaseCommon = require("Phone/DatabaseCommon")
+local databaseReply = require("Phone/DatabaseReply")
+local databaseMoment = require("Phone/DatabaseMoment")
+
+local facade = {}
+
+function facade.Init()
+    phoneDataManager.init()
+    phoneTriggerManager.init()
+
+    databaseRole.Init()
+    databaseCommon.Init()
+    databaseReply.Init()
+    databaseMoment.Init()
+
+    database.Statistics()
+end
+
+function facade.AddFriend(roleId)
+    local role = CS.GameCoreHelper.GetRole(roleId)
+    if not role then
+        print("AddFriend: 角色不存在 - " .. roleId)
+        return
+    end
+
+    phoneDataManager.Character.getOrCreate(role.roleID, true)
+    CS.GameShared.Instance:SendSceneMessage("phone_friend_update", "")
+
+    phoneTriggerManager.checkFriendAddedTriggerForRole(role.roleID)
+end
+
+function facade.SendMessage(roleId, msg, sender)
+    phoneTriggerManager.SendMessage(roleId, msg, sender)
+end
+
+function facade.SendMoment(roleId, content)
+    local moment = phoneTriggerManager.SendMoment(roleId, content)
+    phoneTriggerManager.MomentAutoLikes(roleId, moment.id)
+end
+
+function facade.TriggerDailyChat()
+    -- 默认一天最多触发5个角色
+    phoneTriggerManager.checkAllDailyTrigger("daily_chat", 0.3, 5)
+end
+
+function facade.TriggerHourChat()
+    -- 默认每小时最多触发1个角色
+    phoneTriggerManager.checkAllDailyTrigger("daily_chat", 0.5, 1)
+end
+
+function facade.TriggerDailyMoment()
+    -- 默认一天最多触发5个角色
+    phoneTriggerManager.checkAllDailyTrigger("daily_moment", 0.3, 3)
+end
+
+return facade

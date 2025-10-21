@@ -1,0 +1,757 @@
+-- PhoneTriggerManager.lua
+-- 手机触发器管理器
+
+local PhoneDataManager = require("Phone/PhoneDataManager")
+local serpent = require("Phone/serpent")
+require("Phone/Utils")
+
+-- 频繁访问的方法缓存
+local GetStrVar = CS.GameCoreHelper.GetStrVar
+local SetStrVar = CS.GameCoreHelper.SetStrVar
+local tableInsert = table.insert
+local mathRandom = math.random
+
+-- 命名空间
+local NAMESPACE = "phone_"
+local TRIGGER_COUNT_KEY = NAMESPACE .. "trigger_count"
+
+-- 触发概率（每个角色触发事件的概率）
+local TRIGGER_PROBABILITY = 0.3
+
+---@class PhoneTrigger 触发器定义
+---@field id string 触发器唯一ID
+---@field type string 触发器类型
+---@field weight number 触发权重（越大越容易被选中）
+---@field once boolean 是否只触发一次
+---@field bindRole string|nil 绑定角色或绑定的朋友圈类型
+---@field bindArgs string|nil 绑定参数
+---@field priority string 优先级类型 "normal"|"special"|"unique"（默认"normal"）
+---@field require nil|fun(info: TriggerInfo): boolean 触发条件检查函数
+---@field event fun(context: TriggerContext) 触发事件（异步协程函数）
+
+---@class TriggerInfo 触发器信息
+---@field roleId string 角色ID
+---@field tagRole HanFramework.RoleRuntimeData 目标角色运行时数据
+---@field player HanFramework.RoleRuntimeData 玩家运行时数据
+---@field tagCamp HanFramework.GameCampRtData|nil 目标阵营数据
+---@field playerCamp HanFramework.GameCampRtData|nil 玩家阵营数据
+---@field triggerId string|nil 触发器ID
+---@field momentId string|nil 朋友圈ID
+---@field curGameDay number 当前游戏天数
+
+---@class TriggerContext 触发器上下文
+---@field info TriggerInfo 触发器信息
+---@field SendMessageAsync async fun(roleId: string, msg: string, sender: string) 发送消息（异步）
+---@field SendMessageRaw fun(roleId: string, msg: string, sender: string?) 直接发送消息（不切分）
+---@field SendMoment fun(moment: string) 发送朋友圈（异步）
+---@field SendMomentByTrigger fun(roleId: string, content: string) 通过触发器发送朋友圈（异步）
+---@field SendMomentComment fun(roleId: string, momentId: string, content: string, sender: string) 发送朋友圈评论（异步）
+---@field Delay fun(seconds: number): function 延迟指定秒数（返回协程迭代器）
+
+---序列化数据为字符串
+---@param data table 要序列化的数据
+---@return string 序列化后的字符串
+local function serialize(data)
+    return serpent.dump(data)
+end
+
+---反序列化字符串为数据
+---@param str string 要反序列化的字符串
+---@return table|nil 反序列化后的数据，失败返回nil
+local function deserialize(str)
+    if not str or str == "" then
+        return nil
+    end
+    local ok, result = serpent.load(str)
+    return ok and result or nil
+end
+
+---初始化全局触发器管理器
+---@return table 触发器管理器
+local function initGlobalTriggerManager()
+    _G.triggerManager = {
+        triggers = {},           -- 所有注册的触发器
+        triggerCount = {},       -- 每个触发器的触发次数
+        triggerIndexMap = {},    -- 触发器ID到索引的映射
+        triggerCache = {         -- 触发器缓存池（按bindRole分类）
+        },
+        isInitialized = false
+    }
+    return _G.triggerManager
+end
+
+local PhoneTriggerManager = {}
+
+---发送消息给指定角色
+---@param msg string 消息内容
+---@param roleId string 接收者角色ID
+---@param sender string 是否来自玩家（默认false）
+function PhoneTriggerManager.SendMessage(roleId, msg, sender)
+    -- 获取或创建会话
+    local sessionId = "private_" .. roleId
+    local session = PhoneDataManager.Session.get(sessionId)
+    
+    if not session then
+        session = PhoneDataManager.Session.create(sessionId, "private", nil, { roleId })
+    end
+    
+    -- 创建消息
+    local message = {
+        sender = roleId,
+        content = msg,
+        timestamp = CS.WorldManager.Instance.curGameTime,
+        type = "text"
+    }
+
+    message.sender = sender or roleId
+    
+    -- 添加消息到会话
+    PhoneDataManager.Session.addMessage(sessionId, message)
+    
+    -- 增加未读数
+    PhoneDataManager.Session.setUnread(sessionId, (session.unread or 0) + 1)
+
+    CS.GameShared.Instance:SendSceneMessage("phone_message_update", "")
+end
+
+---异步发送消息给指定角色（会自动切分长消息）
+---@param msg string 消息内容
+---@param roleId string 接收者角色ID
+---@param sender string 是否来自玩家（默认false）
+function PhoneTriggerManager.SendMessageAsync(roleId, msg, sender)
+    -- 使用\n分割长消息
+    local messages = {}
+    for line in string.gmatch(msg, "[^\n]+") do
+        table.insert(messages, line)
+    end
+
+    ---@async
+    StartCoroutine(function()
+        for _, message in ipairs(messages) do
+            PhoneTriggerManager.SendMessage(roleId, message, sender)
+            PhoneTriggerManager.Delay(1)
+        end
+    end)
+end
+
+---发送朋友圈动态
+---@param momentContent string 朋友圈内容
+---@param roleId string 发布者角色ID
+---@param likes table|nil 点赞列表
+---@param comments table|nil 评论列表
+function PhoneTriggerManager.SendMoment(roleId, momentContent, likes, comments, triggerId)
+    -- 确保角色存在
+    PhoneDataManager.Character.getOrCreate(roleId, true)
+    
+    -- 创建朋友圈动态
+    local moment = {
+        id = nil,
+        content = momentContent,
+        images = {},
+        timestamp = CS.WorldManager.Instance.curGameTime,
+        likes = likes or {},
+        comments = comments or {},
+        triggerId = triggerId or nil,
+    }
+    
+    -- 添加到角色的朋友圈
+    PhoneDataManager.Character.addMoment(roleId, moment)
+
+    CS.GameShared.Instance:SendSceneMessage("phone_moment_update", "")
+
+    return moment
+end
+
+function PhoneTriggerManager.SendMomentComment(roleId, momentId, content, sender)
+    PhoneDataManager.Character.addComment(roleId, momentId, content, sender)
+
+    CS.GameShared.Instance:SendSceneMessage("phone_moment_update", "")
+end
+
+---自动收集好友信息，给动态点赞
+function PhoneTriggerManager.MomentAutoLikes(roleId, momentId)
+    local moment = PhoneDataManager.Character.getMoment(roleId, momentId)
+    if not moment then 
+        print("MomentAutoLikes: 动态不存在 - " .. momentId)
+        return
+    end
+
+    local role = CS.GameCoreHelper.GetRole(roleId)
+    if not role then
+        print("MomentAutoLikes: 角色不存在 - " .. tostring(moment.ownerId))
+        return
+    end
+
+    local friends = GetActiveRelationRoles(role)
+    if not friends or #friends == 0 then
+        return
+    end
+
+    for _, friend in ipairs(friends) do
+        -- 根据好感度概率点赞
+        if mathRandom(0, 100) < friend.rep then
+            tableInsert(moment.likes, friend.roleID)
+        end
+    end
+
+    PhoneDataManager.Character.saveMoment(roleId, moment)
+end
+
+---延迟指定秒数（只能在协程内调用）
+---@param seconds number 延迟秒数
+---@async
+function PhoneTriggerManager.Delay(seconds)
+    coroutine.yield(CS.UnityEngine.WaitForSeconds(seconds))
+end
+
+---初始化触发器管理器
+function PhoneTriggerManager.init()
+    initGlobalTriggerManager()
+    
+    -- 加载触发次数记录
+    local countData = GetStrVar(TRIGGER_COUNT_KEY)
+    local triggerCount = deserialize(countData)
+    if triggerCount then
+        _G.triggerManager.triggerCount = triggerCount
+    end
+    
+    _G.triggerManager.isInitialized = true
+end
+
+---保存触发次数记录
+local function saveTriggerCount()
+    if not _G.triggerManager then return end
+    SetStrVar(TRIGGER_COUNT_KEY, serialize(_G.triggerManager.triggerCount))
+end
+
+---添加触发器
+---@param trigger PhoneTrigger 触发器定义
+function PhoneTriggerManager.addTrigger(trigger)
+    if not trigger or not trigger.id then
+        error("触发器必须有有效的ID")
+        return
+    end
+    
+    -- 使用索引映射快速查找是否已存在
+    local existingIndex = _G.triggerManager.triggerIndexMap[trigger.id]
+    
+    if existingIndex then
+        -- 触发器已存在，直接替换
+        local oldTrigger = _G.triggerManager.triggers[existingIndex]
+        _G.triggerManager.triggers[existingIndex] = trigger
+        
+        -- 更新缓存（如果类型或bindRole发生变化，需要从旧缓存中移除）
+        local oldBindRole = oldTrigger.bindRole or "default"
+        local oldCache = _G.triggerManager.triggerCache[oldTrigger.type][oldBindRole]
+        
+        oldCache[existingIndex] = trigger
+    else
+        -- 新触发器，添加到数组末尾
+        tableInsert(_G.triggerManager.triggers, trigger)
+        local newIndex = #_G.triggerManager.triggers
+        _G.triggerManager.triggerIndexMap[trigger.id] = newIndex
+
+        if not _G.triggerManager.triggerCache[trigger.type] then
+            _G.triggerManager.triggerCache[trigger.type] = {}
+        end
+
+        -- 添加到缓存池
+        local bindRole = trigger.bindRole or "default"
+        if not _G.triggerManager.triggerCache[trigger.type][bindRole] then
+            _G.triggerManager.triggerCache[trigger.type][bindRole] = {}
+        end
+        tableInsert(_G.triggerManager.triggerCache[trigger.type][bindRole], trigger)
+    end
+end
+
+---移除触发器
+---@param triggerId string 触发器ID
+function PhoneTriggerManager.removeTrigger(triggerId)
+    if not _G.triggerManager then return end
+    
+    for i, trigger in ipairs(_G.triggerManager.triggers) do
+        if trigger.id == triggerId then
+            table.remove(_G.triggerManager.triggers, i)
+            return
+        end
+    end
+end
+
+---获取触发器触发次数
+---@param triggerId string 触发器ID
+---@return number 触发次数
+function PhoneTriggerManager.getTriggerCount(triggerId)
+    if not _G.triggerManager then return 0 end
+    return _G.triggerManager.triggerCount[triggerId] or 0
+end
+
+---增加触发器触发次数
+---@param triggerId string 触发器ID
+local function incrementTriggerCount(triggerId)
+    if not _G.triggerManager then return end
+    
+    local count = _G.triggerManager.triggerCount[triggerId] or 0
+    _G.triggerManager.triggerCount[triggerId] = count + 1
+    saveTriggerCount()
+end
+
+---构建触发器信息对象
+---@param roleId string 角色ID
+---@return TriggerInfo 触发器信息
+local function buildTriggerInfo(roleId)
+    local tagRole = CS.GameCoreHelper.GetRole(roleId)
+    local player = CS.GameCoreHelper.GetPlayerRole()
+    
+    local info = {
+        roleId = roleId,
+        tagRole = tagRole,
+        player = player,
+        tagCamp = nil,
+        playerCamp = nil,
+        curGameDay = 0.0
+    }
+    
+    -- 获取阵营数据
+    if tagRole then
+        info.tagCamp = tagRole:GetRoleCamp()
+    end
+    if player then
+        info.playerCamp = player:GetRoleCamp()
+    end
+    
+    -- 获取当前游戏天数
+    info.curGameDay = CS.WorldManager.Instance.curGameTime
+    
+    return info
+end
+
+---按权重随机选择触发器
+---@param triggers table 符合条件的触发器列表
+---@param triggerAll boolean 是否触发所有触发器
+---@return table 选中的触发器列表（triggerAll=true时）或单个触发器（triggerAll=false时）
+local function selectTriggers(triggers, triggerAll)
+    if not triggers or #triggers == 0 then
+        return triggerAll and {} or nil
+    end
+    
+    -- 如果触发所有，直接返回全部
+    if triggerAll then
+        return triggers
+    end
+    
+    -- 根据优先级分类触发器
+    local uniqueTriggers = {}
+    local specialTriggers = {}
+    local normalTriggers = {}
+    
+    for _, trigger in ipairs(triggers) do
+        local priority = trigger.priority or "normal"
+        if priority == "unique" then
+            tableInsert(uniqueTriggers, trigger)
+        elseif priority == "special" then
+            tableInsert(specialTriggers, trigger)
+        else
+            tableInsert(normalTriggers, trigger)
+        end
+    end
+    
+    -- 如果存在 unique 类型，选择权重最大的
+    if #uniqueTriggers > 0 then
+        local maxWeightTrigger = uniqueTriggers[1]
+        for _, trigger in ipairs(uniqueTriggers) do
+            if (trigger.weight or 1) > (maxWeightTrigger.weight or 1) then
+                maxWeightTrigger = trigger
+            end
+        end
+        return maxWeightTrigger
+    end
+    
+    -- 如果存在 special 类型，从 special 中随机
+    local candidatePool = #specialTriggers > 0 and specialTriggers or normalTriggers
+    
+    if #candidatePool == 0 then
+        return nil
+    end
+    
+    -- 计算总权重
+    local totalWeight = 0
+    for _, trigger in ipairs(candidatePool) do
+        totalWeight = totalWeight + (trigger.weight or 1)
+    end
+    
+    -- 随机选择
+    local randomValue = mathRandom() * totalWeight
+    local currentWeight = 0
+    
+    for _, trigger in ipairs(candidatePool) do
+        currentWeight = currentWeight + (trigger.weight or 1)
+        if randomValue <= currentWeight then
+            return trigger
+        end
+    end
+    
+    return candidatePool[#candidatePool]
+end
+
+---创建触发器上下文
+---@param info TriggerInfo 触发器信息
+---@return TriggerContext 触发器上下文
+local function createTriggerContext(info)
+    local context = {
+        info = info
+    }
+    
+    -- SendMessage 异步函数，会自动切分消息
+    ---@param msg string 消息内容
+    ---@param roleId string 接收者角色ID
+    ---@param sender string 发送者角色ID
+    context.SendMessageAsync = function(roleId, msg, sender)
+        PhoneTriggerManager.SendMessageAsync(roleId, msg, sender)
+    end
+
+    -- SendMessageRaw 函数，直接发送消息，不切分
+    ---@param msg string 消息内容
+    ---@param roleId string 接收者角色ID
+    ---@param sender string 发送者角色ID
+    context.SendMessageRaw = function(roleId, msg, sender)
+        PhoneTriggerManager.SendMessage(roleId, msg, sender)
+    end
+    
+    -- SendMoment 函数（发送朋友圈）
+    ---@param roleId string 角色ID
+    ---@param content string 朋友圈内容
+    context.SendMoment = function(roleId, content)
+        PhoneTriggerManager.SendMoment(roleId, content)
+    end
+
+    -- SendMomentByTrigger 函数（通过触发器发送朋友圈）
+    ---@param roleId string 角色ID
+    ---@param content string 朋友圈内容
+    context.SendMomentByTrigger = function(roleId, content)
+        local moment = PhoneTriggerManager.SendMoment(roleId, content, nil, nil, info.triggerId)
+        info.momentId = moment.id
+    end
+
+    context.SendMomentComment = function(roleId, momentId, content, sender)
+        PhoneTriggerManager.SendMomentComment(roleId, momentId, content, sender)
+    end
+
+    -- Delay 函数（延迟指定秒数）
+    ---@param seconds number 延迟秒数
+    ---@async
+    context.Delay = function(seconds)
+        PhoneTriggerManager.Delay(seconds)
+    end
+    
+    return context
+end
+
+---执行触发器事件（使用协程）
+---@param trigger PhoneTrigger 触发器
+---@param context TriggerContext 触发器上下文
+---@param executeAwait boolean 是否等待触发器执行完成，仅能在协程内为true
+---@async
+local function executeTriggerEvent(trigger, context, executeAwait)
+    if not trigger.event then return end
+
+    print("触发器执行: " .. trigger.id .. " 参与角色: " .. context.info.roleId)
+
+    -- 启动协程
+    if executeAwait then
+        -- 直接启动
+        trigger.event(context)
+    else
+        -- 否则异步启动
+        StartCoroutine(function()
+            local co = coroutine.create(function()
+                trigger.event(context)
+            end)
+            
+            local success, err = coroutine.resume(co)
+            if not success then
+                print("触发器执行错误: " .. tostring(err))
+            end
+        end)
+    end
+end
+
+---从缓存中获取指定角色和类型的触发器（包括专属和通用）
+---@param roleId string 角色ID
+---@param triggerType string 触发器类型（daily_chat 或 friend_added）
+---@return table 合并后的触发器列表
+local function getCachedTriggersForRole(roleId, triggerType)
+    -- 从缓存中获取该角色专属的触发器
+    local caches = _G.triggerManager.triggerCache[triggerType] or {}
+
+    local roleSpecificTriggers = caches[roleId] or {}
+    local defaultTriggers = caches["default"] or {}
+
+    -- 合并两个列表
+    local cachedTriggers = {}
+    for _, trigger in ipairs(roleSpecificTriggers) do
+        tableInsert(cachedTriggers, trigger)
+    end
+    for _, trigger in ipairs(defaultTriggers) do
+        tableInsert(cachedTriggers, trigger)
+    end
+    
+    return cachedTriggers
+end
+
+---检查符合条件的触发器
+---@param triggers table 触发器列表
+---@param info TriggerInfo 触发器信息
+---@return table 符合条件的触发器列表
+local function checkTriggersForRole(triggers, info)
+    if #triggers == 0 then
+        return {}
+    end
+    
+    -- 筛选符合条件的触发器
+    local candidateTriggers = {}
+    
+    for _, trigger in ipairs(triggers) do
+        -- 检查 once 标记
+        local triggerCount = _G.triggerManager.triggerCount[trigger.id] or 0
+        if trigger.once == false or triggerCount == 0 then
+            -- 执行条件检查
+            local shouldTrigger = true
+            if trigger.require then
+                local success, result = pcall(trigger.require, info)
+                shouldTrigger = success and result
+            end
+            
+            if shouldTrigger then
+                tableInsert(candidateTriggers, trigger)
+            end
+        end
+    end
+
+    return candidateTriggers
+end
+
+---检查并执行缓存触发器
+---@param roleId string 角色ID
+---@param cachedTriggers table 缓存的触发器列表
+---@param executeWait boolean 是否等待触发器执行完成，仅能在协程内为true
+---@return boolean 是否成功触发了触发器
+local function checkAndExecuteCachedTriggers(roleId, cachedTriggers, executeWait)
+    -- 构建触发器信息
+    local info = buildTriggerInfo(roleId)
+    local candidateTriggers = checkTriggersForRole(cachedTriggers, info)
+
+    
+    -- 选择一个触发器（不触发所有）
+    local selectedTrigger = selectTriggers(candidateTriggers, false)
+    
+    if selectedTrigger ~= nil then
+        -- 增加触发次数
+        incrementTriggerCount(selectedTrigger.id)
+        
+        info.triggerId = selectedTrigger.id
+        -- 创建上下文并执行
+        local context = createTriggerContext(info)
+        executeTriggerEvent(selectedTrigger, context, executeWait)
+        return true
+    end
+    
+    return false
+end
+
+---对单个角色进行触发器检测
+---@param character table 角色数据
+---@param triggerType string 触发器类型
+---@param triggerAll boolean 是否触发所有符合条件的触发器
+---@param executeAwait boolean 是否等待触发器执行完成，仅能在协程内为true
+local function checkTriggersForCharacter(character, triggerType, triggerAll, executeAwait)
+    local roleId = character.uid
+    local info = buildTriggerInfo(roleId)
+    
+    -- 筛选符合条件的触发器
+    local candidateTriggers = {}
+    
+    for _, trigger in ipairs(_G.triggerManager.triggers) do
+        -- 检查类型匹配
+        if trigger.type == triggerType then
+            tableInsert(candidateTriggers, trigger)
+        end
+    end
+
+    -- 检查符合条件的触发器
+    candidateTriggers = checkTriggersForRole(candidateTriggers, info)
+    
+    -- 选择触发器
+    local selectedTriggers = selectTriggers(candidateTriggers, triggerAll)
+    
+    if triggerAll then
+        -- 触发所有选中的触发器
+        for _, trigger in ipairs(selectedTriggers) do
+            -- 增加触发次数
+            incrementTriggerCount(trigger.id)
+
+            info.triggerId = trigger.id
+            -- 创建上下文并执行
+            local context = createTriggerContext(info)
+            executeTriggerEvent(trigger, context, executeAwait)
+        end
+    else
+        -- 只触发一个
+        if selectedTriggers then
+            -- 增加触发次数
+            incrementTriggerCount(selectedTriggers.id)
+
+            info.triggerId = selectedTriggers.id
+            -- 创建上下文并执行
+            local context = createTriggerContext(info)
+            executeTriggerEvent(selectedTriggers, context, executeAwait)
+        end
+    end
+end
+
+---批量每日检测所有好友的触发器
+---@param triggerType string 触发器类型例如daily_chat
+---@param triggerProbability number|nil 触发概率（默认使用 TRIGGER_PROBABILITY）
+---@param maxCount number|nil 最大检测人数（nil表示检测所有好友）
+function PhoneTriggerManager.checkAllDailyTrigger(triggerType, triggerProbability, maxCount)
+    triggerProbability = triggerProbability or TRIGGER_PROBABILITY
+    
+    -- 获取所有好友角色
+    local allCharacters = PhoneDataManager.Character.getAll()
+    local friends = {}
+    for _, character in ipairs(allCharacters) do
+        if character.isFriend then
+            tableInsert(friends, character)
+        end
+    end
+    
+    -- 如果指定了人数限制，使用洗牌算法随机选择
+    if maxCount and maxCount > 0 and maxCount < #friends then
+        -- Fisher-Yates 洗牌算法
+        for i = #friends, 2, -1 do
+            local j = mathRandom(1, i)
+            friends[i], friends[j] = friends[j], friends[i]
+        end
+        
+        -- 只保留前 maxCount 个
+        local selectedFriends = {}
+        for i = 1, maxCount do
+            tableInsert(selectedFriends, friends[i])
+        end
+        friends = selectedFriends
+    end
+    
+    -- 对每个好友进行每日触发检测
+    for _, character in ipairs(friends) do
+        -- 按概率决定是否触发
+        if mathRandom() <= triggerProbability then
+            PhoneTriggerManager.checkDailyTriggerForRole(character.uid, triggerType)
+        end
+    end
+end
+
+---进行触发器检测
+---@param triggerType string 触发器类型
+---@param triggerAll boolean|nil 是否触发所有符合条件的触发器（默认false）
+---@param triggerProbability number|nil 触发概率（默认使用 TRIGGER_PROBABILITY）
+---@param executeAwait boolean|nil 是否等待触发器执行完成，仅能在协程内为true（默认false）
+function PhoneTriggerManager.checkAllTrigger(triggerType, triggerProbability, triggerAll, executeAwait)
+    triggerProbability = triggerProbability or TRIGGER_PROBABILITY
+    triggerAll = triggerAll or false
+    executeAwait = executeAwait or false
+    
+    -- 获取所有好友角色
+    local allCharacters = PhoneDataManager.Character.getAll()
+    local friends = {}
+    for _, character in ipairs(allCharacters) do
+        if character.isFriend then
+            tableInsert(friends, character)
+        end
+    end
+    
+    -- 对每个好友进行触发检测
+    for _, character in ipairs(friends) do
+        -- 按概率决定是否触发
+        if mathRandom() <= triggerProbability then
+            checkTriggersForCharacter(character, triggerType, triggerAll, executeAwait)
+        end
+    end
+end
+
+---对指定角色进行触发器检测
+---@param roleId string 角色ID
+---@param triggerType string 触发器类型
+---@param triggerAll boolean|nil 是否触发所有符合条件的触发器（默认false）
+---@param executeAwait boolean|nil 是否等待触发器执行完成，仅能在协程内为true（默认false）
+function PhoneTriggerManager.checkTriggersForRole(roleId, triggerType, triggerAll, executeAwait)
+    triggerAll = triggerAll or false
+    executeAwait = executeAwait or false
+
+    -- 获取角色数据
+    local character = PhoneDataManager.Character.get(roleId)
+    if not character then
+        return
+    end
+
+    checkTriggersForCharacter(character, triggerType, triggerAll, executeAwait)
+end
+
+---每日检测指定角色的触发器
+---@param roleId string 角色ID
+function PhoneTriggerManager.checkDailyTriggerForRole(roleId, triggerType)
+    local cachedTriggers = getCachedTriggersForRole(roleId, triggerType)
+    checkAndExecuteCachedTriggers(roleId, cachedTriggers)
+end
+
+---好友添加时检测指定角色的触发器
+---@param roleId string 角色ID
+function PhoneTriggerManager.checkFriendAddedTriggerForRole(roleId)
+    local cachedTriggers = getCachedTriggersForRole(roleId, "friend_added")
+    checkAndExecuteCachedTriggers(roleId, cachedTriggers)
+end
+
+---清空所有触发器（调试用）
+function PhoneTriggerManager.clearAll()
+    if not _G.triggerManager then return end
+    
+    _G.triggerManager.triggers = {}
+    _G.triggerManager.triggerCount = {}
+    saveTriggerCount()
+end
+
+---清空触发次数记录（调试用）
+function PhoneTriggerManager.clearTriggerCounts()
+    if not _G.triggerManager then return end
+    
+    _G.triggerManager.triggerCount = {}
+    saveTriggerCount()
+end
+
+---获取所有注册的触发器
+---@return table 触发器列表
+function PhoneTriggerManager.getAllTriggers()
+    if not _G.triggerManager then return {} end
+    return _G.triggerManager.triggers
+end
+
+function PhoneTriggerManager.getReplyTriggers(roleId)
+    local cachedTriggers = getCachedTriggersForRole(roleId, "reply")
+
+    local info = buildTriggerInfo(roleId)
+    cachedTriggers = checkTriggersForRole(cachedTriggers, info)
+    return cachedTriggers
+end
+
+function PhoneTriggerManager.getCommentTriggers(triggerId, roleId)
+    local cachedTriggers = getCachedTriggersForRole(triggerId, "moment_reply")
+
+    local info = buildTriggerInfo(roleId)
+    cachedTriggers = checkTriggersForRole(cachedTriggers, info)
+    return cachedTriggers
+end
+
+PhoneTriggerManager.buildTriggerInfo = buildTriggerInfo
+PhoneTriggerManager.createTriggerContext = createTriggerContext
+PhoneTriggerManager.getCachedTriggersForRole = getCachedTriggersForRole
+PhoneTriggerManager.checkAndExecuteCachedTriggers = checkAndExecuteCachedTriggers
+
+return PhoneTriggerManager

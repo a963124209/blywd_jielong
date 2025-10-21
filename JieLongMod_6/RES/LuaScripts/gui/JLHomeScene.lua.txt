@@ -1,0 +1,262 @@
+require("gui/WindowUtils")
+
+local ResourceLoader = CS.HanSquirrel.ResourceManager.ResourceLoader
+local GUIHelper = CS.GUIHelper
+
+local cusConstPackageName = "JieLongRes"
+local gameModeWinCompName = "GameModeSelWindow"
+local gameModeWinScriptPath = "gui/JLSelectGameModeWin"
+local updateLogWinCompName = "TextWindow"
+local updateLogScriptPath = "gui/JLUpdateLogWin"
+local backgroundFilePathName = "Assets/BuildSource/HomeScene/background.png"
+-- local UpdateLogPath = "Assets/BuildSource/UpdateLog/"
+-- local UpdateLogFileName = "update_detail.txt"
+-- local UpdateLogFileNameEN = "update_detail_en.txt"
+
+local delayTime = 0.3
+
+local g = {}
+
+
+--窗体初始化时
+function initPanel(_tagComp, _controllerUI)
+	local contentPane = _tagComp
+	g.homeSceneController = _controllerUI
+	--本地化处理
+	g.isChineseLanguage = CS.GameTools.IsChineseLanguage()
+	--绑定按钮事件
+	local listBtnMenu = contentPane:GetChild("list_menu").asList
+	local listBtnOther = contentPane:GetChild("list_other").asList
+	AddMenuButton(listBtnMenu)
+	AddOtherButton(listBtnOther)
+	--显示控制器
+	g.ctlShadow = contentPane:GetController("hide_shadow")
+	g.ctlShow = contentPane:GetController("show_info")
+	g.ctlShadow.selectedIndex = 0
+	g.ctlShow.selectedIndex = 0
+	--根据背景控件的类型进行图片加载（default.json中的homepage_background不适配部分机型，因此另作背景显示）
+	local bgComp = contentPane:GetChild("bg")
+	if bgComp then
+		local loaberBg = bgComp.asLoader
+		local imgBg = bgComp.asImage
+		if loaberBg then
+			loaberBg.url = backgroundFilePathName
+			loaberBg.visible = true
+		elseif imgBg then
+			local imgSpt = GUIHelper.GetSpriteByPath(backgroundFilePathName)
+			GUIHelper.SetImageBySprite(imgBg, imgSpt, Vector2(imgBg.actualWidth, imgBg.actualHeight), Vector2(imgBg.x, imgBg.y))
+			imgBg.visible = true
+		end
+		g.loaberBg = loaberBg
+		g.imgBg = imgBg
+	end
+
+--	cmbLanSel = contentPane:GetChild("cmb_lansel").asComboBox
+--	CS.GUIHelper.SetComboBoxItems(cmbLanSel, "schinese,简体中文;english,English");
+--	cmbLanSel.onChanged:Add(OnLanSelChanged)
+
+	g.contentPane = contentPane
+end
+
+function AddMenuButton(_tagList)
+	if not _tagList then return end
+	_tagList.numItems = 0
+
+	local btnObj
+	--开始游戏
+	btnObj = _tagList:AddItemFromPool().asButton
+	btnObj.title = GetGameString("jl_ui_title_start_game")
+	--btnObj.onClick:Add(onClickStartGame)
+	btnObj.onClick:Add(onClickStartGameNew)
+	g.btnStartGame = btnObj
+	--读取游戏
+	btnObj = _tagList:AddItemFromPool().asButton
+	btnObj.title = GetGameString("jl_ui_title_load_game")
+	btnObj.onClick:Add(onClickLoadGame)
+	g.btnLoadGame = btnObj
+	--管理模组
+	btnObj = _tagList:AddItemFromPool().asButton
+	btnObj.title = GetGameString("jl_ui_title_manage_mod")
+	btnObj.onClick:Add(onClickMod)
+	g.btnMod = btnObj
+	--退出游戏
+	btnObj = _tagList:AddItemFromPool().asButton
+	btnObj.title = GetGameString("jl_ui_title_exit_game")
+	btnObj.onClick:Add(onClickQuitGame);
+	g.btnQuitGame = btnObj
+end
+
+function AddOtherButton(_tagList)
+	if not _tagList then return end
+	_tagList.numItems = 0
+	local index = 0
+
+	local btnObj
+	--设置
+	if index <= _tagList.numItems - 1 then
+		btnObj = _tagList:GetChildAt(index).asButton
+	else
+		btnObj = _tagList:AddItemFromPool().asButton
+	end
+	btnObj.onClick:Add(onClickGameSetting)
+	g.btnGameSetting = btnObj
+	index = index + 1
+	--日志
+	if index <= _tagList.numItems - 1 then
+		btnObj = _tagList:GetChildAt(index).asButton
+	else
+		btnObj = _tagList:AddItemFromPool().asButton
+	end
+	btnObj.onClick:Add(onClickUpdateLog)
+	g.btnUpdateLog = btnObj
+	index = index + 1
+	--重置环境
+	if index <= _tagList.numItems - 1 then
+		btnObj = _tagList:GetChildAt(index).asButton
+	else
+		btnObj = _tagList:AddItemFromPool().asButton
+	end
+	btnObj.onClick:Add(onClickResetMod)
+	g.btnUpdateLog = btnObj
+	index = index + 1
+end
+
+--窗体播放完显示动画时
+function onShown()
+
+end
+
+--窗体隐藏时
+function onHide()
+
+end
+
+--当内置弹出UI关闭时
+function onUIClosed()
+	g.contentPane.touchable = true
+	if g.ctlShow then
+		g.ctlShow.selectedIndex = 0
+	end
+end
+
+function onUIShowed()
+	g.contentPane.touchable = false
+	if g.ctlShow then
+		g.ctlShow.selectedIndex = 1
+	end
+end
+
+function OnLanSelChanged()
+    g.homeSceneController:ChangeLanguage(g.cmbLanSel.value);
+end
+
+function onClickStartGame()
+	PlayButtonSound()
+	g.homeSceneController:NewGame()
+end
+
+function onClickStartGameNew()
+	--[[添加缓动效果--]]
+	local gTweener = CS.FairyGUI.GTween:DelayedCall(delayTime)
+	gTweener:OnComplete(function ()
+		onUIShowed()
+		GameModeSelWin = CS.GUIHelper.ShowGUIWindow(cusConstPackageName, gameModeWinCompName, gameModeWinScriptPath, "", onSelectGameWinCallback, true)
+	end)
+	PlayButtonSound()
+	gTweener:SetDelay(delayTime)
+end
+
+function onSelectGameWinCallback(ret)
+	onUIClosed()
+	if ret == 1 then
+		g.homeSceneController:NewGame()
+	end
+end
+
+function onClickLoadGame()
+	PlayButtonSound()
+	--[[添加缓动效果--]]
+	local gTweener = CS.FairyGUI.GTween:DelayedCall(delayTime)
+	gTweener:OnComplete(function ()
+		onUIShowed()
+		g.homeSceneController:LoadGame()
+	end)
+	gTweener:SetDelay(delayTime)
+end
+
+function onClickGameSetting()
+	PlayButtonSound()
+	--onUIShowed()
+	--[[添加缓动效果--]]
+	-- local gTweener = CS.FairyGUI.GTween:DelayedCall(delayTime)
+	-- gTweener:OnComplete(function ()
+	-- 	g.homeSceneController:ShowSettings()
+	-- end)
+	-- gTweener:SetDelay(delayTime)
+	g.homeSceneController:ShowSettings()
+end
+
+function onSetGameLanguage(_newLanguage)
+	g.homeSceneController:ChangeLanguage(_newLanguage)
+end
+
+
+function onClickMod()
+	PlayButtonSound()
+	--[[添加缓动效果--]]
+	local gTweener = CS.FairyGUI.GTween:DelayedCall(delayTime)
+	gTweener:OnComplete(function ()
+		onUIShowed()
+		g.homeSceneController:ShowDLC()
+	end)
+	gTweener:SetDelay(delayTime)
+	-- g.homeSceneController:ShowDLC()
+end
+
+function onClickQuitGame()
+	PlayButtonSound()
+	--[[添加缓动效果--]]
+	--btnQuitGame:TweenFade(0, delayTime)
+	local gTweener = CS.FairyGUI.GTween:DelayedCall(delayTime)
+	gTweener:OnComplete(function ()
+		onUIShowed()
+		g.homeSceneController:ExitGame()
+	end)
+	gTweener:SetDelay(delayTime)
+end
+
+
+function onClickUpdateLog()
+	PlayButtonSound()
+	onUIShowed()
+	-- local updateLogText = ""
+    -- if g.isChineseLanguage then
+    --     updateLogText = ResourceLoader.LoadText(UpdateLogPath .. UpdateLogFileName)
+    -- else
+    --     updateLogText = ResourceLoader.LoadText(UpdateLogPath .. UpdateLogFileNameEN)
+    -- end
+	-- CS.ImportantConfirmDlg.ShowUpDialog(updateLogText, 0, onSelectGameWinCallback)
+	CS.GUIHelper.ShowGUIWindow(cusConstPackageName, updateLogWinCompName, updateLogScriptPath, "", onUpdateLogWinCallback, true)
+end
+
+function onUpdateLogWinCallback(ret)
+	onUIClosed()
+	if ret == 1 then
+
+	end
+end
+
+function openPolicyUrl(url, _title)
+	CS.GUIHelper.ShowGameNoticeInfoByUrl(url, _title)
+end
+
+function onClickMultiGame()
+	PlayButtonSound()
+	onUIShowed()
+	g.homeSceneController:ShowMGameUI(false)
+end
+
+function onClickResetMod()
+	PlayButtonSound()
+	g.homeSceneController:OnClickResetMod()
+end

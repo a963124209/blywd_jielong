@@ -1,0 +1,11 @@
+
+--- Lua获取变量
+---@param valKey string 变量名
+---@param contextArgVal RuntimeArgVals 传入参数
+function GetLuaStringVal(valKey, contextArgVal)
+    if valKey == "map_id_player_team" then
+        local playerTeam = CS.GameCoreHelper.GetPlayerTeam()
+        return playerTeam.curMapID
+    end
+    return ""
+end

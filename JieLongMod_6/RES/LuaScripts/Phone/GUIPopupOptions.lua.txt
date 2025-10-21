@@ -1,0 +1,65 @@
+-- GUIPopupOptions.lua
+-- 弹出选项菜单
+
+---@class GUIPopupOptions 弹出选项菜单
+local GUIPopupOptions = {}
+GUIPopupOptions.__index = GUIPopupOptions
+
+---创建弹出选项菜单实例
+---@param component FairyGUI.GComponent 弹出菜单组件
+---@param options table 选项列表 { { label = "选项1", action = function() end }, ... }
+---@return GUIPopupOptions 弹出菜单实例
+function GUIPopupOptions.New(component, options)
+    local self = setmetatable({}, GUIPopupOptions)
+    
+    self.component = component
+    self.options = options or {}
+    
+    -- 获取列表组件
+    self.list = component:GetChild("list").asList
+    
+    -- 设置列表项渲染
+    self.list.itemRenderer = function(index, item)
+        self:RenderOptionItem(index, item)
+    end
+    
+    -- 设置列表项数量
+    self.list.numItems = #self.options
+    self.list:ResizeToFit()
+    
+    return self
+end
+
+---渲染选项列表项
+---@param index number 列表项索引（从0开始）
+---@param item FairyGUI.GComponent 列表项组件
+function GUIPopupOptions:RenderOptionItem(index, item)
+    local option = self.options[index + 1] -- Lua索引从1开始
+    
+    if not option then return end
+    
+    -- 设置按钮文本
+    local title = item:GetChild("title")
+    if title then
+        title.asTextField.text = option.label or ""
+    end
+    
+    -- 设置点击事件
+    item.asButton.onClick:Clear()
+    item.asButton.onClick:Add(function()
+        -- 执行选项的 action
+        if option.action then
+            option.action()
+        end
+        
+        -- 关闭弹窗
+        self:Close()
+    end)
+end
+
+---关闭弹出菜单
+function GUIPopupOptions:Close()
+    CS.FairyGUI.GRoot.inst:HidePopup(self.component)
+end
+
+return GUIPopupOptions

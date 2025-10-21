@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="600,720">
+  <displayList>
+    <list id="n3_msgl" name="messageList" xy="10,90" size="580,620" overflow="scroll" lineGap="2" defaultItem="ui://qrms65xvtno2g" autoClearItems="true">
+      <relation target="" sidePair="width-width,height-height"/>
+      <item/>
+      <item/>
+      <item/>
+      <item/>
+      <item/>
+      <item/>
+    </list>
+    <richtext id="n4_wdd1" name="title" xy="20,20" size="560,50" fontSize="28" color="#ffffff" align="center" vAlign="middle" autoSize="none" text="消息"/>
+  </displayList>
+</component>

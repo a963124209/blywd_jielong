@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="600,720">
+  <displayList>
+    <component id="n2_prf" name="avatar" src="tno2h" fileName="Output/AvatarCom.xml" xy="20,88" size="80,80"/>
+    <richtext id="n3_prf" name="userName" xy="110,98" size="200,30" fontSize="24" color="#ffffff" vAlign="middle" autoSize="none" text="用户名"/>
+    <richtext id="n4_prf" name="userId" xy="110,138" size="200,26" fontSize="18" color="#cccccc" vAlign="middle" autoSize="none" text="姓名: 大漠旅人"/>
+    <image id="n11_wdd1" name="headerBg" src="tno2o" fileName="Images/ui_listblank_line_1.png" xy="0,192" size="600,8"/>
+    <richtext id="n12_wdd1" name="title" xy="20,20" size="560,50" fontSize="28" color="#ffffff" align="center" vAlign="middle" autoSize="none" text="设置"/>
+    <component id="n6_prf" name="btnPay" src="tno2v" fileName="Buttons/ListItemFuncBtnWide1.xml" xy="20,224" size="560,60">
+      <Button title="大漠支付"/>
+    </component>
+    <component id="n7_prf" name="btnCollect" src="tno2v" fileName="Buttons/ListItemFuncBtnWide1.xml" xy="20,564" size="560,60">
+      <Button title="退出"/>
+    </component>
+    <component id="n10_prf" name="btnSettings" src="tno2v" fileName="Buttons/ListItemFuncBtnWide1.xml" xy="20,479" size="560,60">
+      <Button title="设置"/>
+    </component>
+    <component id="n13_wdd1" name="btnMoment" src="tno2v" fileName="Buttons/ListItemFuncBtnWide1.xml" xy="20,394" size="560,60">
+      <Button title="朋友圈"/>
+    </component>
+    <component id="n14_wdd1" name="btnFriend" src="tno2v" fileName="Buttons/ListItemFuncBtnWide1.xml" xy="20,309" size="560,60">
+      <Button title="通讯录"/>
+    </component>
+  </displayList>
+</component>

@@ -1,0 +1,60 @@
+local triggerMgr = require("Phone/PhoneTriggerManager")
+local phoneDataMgr = require("Phone/PhoneDataManager")
+
+local database = {}
+
+---@param info TriggerInfo
+function database.InPlayerCamp(info)
+    if info.playerCamp == nil then
+        return false
+    end
+    
+    return info.tagCamp == info.playerCamp and info.playerCamp:IsPlayerOwnedCamp()
+end
+
+---@param info TriggerInfo
+function database.NotInPlayerOwnedCamp(info)
+    if info.playerCamp == nil then
+        return true
+    end
+
+    if info.tagCamp == nil then
+        return true
+    end
+
+    return info.tagCamp ~= info.playerCamp or not info.playerCamp:IsPlayerOwnedCamp()
+end
+
+function database.GetNatureChecker(type, min, max)
+    ---@param info TriggerInfo
+    return function(info)
+        ---@type HanFramework.RoleRuntimeData
+        local role = info.tagRole
+        
+        local natureValue = role:GetRoleNatureVal(type)
+        if natureValue == 0 then natureValue = 5 end
+
+        return natureValue >= min and natureValue <= max
+    end
+end
+
+function database.Statistics()
+    local triggers = _G.triggerManager.triggers
+    local triggerCount = 0
+    if triggers ~= nil then
+        triggerCount = #triggers
+    end
+
+    local characters = phoneDataMgr.Character.getAll()
+    local characterCount = 0
+    if characters ~= nil then
+        characterCount = #characters
+    end
+
+    print("=== 数据库统计 ===")
+    print("角色数量: " .. tostring(characterCount))
+    print("触发器数量: " .. tostring(triggerCount))
+    print("=== 数据库统计 ===")
+end
+
+return database

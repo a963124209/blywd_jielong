@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="136,98" pivot="0.5,0.5" extention="Button">
+  <controller name="button" pages="0,up,1,down,2,over,3,selectedOver" selected="1"/>
+  <displayList>
+    <image id="n0_nlz0" name="bg" src="jlzz29" fileName="Images_Custom/ui_btn_back_s1.png" xy="0,0" pivot="0.5,0.5" aspect="true">
+      <relation target="" sidePair="width-width,center-center,middle-middle"/>
+    </image>
+    <image id="n7_jlzz" name="on" src="jlzz2b" fileName="Images_Custom/ui_btn_back_s1_cover.png" xy="0,-1" pivot="0.5,0.5" size="136,100" scale="1.2,1.2" color="#ffff00">
+      <gearDisplay controller="button" pages="1"/>
+      <gearSize controller="button" pages="0,1,2,3" values="136,100,1,1|136,100,1.2,1.2|136,100,1,1|136,100,1,1" tween="true" ease="Bounce.Out" duration=".2"/>
+      <relation target="" sidePair="width-width,center-center,middle-middle"/>
+    </image>
+    <text id="n4_nlz0" name="title" xy="18,21" pivot="0.5,0.5" size="100,54" font="STHupo" fontSize="40" align="center" vAlign="middle" letterSpacing="5" autoSize="none" text="">
+      <gearColor controller="button" pages="0,1,2,3" values="#ffffff,#666666|#000000,#000000|#ffecb1,#666666|#ffecb1,#000000" tween="true"/>
+      <relation target="" sidePair="center-center,middle-middle"/>
+    </text>
+    <image id="n8_jlzz" name="icon" src="jlzz25" fileName="Images_Custom/ui_icon_back_s1.png" xy="0,0" pivot="0.5,0.5" scale="1.1,1.1" color="#000000">
+      <gearSize controller="button" pages="1,2" values="136,98,1.1,1.1|136,98,1.1,1.1" default="136,98,1,1" tween="true" duration=".2"/>
+      <gearColor controller="button" pages="1,2" values="#000000|#ffff00" default="#ffffff"/>
+      <relation target="" sidePair="center-center,middle-middle"/>
+    </image>
+  </displayList>
+  <Button/>
+</component>

@@ -1,0 +1,207 @@
+require("gui/WindowUtils")
+--require("gui/JLHomeScene")
+
+local GameCoreHelper = CS.GameCoreHelper
+local StringFormat = GameCoreHelper.StringFormat
+local GetGameString = GameCoreHelper.GetGameString
+
+--页面访问控件
+local contentPane
+
+local btnBack
+local btnStoryMode
+local btnCustomBattle
+local btnStartGame
+
+local listGameModeBtn = {}
+
+local comboxHardLevel
+local comboxExpert
+
+local txtDiff
+
+local ctlShadow
+
+local isExpertMode = 0
+local curGameMode = 0
+local curHardlevel = 0
+
+--窗体初始化时
+function onInit()
+	contentPane = self.contentPane
+
+	btnBack = contentPane:GetChild("btn_exit").asButton
+
+	--[[获取控件--]]
+	--故事模式按钮
+	btnStoryMode = contentPane:GetChild("btn_mode_1").asButton
+	table.insert(listGameModeBtn, btnStoryMode)
+	--沙盒模式按钮
+	btnCustomBattle = contentPane:GetChild("btn_mode_2").asButton
+	table.insert(listGameModeBtn, btnCustomBattle)
+	--开始游戏按钮
+	btnStartGame = contentPane:GetChild("btn_start").asButton
+	--难度选择框
+	comboxHardLevel = contentPane:GetChild("comb_hardlevel").asComboBox
+	--专家模式选择框
+	comboxExpert = contentPane:GetChild("comb_expert").asComboBox
+	--难度文本
+	txtDiff = contentPane:GetChild("txt_diff").asRichTextField
+	--显示控制器
+	ctlShadow = contentPane:GetController("hide_shadow")
+
+	--[[绑定按钮事件--]]
+	btnBack.onClick:Add(onClickBackBtn)
+	btnStoryMode.onClick:Add(onClickStoryModeBtn)
+	btnCustomBattle.onClick:Add(onClickCustomBattleBtn)
+	btnStartGame.onClick:Add(onClickStartGame)
+	comboxHardLevel.onChanged:Add(onHardLevelSelChanged)
+	comboxExpert.onChanged:Add(onExpertSelChanged)
+
+	--[[设置默认值--]]
+	updateHardLevelSelCombo(comboxHardLevel)
+	updateExpertSelCombo(comboxExpert)
+	updateDifficultyInfo()
+
+	btnStoryMode.title = GetGameString("jl_game_mode_title_1")
+	btnStoryMode:GetChild("title_sub").asTextField.text = GetGameString("jl_game_mode_sub_title_1")
+	btnStoryMode:GetChild("info").asRichTextField.text = GetGameString("jl_game_mode_desc_1")
+
+	btnCustomBattle.title = GetGameString("jl_game_mode_title_2")
+	btnCustomBattle:GetChild("title_sub").asTextField.text = GetGameString("jl_game_mode_sub_title_2")
+	btnCustomBattle:GetChild("info").asRichTextField.text = GetGameString("jl_game_mode_desc_2")
+
+	comboxHardLevel:GetChild("desc").asRichTextField.text = GetGameString("jl_hardlevel_title")
+	comboxExpert:GetChild("desc").asRichTextField.text = GetGameString("jl_expert_mode_title")
+	comboxExpert.tooltips = GetGameString("jl_expert_mode_desc")
+
+	btnStartGame.visible = false
+
+	ctlShadow.selectedIndex = 1
+
+	self:SetCloseButton(btnBack)
+end
+
+--窗体开始显示并播放显示动画时
+function onDoShowAnimation()
+	CommonShowWindowAnim(self, onShown)
+end
+
+--窗体播放完显示动画时
+function onShown()
+	
+end
+
+--窗体开始播放关闭动画时
+function onDoHideAnimation()
+	CommonHideWindowAnim(self, onHideAnimationDone)
+end
+
+function onHideAnimationDone()
+	self:HideImmediately();
+end
+
+--窗体隐藏时
+function onHide()
+	
+end
+
+--按下完成按钮时
+function onClickBackBtn()
+	PlayButtonSound()
+	
+	self:Hide()
+end
+
+function onClickStoryModeBtn()
+	PlayButtonSound()
+	for k, v in pairs(listGameModeBtn) do
+		if v ~= btnStoryMode then
+			v.selected = false
+		end
+	end
+	--CS.GUIHelper.OpenGUIInIndepScene(constPackageName, "MStorySelectorWindow", "mobile/StorySelectWin", "", nil, true);
+	curGameMode = 0
+	btnStartGame.visible = true
+end
+
+function onClickCustomBattleBtn()
+	PlayButtonSound()
+	for k, v in pairs(listGameModeBtn) do
+		if v ~= btnCustomBattle then
+			v.selected = false
+		end
+	end
+	curGameMode = 1
+	btnStartGame.visible = true
+end
+
+local difficultyPool = {
+	[0] = { 
+		name = GetGameString("jl_hardlevel_opt_1"),
+		desc = GetGameString("jl_hardlevel_desc_1"),
+	},
+	[1] = { 
+		name = GetGameString("jl_hardlevel_opt_2"),
+		desc = GetGameString("jl_hardlevel_desc_2"),
+	},
+	[2] = { 
+		name = GetGameString("jl_hardlevel_opt_3"),
+		desc = GetGameString("jl_hardlevel_desc_3"),
+	},
+}
+
+function updateHardLevelSelCombo(_combox)
+	local itemsInfo = ""
+	for i, v in pairs(difficultyPool) do
+		itemsInfo = itemsInfo .. i .. "," .. v.name .. ";"
+    end
+	CS.GUIHelper.SetComboBoxItems(_combox, itemsInfo)
+end
+
+
+function onHardLevelSelChanged()
+	local curSelValue = tonumber(comboxHardLevel.value)
+	curHardlevel = curSelValue
+	updateDifficultyInfo()
+end
+
+
+function updateDifficultyInfo()
+	txtDiff.text = difficultyPool[curHardlevel].desc
+end
+
+local expertPool = {
+	[0] = { 
+		name = GetGameString("jl_expert_mode_opt_1"),
+		desc = "",
+	},
+	[1] = { 
+		name = GetGameString("jl_expert_mode_opt_2"),
+		desc = GetGameString("jl_expert_mode_desc"),
+	},
+}
+
+function updateExpertSelCombo(_combox)
+	local itemsInfo = ""
+	for i, v in pairs(expertPool) do
+		itemsInfo = itemsInfo .. i .. "," .. v.name .. ";"
+    end
+	CS.GUIHelper.SetComboBoxItems(_combox, itemsInfo)
+end
+
+
+function onExpertSelChanged()
+	local curSelValue = comboxExpert.value
+	isExpertMode = curSelValue
+end
+
+
+function onClickStartGame()
+	PlayButtonSound()
+	CS.GUIHelper.SetGUIGlobalIntVal("newgame_is_expert", isExpertMode)
+	CS.GUIHelper.SetGUIGlobalIntVal("newgame_gamemode_code", curGameMode)
+	CS.GUIHelper.SetGUIGlobalIntVal("newgame_hardlevel_code", curHardlevel)
+	self.CurDialogResult = 1
+	self:Hide()
+end

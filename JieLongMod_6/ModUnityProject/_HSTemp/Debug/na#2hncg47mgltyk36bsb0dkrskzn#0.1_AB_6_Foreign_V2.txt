@@ -1,0 +1,16 @@
+此文件记录了 所有被引用的外部资源和引用者。
+Assets/Shaders/MyGameBlend.shader
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/Prefabs/哲.prefab
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/Prefabs/玲.prefab
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/哲/体.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/哲/发.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/哲/时尚.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/哲/眼镜.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/哲/颜.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/玲/体.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/玲/发.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/玲/夏装.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/玲/头套.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/玲/时尚.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/玲/眼镜.mat
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS/role_models/玲/颜.mat

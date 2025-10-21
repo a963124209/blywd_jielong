@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="600,800" overflow="hidden">
+  <controller name="pageCtrl" pages="0,消息,1,通讯录,2,朋友圈,3,我" selected="0"/>
+  <controller name="typeCtrl" pages="0,主页,1,聊天" selected="0"/>
+  <displayList>
+    <image id="n0_nkb0" name="bg" src="tno22" fileName="Images/ui_rolebox_box_s1_bg.png" xy="0,0" size="600,800"/>
+    <component id="n1_nkb0" name="contentArea" src="tno23" fileName="Output/Bg.xml" xy="0,0" size="600,720" alpha="0.3">
+      <relation target="" sidePair="width-width,height-height"/>
+    </component>
+    <image id="n14_wdd1" name="topBar" src="tno25" fileName="Images/ui_blank_image_0.png" xy="0,0" size="600,80" alpha="0.7" color="#000000">
+      <relation target="" sidePair="width-width,top-top"/>
+    </image>
+    <image id="n2_nkb0" name="bottomBar" src="tno25" fileName="Images/ui_blank_image_0.png" xy="0,720" size="600,80" alpha="0.3" color="#000000">
+      <relation target="" sidePair="width-width,bottom-bottom"/>
+    </image>
+    <component id="n3_nkb0" name="btnMessage" src="tno26" fileName="Buttons/ListItemFuncBtnShort1Switch.xml" xy="0,720" size="150,80">
+      <relation target="" sidePair="bottom-bottom"/>
+      <Button checked="true" title="消息" icon="ui://qrms65xvtno2b" controller="pageCtrl" page="0"/>
+    </component>
+    <component id="n4_nkb0" name="btnContact" src="tno26" fileName="Buttons/ListItemFuncBtnShort1Switch.xml" xy="150,720" size="150,80">
+      <relation target="" sidePair="bottom-bottom"/>
+      <Button title="通讯录" icon="ui://qrms65xvtno2c" controller="pageCtrl" page="1"/>
+    </component>
+    <component id="n5_nkb0" name="btnMoments" src="tno26" fileName="Buttons/ListItemFuncBtnShort1Switch.xml" xy="300,720" size="150,80">
+      <relation target="" sidePair="bottom-bottom"/>
+      <Button title="朋友圈" icon="ui://qrms65xvtno2d" controller="pageCtrl" page="2"/>
+    </component>
+    <component id="n6_nkb0" name="btnProfile" src="tno26" fileName="Buttons/ListItemFuncBtnShort1Switch.xml" xy="450,720" size="150,80">
+      <relation target="" sidePair="bottom-bottom"/>
+      <Button title="我" icon="ui://qrms65xvtno2e" controller="pageCtrl" page="3"/>
+    </component>
+    <component id="n7_nkb0" name="messagePage" src="tno2f" fileName="Output/MessageListView.xml" xy="0,0" size="600,720">
+      <gearDisplay controller="pageCtrl" pages="0"/>
+      <relation target="" sidePair="width-width,height-height"/>
+    </component>
+    <component id="n8_nkb0" name="contactPage" src="tno2l" fileName="Output/ContactPage.xml" xy="0,0" size="600,720">
+      <gearDisplay controller="pageCtrl" pages="1"/>
+      <relation target="" sidePair="width-width,height-height"/>
+    </component>
+    <component id="n9_nkb0" name="momentsPage" src="tno2n" fileName="Output/MomentsPage.xml" xy="0,0" size="600,720">
+      <gearDisplay controller="pageCtrl" pages="2"/>
+      <relation target="" sidePair="width-width,height-height"/>
+    </component>
+    <component id="n10_nkb0" name="profilePage" src="tno2u" fileName="Output/ProfilePage.xml" xy="0,0" size="600,720">
+      <gearDisplay controller="pageCtrl" pages="3"/>
+      <relation target="" sidePair="width-width,height-height"/>
+    </component>
+    <component id="n15_wdd1" name="chatPage" src="tno2x" fileName="Output/ChatPage.xml" xy="600,0" size="600,800">
+      <gearXY controller="typeCtrl" pages="0" values="600,0" default="0,0" tween="true"/>
+    </component>
+  </displayList>
+</component>

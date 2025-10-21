@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="1280,720" extention="Label" initName="frame">
+  <displayList>
+    <component id="n13_enie" name="frame" src="qr8k2v" fileName="Components_Custom/CommonWindowFrame1.xml" xy="0,0" size="1280,720">
+      <relation target="" sidePair="width-width,height-height,center-center,middle-middle"/>
+    </component>
+    <component id="n14_enie" name="label" src="jlzzd" fileName="Components/TextWindowLabel1.xml" xy="23,91" size="1239,597"/>
+  </displayList>
+</component>

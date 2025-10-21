@@ -1,0 +1,325 @@
+require("FairyGUI")
+
+-- 引入各个页面的绑定类
+local MessagePageBinder = require("Phone/MessagePageBinder")
+local ContactPageBinder = require("Phone/ContactPageBinder")
+local MomentsPageBinder = require("Phone/MomentsPageBinder")
+local ProfilePageBinder = require("Phone/ProfilePageBinder")
+local ChatPageBinder = require("Phone/ChatPageBinder")
+local PhoneDataManager = require("Phone/PhoneDataManager")
+
+local g = {}
+
+---@type FGUIWindowLua
+local self = self
+
+--窗体初始化时
+function onInit()
+    -- 初始化数据管理器
+    PhoneDataManager.init()
+    
+    -- FGUI组件
+    ---@type FairyGUI.GComponent
+    g.contentPane = self.contentPane
+
+    -- 背景
+    g.bg = g.contentPane:GetChild("bg")
+
+    -- 主界面组件
+    g.main = g.contentPane:GetChild("main").asCom
+
+    -- 拖拽区域
+    g.dragArea = g.contentPane:GetChild("drag_area")
+
+    -- 关闭按钮
+    g.btnClose = g.contentPane:GetChild("btn_close").asButton
+    g.btnClose.onClick:Add(onClickClose)
+
+    -- 设置返回键
+    self:SetBackkeyButton(g.btnClose)
+
+    -- 初始化主界面组件
+    initMainComponent()
+
+    CS.GameCoreHelper.PauseGame()
+end
+
+-- 初始化主界面组件
+function initMainComponent()
+    -- 主界面控制器
+    g.mainComponent = {}
+    g.mainComponent.pageCtrl = g.main:GetController("pageCtrl")
+    g.mainComponent.typeCtrl = g.main:GetController("typeCtrl")
+
+    -- 背景和区域
+    g.mainComponent.bg = g.main:GetChild("bg")
+    g.mainComponent.contentArea = g.main:GetChild("contentArea").asCom
+    g.mainComponent.topBar = g.main:GetChild("topBar")
+    g.mainComponent.bottomBar = g.main:GetChild("bottomBar")
+
+    -- 底部按钮组
+    g.mainComponent.btnMessage = g.main:GetChild("btnMessage").asButton
+    g.mainComponent.btnMessage.onClick:Add(onClickMessage)
+
+    g.mainComponent.btnContact = g.main:GetChild("btnContact").asButton
+    g.mainComponent.btnContact.onClick:Add(onClickContact)
+
+    g.mainComponent.btnMoments = g.main:GetChild("btnMoments").asButton
+    g.mainComponent.btnMoments.onClick:Add(onClickMoments)
+
+    g.mainComponent.btnProfile = g.main:GetChild("btnProfile").asButton
+    g.mainComponent.btnProfile.onClick:Add(onClickProfile)
+
+    -- 页面组件
+    g.mainComponent.messagePage = g.main:GetChild("messagePage").asCom
+    g.mainComponent.contactPage = g.main:GetChild("contactPage").asCom
+    g.mainComponent.momentsPage = g.main:GetChild("momentsPage").asCom
+    g.mainComponent.profilePage = g.main:GetChild("profilePage").asCom
+    g.mainComponent.chatPage = g.main:GetChild("chatPage").asCom
+
+    -- 使用绑定类绑定各个页面
+    g.messagePageBinder = MessagePageBinder.New(g.mainComponent.messagePage)
+    g.contactPageBinder = ContactPageBinder.New(g.mainComponent.contactPage)
+    g.momentsPageBinder = MomentsPageBinder.New(g.mainComponent.momentsPage)
+    g.profilePageBinder = ProfilePageBinder.New(g.mainComponent.profilePage)
+    g.chatPageBinder = ChatPageBinder.New(g.mainComponent.chatPage)
+
+    -- 设置回调
+    setupCallbacks()
+end
+
+-- 设置各个页面的回调
+function setupCallbacks()
+    -- 消息页面：点击会话进入聊天
+    g.messagePageBinder:SetSessionClickCallback(function(sessionId)
+        onSessionClicked(sessionId)
+    end)
+    
+    -- 联系人页面：点击联系人查看详情或打开聊天
+    g.contactPageBinder:SetContactClickCallback(function(uid)
+        onContactClicked(uid)
+    end)
+    
+    -- 朋友圈页面：点击评论
+    g.momentsPageBinder:SetCommentClickCallback(function(moment)
+        onMomentCommentClicked(moment)
+    end)
+    
+    -- 个人设置页面的回调
+    g.profilePageBinder:SetCallbacks({
+        onPayClicked = onProfilePayClicked,
+        onFriendClicked = onProfileFriendClicked,
+        onMomentClicked = onProfileMomentClicked,
+        onSettingsClicked = onProfileSettingsClicked,
+        onCollectClicked = onProfileCollectClicked
+    })
+    
+    -- 聊天页面：返回按钮回调
+    g.chatPageBinder:SetBackCallback(function()
+        onChatBackClicked()
+    end)
+    
+    -- 聊天页面：消息点击回调
+    g.chatPageBinder:SetMessageClickCallback(function(message)
+        onChatMessageClicked(message)
+    end)
+end
+
+-- 关闭按钮点击事件
+function onClickClose()
+    PlayButtonSound()
+    self:Hide()
+end
+
+-- 消息按钮点击事件
+function onClickMessage()
+    PlayButtonSound()
+    g.mainComponent.pageCtrl.selectedIndex = 0
+    g.mainComponent.typeCtrl.selectedIndex = 0
+end
+
+-- 通讯录按钮点击事件
+function onClickContact()
+    PlayButtonSound()
+    g.mainComponent.pageCtrl.selectedIndex = 1
+    g.mainComponent.typeCtrl.selectedIndex = 0
+end
+
+-- 朋友圈按钮点击事件
+function onClickMoments()
+    PlayButtonSound()
+    g.mainComponent.pageCtrl.selectedIndex = 2
+    g.mainComponent.typeCtrl.selectedIndex = 0
+end
+
+-- 我按钮点击事件
+function onClickProfile()
+    PlayButtonSound()
+    g.mainComponent.pageCtrl.selectedIndex = 3
+    g.mainComponent.typeCtrl.selectedIndex = 0
+end
+
+-- 个人设置页面 - 支付按钮点击
+function onProfilePayClicked()
+    -- 实现支付功能
+    CS.GUIHelper.ShowConfirmDialog("大漠支付还未开通哦……", 0, nil)
+end
+
+-- 个人设置页面 - 通讯录按钮点击
+function onProfileFriendClicked()
+    -- 跳转到通讯录页面
+    onClickContact()
+end
+
+-- 个人设置页面 - 朋友圈按钮点击
+function onProfileMomentClicked()
+    -- 跳转到朋友圈页面
+    onClickMoments()
+end
+
+-- 个人设置页面 - 设置按钮点击
+function onProfileSettingsClicked()
+    -- 打开设置界面
+    CS.GUIHelper.ShowInputDialog("设置昵称", 20, "", function(ret, nickName)
+        if ret == 1 and nickName and nickName ~= "" then
+            -- 保存昵称
+            PhoneDataManager.Profile.setNickname(nickName)
+            CS.GameShared.Instance:SendSceneMessage("phone_refresh", "")
+        end
+    end)
+end
+
+-- 个人设置页面 - 退出按钮点击
+function onProfileCollectClicked()
+    -- 退出或注销
+    self:Hide()
+end
+
+-- 会话列表项点击事件
+function onSessionClicked(sessionId)
+    -- 切换到聊天页面并传入会话ID
+    g.mainComponent.typeCtrl.selectedIndex = 1
+    print("打开会话: " .. sessionId)
+    
+    -- 加载聊天记录
+    g.chatPageBinder:LoadSession(sessionId)
+    
+    -- 清空该会话的未读数
+    PhoneDataManager.Session.clearUnread(sessionId)
+    g.messagePageBinder:UpdateSession(sessionId)
+end
+
+-- 联系人点击事件
+function onContactClicked(uid)
+    local character = PhoneDataManager.Character.get(uid)
+    if character then
+        -- 创建或获取单人会话
+        local sessionId = "private_" .. uid
+        local session = PhoneDataManager.Session.get(sessionId)
+        if not session then
+            session = PhoneDataManager.Session.create(sessionId, "private", "", { uid })
+        end
+        
+        -- 打开聊天
+        onSessionClicked(sessionId)
+    end
+end
+
+-- 朋友圈评论点击事件
+function onMomentCommentClicked(moment)
+    -- TODO: 打开评论输入框
+    print("评论朋友圈: " .. (moment.id or ""))
+    
+    -- 示例：弹出输入框让用户输入评论
+    -- local commentText = ShowInputDialog("输入评论")
+    -- if commentText then
+    --     local currentUserUid = g.currentUserUid
+    --     MomentsPageBinder.AddComment(g.momentsPageBinder, moment.uid, moment.id, currentUserUid, commentText)
+    -- end
+end
+
+-- 聊天页面返回按钮点击事件
+function onChatBackClicked()
+    -- 返回到消息列表页面
+    g.mainComponent.typeCtrl.selectedIndex = 0
+end
+
+-- 聊天消息点击事件
+function onChatMessageClicked(message)
+    print("点击消息: " .. (message.id or ""))
+end
+
+--窗体播放完显示动画时
+function onShown()
+    -- 加载所有数据
+    loadAllData()
+end
+
+function onHide()
+    CS.GameCoreHelper.ResumeGame()
+end
+
+-- 加载所有页面数据
+function loadAllData()
+    local playerUid = "主角"
+    
+    g.currentUserUid = playerUid
+    
+    -- 加载个人资料页面
+    g.profilePageBinder:LoadUserInfo()
+    
+    -- 加载消息列表
+    g.messagePageBinder:LoadAllSessions()
+    
+    -- 加载联系人列表
+    g.contactPageBinder:LoadAllContacts()
+    
+    -- 加载朋友圈
+    g.momentsPageBinder:SetUserInfo()
+    g.momentsPageBinder:LoadAllMoments()
+    
+    local unreadCount = PhoneDataManager.getTotalUnreadCount()
+    if unreadCount > 0 then
+        -- 显示未读数红点
+        print("未读消息数: " .. unreadCount)
+    end
+end
+
+--设置窗口参数
+--被调用 window:SetWindowParams(arg1.arg2,...)
+---@param args string[] 参数数组
+function SetWindowParams(args)
+
+end
+
+--UI消息事件
+---@param type string 消息类型
+---@param arg string 消息参数
+function onWindowEvent(type, arg)
+    if type == "phone_friend_update" then
+        g.contactPageBinder:LoadAllContacts()
+        g.messagePageBinder:LoadAllSessions()
+    elseif type == "phone_message_update" then
+        if g.mainComponent.typeCtrl.selectedIndex == 1 then
+            g.chatPageBinder:MarkUnreadAsRead()
+        end
+        g.messagePageBinder:LoadAllSessions()
+        g.chatPageBinder:RefreshMessageList()
+    elseif type == "phone_moment_update" then
+        g.momentsPageBinder:LoadAllMoments()
+    elseif type == "phone_refresh" then
+        loadAllData()
+    end
+end
+
+--按钮按下事件
+---@param keyCode number 按键代码，参考Unity的KeyCode枚举
+function onKeyDown(keyCode)
+
+end
+
+--- 抖动效果
+function animShake()
+    
+end
+

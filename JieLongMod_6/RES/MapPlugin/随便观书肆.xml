@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<blend_map_export xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <areas_info>
+    <tile_areas area_id="678" bind_info_type="5" center_map_x="-1270" center_map_y="-310" width="60" height="60" rotate="225" aabb_state="1" aabb_min_x="-43.4513931" aabb_min_y="-24.2256966" aabb_max_x="43.4513931" aabb_max_y="24.2256966">
+      <pts_info>-38,17;-17,-38;38,-17;17,38</pts_info>
+      <properties>
+        <property name="dummy_id" value="随便观书肆" />
+        <property name="model_id" value="随便观书肆" />
+        <property name="role_id" value="随便观书肆" />
+        <property name="interactive" value="1" />
+        <property name="move_info" value="" />
+        <property name="move_speed" value="" />
+        <property name="camp_id" value="" />
+        <property name="init_state" value="0" />
+        <property name="orders" value="" />
+        <property name="bb_info" value="" />
+      </properties>
+    </tile_areas>
+  </areas_info>
+</blend_map_export>

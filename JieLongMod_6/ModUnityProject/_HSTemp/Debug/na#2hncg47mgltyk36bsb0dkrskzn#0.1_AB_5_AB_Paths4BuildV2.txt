@@ -1,0 +1,6 @@
+此文件记录了 各个AB包所包含的路径（文件和文件夹）。
+na#2hncg47mgltyk36bsb0dkrskzn#0.1.bundle
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/ABS
+	Assets/Shaders/MyGameBlend.shader
+na#2hncg47mgltyk36bsb0dkrskzn#0.1_hsframework_resourceabindex_v2.bundle
+	Assets/HanUser.Mod/na#2hncg47mgltyk36bsb0dkrskzn#0.1/resourceindex_v2.bytes

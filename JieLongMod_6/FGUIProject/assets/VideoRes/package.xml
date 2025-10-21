@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<packageDescription id="733eviq1">
+  <resources>
+    <component id="nkc40" name="VideoPlayer.xml" path="/" exported="true"/>
+    <component id="nkc42" name="CloseBtn1.xml" path="/"/>
+    <image id="nkc43" name="background.jpg" path="/"/>
+  </resources>
+  <publish name=""/>
+</packageDescription>

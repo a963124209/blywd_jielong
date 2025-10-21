@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="450,90" extention="ComboBox">
+  <controller name="button" pages="0,up,1,down,2,over,3,selectedOver" selected="0"/>
+  <displayList>
+    <image id="n2_qr8k" name="bg" src="qr8k2l" fileName="Images_Custom/ui_btn_bg_s1.png" xy="-241,-4" pivot="0,0.5" size="680,98">
+      <relation target="" sidePair="width-width"/>
+    </image>
+    <image id="n0_qr8k" name="n0" src="jlzz1p" fileName="Images_Custom/ui_btn_s1.png" xy="0,3" size="449,82">
+      <relation target="" sidePair="width-width,height-height"/>
+    </image>
+    <richtext id="n1_qr8k" name="title" xy="44,7" pivot="0,0.5" size="372,65" font="STHupo" fontSize="35" color="#ffffff" align="center" vAlign="middle" autoSize="shrink" autoClearText="true" text="选项">
+      <relation target="" sidePair="width-width"/>
+    </richtext>
+    <richtext id="n4_qr8k" name="desc" xy="-198,10" pivot="0,0.5" size="196,65" font="STHupo" fontSize="40" color="#ffffff" vAlign="middle" autoSize="shrink" autoClearText="true" text="专家模式">
+      <relation target="n2_qr8k" sidePair="left-left"/>
+    </richtext>
+  </displayList>
+  <ComboBox dropdown="ui://7l8qp3zoqr8k2n"/>
+</component>

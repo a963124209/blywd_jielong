@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="350,100" pivot="0.5,0.5" extention="Button">
+  <controller name="button" pages="0,up,1,down,2,over,3,selectedOver" selected="0"/>
+  <displayList>
+    <image id="n0_nlz0" name="bg" src="jlzz1p" fileName="Images_Custom/ui_btn_s1.png" xy="0,9" pivot="0.5,0.5" size="349,90" aspect="true">
+      <relation target="" sidePair="width-width,center-center,middle-middle"/>
+    </image>
+    <image id="n7_jlzz" name="on" src="jlzz1q" fileName="Images_Custom/ui_btn_s1_cover.png" xy="0,9" pivot="0.5,0.5" size="349,90" aspect="true" color="#ffff00">
+      <gearDisplay controller="button" pages="1"/>
+      <gearSize controller="button" pages="0,1" values="349,90,1,1|349,90,1.2,1.2" default="349,90,1,1" tween="true" ease="Bounce.Out"/>
+      <relation target="" sidePair="width-width,center-center,middle-middle"/>
+    </image>
+    <text id="n4_nlz0" name="title" xy="-50,22" pivot="0.5,0.5" size="450,54" font="STHupo" fontSize="40" color="#ffffff" align="center" vAlign="middle" letterSpacing="5" autoSize="none" text="新的游戏">
+      <gearColor controller="button" pages="0,1,2,3" values="#ffffff,#666666|#000000,#000000|#ffff00,#666666|#ffecb1,#000000" tween="true"/>
+      <relation target="" sidePair="center-center,middle-middle"/>
+    </text>
+  </displayList>
+  <Button/>
+</component>

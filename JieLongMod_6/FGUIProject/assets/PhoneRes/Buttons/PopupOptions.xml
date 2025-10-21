@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="590,289">
+  <displayList>
+    <list id="n0_tno2" name="list" xy="0,0" size="590,289" restrictSize="0,0,0,600" overflow="scroll" defaultItem="ui://qrms65xvtno2v">
+      <relation target="" sidePair="width-width"/>
+      <item/>
+      <item/>
+      <item/>
+      <item/>
+      <item/>
+      <item/>
+    </list>
+  </displayList>
+  <relation target="n0_tno2" sidePair="bottomext-bottom"/>
+</component>

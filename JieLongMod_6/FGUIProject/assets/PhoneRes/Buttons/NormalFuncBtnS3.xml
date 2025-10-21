@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="188,63" extention="Button">
+  <controller name="button" pages="0,up,1,down,2,over,3,selectedOver" selected="0"/>
+  <displayList>
+    <image id="n8_9u9y" name="bg_on" src="tno216" fileName="Images/ui_btn_func_s4_n.png" xy="11,12">
+      <gearDisplay controller="button" pages="1"/>
+      <relation target="" sidePair="width-width,height-height"/>
+    </image>
+    <image id="n4_7kw8" name="bg" src="tno217" fileName="Images/ui_btn_func_s3_n.png" xy="11,12">
+      <gearDisplay controller="button" pages="0,2"/>
+      <relation target="" sidePair="width-width,height-height"/>
+    </image>
+    <richtext id="n3_7kw8" name="title" xy="14,12" size="160,38" fontSize="18" color="#cdbeab" align="center" vAlign="middle" letterSpacing="1" autoSize="none" singleLine="true" text="Button">
+      <gearDisplay controller="button" pages=""/>
+      <gearColor controller="button" pages="1,2" values="#49260c,#000000|#b1843c,#000000" default="#cdbeab,#000000"/>
+      <relation target="" sidePair="width-width,height-height"/>
+    </richtext>
+    <image id="n7_7kw8" name="sel_frame" src="tno2a" fileName="Images/ui_infobar_selframe_s1.png" xy="4,5" size="180,53" visible="false">
+      <relation target="" sidePair="width-width,height-height"/>
+    </image>
+  </displayList>
+  <Button/>
+</component>

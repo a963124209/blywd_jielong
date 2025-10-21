@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<blend_map_tileinfo xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" blend_weight="0.001" need_tex_file="0">
+  <tile_tex tex_id="1" scale_x="1" scale_y="1" rotate="0" />
+  <tile_obj obj_id="216" obj_type="0" tileset_id="浅绿-2 (3)" layer_index="2" pos_x="-2293.15649" pos_y="-588.861633" offset_z="0" arg_x="1" arg_y="1" arg_z="0" visible="1" is_locked="0" x_flip="0" obj_infos="" bind_tag="" control_info="" />
+  <tile_obj obj_id="217" obj_type="0" tileset_id="浅绿-2 (3)" layer_index="2" pos_x="-2528.89185" pos_y="-389.8488" offset_z="0" arg_x="1" arg_y="1" arg_z="0" visible="1" is_locked="0" x_flip="0" obj_infos="" bind_tag="" control_info="" />
+  <tile_obj obj_id="211" obj_type="0" tileset_id="浅绿-2 (4)" layer_index="2" pos_x="-2018.791" pos_y="-800.1845" offset_z="0" arg_x="1" arg_y="1" arg_z="0" visible="1" is_locked="0" x_flip="0" obj_infos="" bind_tag="" control_info="" />
+  <tile_obj obj_id="212" obj_type="0" tileset_id="浅绿-2 (5)" layer_index="2" pos_x="-1472.03882" pos_y="-1097.50525" offset_z="0" arg_x="1" arg_y="1" arg_z="0" visible="1" is_locked="0" x_flip="0" obj_infos="" bind_tag="" control_info="" />
+  <tile_obj obj_id="213" obj_type="0" tileset_id="浅绿 (18)" layer_index="2" pos_x="-1765.8197" pos_y="-988.522034" offset_z="0" arg_x="1" arg_y="1" arg_z="0" visible="1" is_locked="0" x_flip="0" obj_infos="" bind_tag="" control_info="" />
+  <tile_obj obj_id="231" obj_type="0" tileset_id="户外-A (57)" layer_index="2" pos_x="-1534.732" pos_y="-557.450134" offset_z="0" arg_x="1" arg_y="1" arg_z="0" visible="1" is_locked="0" x_flip="0" obj_infos="" bind_tag="" control_info="" />
+  <tile_obj obj_id="1053" obj_type="0" tileset_id="未标题-22" layer_index="4" pos_x="-1606.81934" pos_y="-868.1659" offset_z="0" arg_x="0.3" arg_y="0.3" arg_z="0" visible="1" is_locked="0" x_flip="0" obj_infos="" bind_tag="" control_info="" />
+  <tile_obj obj_id="1054" obj_type="0" tileset_id="未标题-22" layer_index="4" pos_x="-1606.37488" pos_y="-978.388062" offset_z="0" arg_x="0.3" arg_y="0.3" arg_z="0" visible="1" is_locked="0" x_flip="0" obj_infos="" bind_tag="" control_info="" />
+  <tile_obj obj_id="1055" obj_type="0" tileset_id="未标题-22" layer_index="4" pos_x="-1496.486" pos_y="-923.277" offset_z="0" arg_x="0.3" arg_y="0.3" arg_z="0" visible="1" is_locked="0" x_flip="0" obj_infos="" bind_tag="" control_info="" />
+  <tile_obj obj_id="1056" obj_type="0" tileset_id="未标题-22" layer_index="4" pos_x="-1496.5083" pos_y="-813.1437" offset_z="0" arg_x="0.3" arg_y="0.3" arg_z="0" visible="1" is_locked="0" x_flip="0" obj_infos="" bind_tag="" control_info="" />
+  <tile_obj obj_id="1063" obj_type="0" tileset_id="未标题-22" layer_index="4" pos_x="-1496.24158" pos_y="-1033.67712" offset_z="0" arg_x="0.3" arg_y="0.3" arg_z="0" visible="1" is_locked="0" x_flip="0" obj_infos="" bind_tag="" control_info="" />
+  <tile_obj obj_id="1147" obj_type="0" tileset_id="未标题-22" layer_index="4" pos_x="-1497.353" pos_y="-702.555542" offset_z="0" arg_x="0.3" arg_y="0.3" arg_z="0" visible="1" is_locked="0" x_flip="0" obj_infos="" bind_tag="" control_info="" />
+  <tile_obj obj_id="1148" obj_type="0" tileset_id="未标题-22" layer_index="4" pos_x="-1718.35315" pos_y="-482.222046" offset_z="0" arg_x="0.3" arg_y="0.3" arg_z="0" visible="1" is_locked="0" x_flip="0" obj_infos="" bind_tag="" control_info="" />
+  <tile_obj obj_id="1149" obj_type="0" tileset_id="未标题-22" layer_index="4" pos_x="-2048.464" pos_y="-647.444458" offset_z="0" arg_x="0.3" arg_y="0.3" arg_z="0" visible="1" is_locked="0" x_flip="0" obj_infos="" bind_tag="" control_info="" />
+  <tile_obj obj_id="1150" obj_type="0" tileset_id="未标题-22" layer_index="4" pos_x="-2048.01953" pos_y="-757.6666" offset_z="0" arg_x="0.3" arg_y="0.3" arg_z="0" visible="1" is_locked="0" x_flip="0" obj_infos="" bind_tag="" control_info="" />
+  <tile_obj obj_id="1151" obj_type="0" tileset_id="未标题-22" layer_index="4" pos_x="-1938.13074" pos_y="-702.555542" offset_z="0" arg_x="0.3" arg_y="0.3" arg_z="0" visible="1" is_locked="0" x_flip="0" obj_infos="" bind_tag="" control_info="" />
+  <tile_obj obj_id="1152" obj_type="0" tileset_id="未标题-22" layer_index="4" pos_x="-1938.15308" pos_y="-592.422241" offset_z="0" arg_x="0.3" arg_y="0.3" arg_z="0" visible="1" is_locked="0" x_flip="0" obj_infos="" bind_tag="" control_info="" />
+  <tile_obj obj_id="1153" obj_type="0" tileset_id="未标题-22" layer_index="4" pos_x="-1828.26416" pos_y="-537.311157" offset_z="0" arg_x="0.3" arg_y="0.3" arg_z="0" visible="1" is_locked="0" x_flip="0" obj_infos="" bind_tag="" control_info="" />
+  <tile_obj obj_id="1154" obj_type="0" tileset_id="未标题-22" layer_index="4" pos_x="-1827.8197" pos_y="-647.5333" offset_z="0" arg_x="0.3" arg_y="0.3" arg_z="0" visible="1" is_locked="0" x_flip="0" obj_infos="" bind_tag="" control_info="" />
+  <tile_obj obj_id="1155" obj_type="0" tileset_id="未标题-22" layer_index="4" pos_x="-1717.93079" pos_y="-592.422241" offset_z="0" arg_x="0.3" arg_y="0.3" arg_z="0" visible="1" is_locked="0" x_flip="0" obj_infos="" bind_tag="" control_info="" />
+  <tile_obj obj_id="1156" obj_type="0" tileset_id="未标题-22" layer_index="4" pos_x="-1717.61975" pos_y="-702.5558" offset_z="0" arg_x="0.3" arg_y="0.3" arg_z="0" visible="1" is_locked="0" x_flip="0" obj_infos="" bind_tag="" control_info="" />
+  <tile_obj obj_id="1157" obj_type="0" tileset_id="未标题-22" layer_index="4" pos_x="-1607.73083" pos_y="-647.4447" offset_z="0" arg_x="0.3" arg_y="0.3" arg_z="0" visible="1" is_locked="0" x_flip="0" obj_infos="" bind_tag="" control_info="" />
+  <tile_obj obj_id="1158" obj_type="0" tileset_id="未标题-22" layer_index="4" pos_x="-1607.2865" pos_y="-757.6669" offset_z="0" arg_x="0.3" arg_y="0.3" arg_z="0" visible="1" is_locked="0" x_flip="0" obj_infos="" bind_tag="" control_info="" />
+  <tile_obj obj_id="1159" obj_type="0" tileset_id="未标题-22" layer_index="4" pos_x="-1937.88635" pos_y="-812.9557" offset_z="0" arg_x="0.3" arg_y="0.3" arg_z="0" visible="1" is_locked="0" x_flip="0" obj_infos="" bind_tag="" control_info="" />
+  <tile_obj obj_id="1160" obj_type="0" tileset_id="未标题-22" layer_index="4" pos_x="-1827.99744" pos_y="-757.8446" offset_z="0" arg_x="0.3" arg_y="0.3" arg_z="0" visible="1" is_locked="0" x_flip="0" obj_infos="" bind_tag="" control_info="" />
+  <tile_obj obj_id="1162" obj_type="0" tileset_id="未标题-22" layer_index="4" pos_x="-1717.66418" pos_y="-812.955933" offset_z="0" arg_x="0.3" arg_y="0.3" arg_z="0" visible="1" is_locked="0" x_flip="0" obj_infos="" bind_tag="" control_info="" />
+  <tile_obj obj_id="1165" obj_type="0" tileset_id="未标题-22" layer_index="4" pos_x="-1608.01978" pos_y="-537.3331" offset_z="0" arg_x="0.3" arg_y="0.3" arg_z="0" visible="1" is_locked="0" x_flip="0" obj_infos="" bind_tag="" control_info="" />
+  <tile_obj obj_id="1166" obj_type="0" tileset_id="未标题-22" layer_index="4" pos_x="-1498.13086" pos_y="-482.222046" offset_z="0" arg_x="0.3" arg_y="0.3" arg_z="0" visible="1" is_locked="0" x_flip="0" obj_infos="" bind_tag="" control_info="" />
+  <tile_obj obj_id="1174" obj_type="0" tileset_id="未标题-22" layer_index="4" pos_x="-1497.88647" pos_y="-592.6222" offset_z="0" arg_x="0.3" arg_y="0.3" arg_z="0" visible="1" is_locked="0" x_flip="0" obj_infos="" bind_tag="" control_info="" />
+  <tile_obj obj_id="1179" obj_type="0" tileset_id="未标题-22" layer_index="4" pos_x="-1939.04736" pos_y="-481.61" offset_z="0" arg_x="0.3" arg_y="0.3" arg_z="0" visible="1" is_locked="0" x_flip="0" obj_infos="" bind_tag="" control_info="" />
+  <tile_obj obj_id="1190" obj_type="0" tileset_id="未标题-22" layer_index="4" pos_x="-2048.981" pos_y="-536.7213" offset_z="0" arg_x="0.3" arg_y="0.3" arg_z="0" visible="1" is_locked="0" x_flip="0" obj_infos="" bind_tag="" control_info="" />
+  <tile_obj obj_id="2315" obj_type="3" tileset_id="fazhen" layer_index="4" pos_x="-1492.8667" pos_y="-596.932556" offset_z="0" arg_x="1" arg_y="1" arg_z="0" visible="1" is_locked="0" x_flip="0" obj_infos="" bind_tag="" control_info="" />
+  <tile_areas area_id="25" bind_info_type="4" center_map_x="-1474.20007" center_map_y="-1183.19836" width="30.0000019" height="100" rotate="0" aabb_state="1" aabb_min_x="-131" aabb_min_y="-55.5" aabb_max_x="91" aabb_max_y="61.5">
+    <pts_info>-126,0;-24,-101;86,2;-23,113</pts_info>
+    <properties>
+      <property name="trig_id" value="随便观空洞通道" />
+      <property name="interupt_mode" value="0" />
+    </properties>
+  </tile_areas>
+</blend_map_tileinfo>

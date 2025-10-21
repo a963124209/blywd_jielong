@@ -1,0 +1,68 @@
+require("Phone/Utils")
+local PhoneDataManager = require("Phone/PhoneDataManager")
+
+function init()
+    ---@diagnostic disable-next-line: undefined-global
+    -- 尝试查找GUISandboxPanel
+    local panels = CS.UnityEngine.Object.FindObjectsOfType(typeof(CS.GUISandboxPanel))
+    xlua.private_accessible(CS.GUISandboxPanel)
+    ---@type GUISandboxPanel
+    local tagPanel
+
+    for i = 0, panels.Length - 1 do
+        tagPanel = panels[i]
+        print(string.format("[FindPanel] 找到 GUISandboxPanel: %s", tagPanel.gameObject.name))
+        break
+    end
+
+    if tagPanel == nil then
+        print("[Error] 未找到 GUISandboxPanel")
+        return
+    end
+
+    -- 标记注入
+    CS.GUIManager.Instance:AddGUIPackage("PhoneRes");
+    local ui = CS.FairyGUI.UIPackage.CreateObject("PhoneRes", "RoundBtnPhone").asButton
+    
+    ---@type FairyGUI.GComponent
+    local mainView = tagPanel.mainView
+    mainView:AddChild(ui)
+    
+    local btn_arch = mainView:GetChild("btn_arch")
+    if btn_arch ~= nil then
+        ui:SetXY(btn_arch.x, btn_arch.y - 67)
+        print(string.format("[Info] GUIInjectBtn 设置位置到 (%.2f, %.2f)", ui.x, ui.y))
+    else
+        print("[Warning] 未找到 btn_arch，GUIInjectBtn 使用默认位置")
+        ui:SetXY(38, 900)
+    end
+
+    ui.onClick:Add(function()
+        print("[Info] GUIInjectBtn 被点击，打开手机界面")
+        CS.GameCoreHelper.RunCmd("OPEN_GUI*PhoneRes#Phone#Phone/GUIPhone##1#0", nil)
+    end)
+
+    -- 注册监听
+    local delegate
+    delegate = CS.GUIHelper.RegSceneMsgHandler(function(id, args)
+        if delegate == nil then
+            print("[Error] GUIInjectBtn 监听器未定义")
+            return
+        end
+
+        if ui.isDisposed then
+            print("[Info] GUIInjectBtn 已被销毁，移除监听")
+            CS.GUIHelper.RemoveSceneMsgHandler(delegate)
+            return
+        end
+
+        if id == "phone_refresh" or id == "phone_message_update" or id == "phone_unread_update" then
+            local unreadCount = PhoneDataManager.getTotalUnreadCount()
+            SetUIUnreadCount(ui, unreadCount)
+        end
+    end)
+
+    local unreadCount = PhoneDataManager.getTotalUnreadCount()
+    SetUIUnreadCount(ui, unreadCount)
+end
+

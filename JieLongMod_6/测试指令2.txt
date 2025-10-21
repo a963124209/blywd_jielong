@@ -1,0 +1,12 @@
+[测试改变好感]
+CHG_PERSON_FV*仪玄#100
+CHG_PERSON_FV*橘福福#100
+CHG_PERSON_FV*潘引壶#100
+
+[测试成为城主]
+SET_LORD*主角#随便观
+
+
+[测试快速等待]
+WAIT_EXEC*10#50##0###1
+WAIT_EXEC*10#500##0###1

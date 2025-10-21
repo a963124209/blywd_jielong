@@ -1,0 +1,753 @@
+local serpent = require("Phone/serpent")
+
+-- 频繁访问的方法缓存
+local GetStrVar = CS.GameCoreHelper.GetStrVar
+local SetStrVar = CS.GameCoreHelper.SetStrVar
+local tableInsert = table.insert
+local tableRemove = table.remove
+local stringFormat = string.format
+
+-- 命名空间
+local NAMESPACE = "phone_"
+local SESSION_INDEX_KEY = NAMESPACE .. "session_index"
+local CHARACTER_INDEX_KEY = NAMESPACE .. "character_index"
+
+local DataTemplates = {
+    -- 数据模板定义
+    session = {
+        id = "",
+        type = "private",
+        name = "",
+        members = {},
+        messages = {},
+        unread = 0,
+        lastMessageTime = 0
+    },
+
+    character = {
+        uid = "",
+        isFriend = false,
+        moments = {}
+    },
+
+
+    profile = {
+        nickname = "",
+    },
+
+    message = {
+        id = "",
+        sender = "",
+        content = "",
+        timestamp = 0,
+        type = "text"
+    },
+
+    moment = {
+        id = "",
+        ownerId = "",
+        content = "",
+        images = {},
+        timestamp = 0,
+        likes = {},
+        comments = {},
+        triggerId = ""
+    }
+}
+
+---序列化数据为字符串
+---@param data table 要序列化的数据
+---@return string 序列化后的字符串
+local function serialize(data)
+    return serpent.dump(data)
+end
+
+---反序列化字符串为数据
+---@param str string 要反序列化的字符串
+---@return table|nil 反序列化后的数据，失败返回nil
+local function deserialize(str)
+    if not str or str == "" then
+        return nil
+    end
+    local ok, result = serpent.load(str)
+    return ok and result or nil
+end
+
+---生成存储键
+---@param prefix string 键前缀
+---@param id string ID
+---@return string 完整的存储键
+local function makeKey(prefix, id)
+    return stringFormat("%s%s_%s", NAMESPACE, prefix, id)
+end
+
+---数据后处理修复函数，根据模板确保数据包含所有必需字段
+---@param data table|nil 需要修复的数据
+---@param template table 数据模板
+---@return table|nil 修复后的数据
+local function fixDataWithTemplate(data, template)
+    if not data then return nil end
+    if not template then return data end
+    
+    -- 遍历模板，补充缺失的字段
+    for key, defaultValue in pairs(template) do
+        if data[key] == nil then
+            -- 复制默认值（对于表类型要创建新表）
+            if type(defaultValue) == "table" then
+                data[key] = {}
+            else
+                data[key] = defaultValue
+            end
+        end
+    end
+    
+    return data
+end
+
+---初始化全局数据表
+---@return table 全局数据表
+local function initGlobalData()
+    _G.phoneData = {
+        profile = nil,
+        messages = {},
+        characters = {},
+        settings = {},
+        cache = {}
+    }
+    return _G.phoneData
+end
+
+
+local IndexManager = {}
+
+---获取会话索引列表
+---@return table 会话ID列表
+function IndexManager.getSessionIndex()
+    local data = GetStrVar(SESSION_INDEX_KEY)
+    local result = deserialize(data)
+    return result or {}
+end
+
+---保存会话索引列表
+---@param sessions table 会话ID列表
+function IndexManager.saveSessionIndex(sessions)
+    SetStrVar(SESSION_INDEX_KEY, serialize(sessions))
+end
+
+---获取角色索引列表
+---@return table 角色UID列表
+function IndexManager.getCharacterIndex()
+    local data = GetStrVar(CHARACTER_INDEX_KEY)
+    local result = deserialize(data)
+    return result or {}
+end
+
+---保存角色索引列表
+---@param characters table 角色UID列表
+function IndexManager.saveCharacterIndex(characters)
+    SetStrVar(CHARACTER_INDEX_KEY, serialize(characters))
+end
+
+---添加会话到索引
+---@param sessionId string 会话ID
+function IndexManager.addSession(sessionId)
+    local index = IndexManager.getSessionIndex()
+    for _, id in ipairs(index) do
+        if id == sessionId then return end
+    end
+    tableInsert(index, sessionId)
+    IndexManager.saveSessionIndex(index)
+end
+
+---从索引中移除会话
+---@param sessionId string 会话ID
+function IndexManager.removeSession(sessionId)
+    local index = IndexManager.getSessionIndex()
+    for i, id in ipairs(index) do
+        if id == sessionId then
+            tableRemove(index, i)
+            break
+        end
+    end
+    IndexManager.saveSessionIndex(index)
+end
+
+---添加角色到索引
+---@param uid string 角色UID
+function IndexManager.addCharacter(uid)
+    local index = IndexManager.getCharacterIndex()
+    for _, id in ipairs(index) do
+        if id == uid then return end
+    end
+    tableInsert(index, uid)
+    IndexManager.saveCharacterIndex(index)
+end
+
+---从索引中移除角色
+---@param uid string 角色UID
+function IndexManager.removeCharacter(uid)
+    local index = IndexManager.getCharacterIndex()
+    for i, id in ipairs(index) do
+        if id == uid then
+            tableRemove(index, i)
+            break
+        end
+    end
+    IndexManager.saveCharacterIndex(index)
+end
+
+local ProfileManager = {}
+
+---加载用户资料
+---@return table 用户资料数据
+function ProfileManager.load()
+    local data = GetStrVar(makeKey("profile", "main"))
+    local profile = deserialize(data)
+    
+    -- 使用模板修复数据
+    if not profile then
+        profile = {
+            nickname = CS.GameCoreHelper.GetPlayerRole():GetRoleName()
+        }
+    end
+    profile = fixDataWithTemplate(profile, DataTemplates.profile)
+    
+    _G.phoneData.profile = profile
+    return profile
+end
+
+---保存用户资料
+---@param profile table 用户资料数据
+function ProfileManager.save(profile)
+    _G.phoneData.profile = profile
+    SetStrVar(makeKey("profile", "main"), serialize(profile))
+end
+
+---获取用户资料（优先从缓存获取）
+---@return table 用户资料数据
+function ProfileManager.get()
+    if not _G.phoneData.profile then
+        return ProfileManager.load()
+    end
+    return _G.phoneData.profile
+end
+
+---设置用户昵称
+---@param nickname string 昵称
+function ProfileManager.setNickname(nickname)
+    local profile = ProfileManager.get()
+    profile.nickname = nickname
+    ProfileManager.save(profile)
+end
+
+local SessionManager = {}
+
+---加载会话数据
+---@param sessionId string 会话ID
+---@return table|nil 会话数据，不存在返回nil
+function SessionManager.load(sessionId)
+    local key = makeKey("session", sessionId)
+    local data = GetStrVar(key)
+    local session = deserialize(data)
+    
+    -- 使用模板修复数据
+    if session then
+        session = fixDataWithTemplate(session, DataTemplates.session)
+        _G.phoneData.messages[sessionId] = session
+    end
+    
+    return session
+end
+
+---保存会话数据
+---@param session table 会话数据
+function SessionManager.save(session)
+    if not session or not session.id then return end
+    local key = makeKey("session", session.id)
+    _G.phoneData.messages[session.id] = session
+    SetStrVar(key, serialize(session))
+    IndexManager.addSession(session.id)
+end
+
+---获取会话数据（优先从缓存获取）
+---@param sessionId string 会话ID
+---@return table|nil 会话数据，不存在返回nil
+function SessionManager.get(sessionId)
+    if _G.phoneData.messages[sessionId] then
+        return _G.phoneData.messages[sessionId]
+    end
+    return SessionManager.load(sessionId)
+end
+
+---创建新会话
+---@param sessionId string 会话ID
+---@param sessionType string 会话类型 "private"|"group"
+---@param name string|nil 会话名称
+---@param members table 成员UID列表
+---@return table 创建的会话数据
+function SessionManager.create(sessionId, sessionType, name, members)
+    -- 基于模板创建会话
+    local session = {}
+    for key, value in pairs(DataTemplates.session) do
+        if type(value) == "table" then
+            session[key] = {}
+        else
+            session[key] = value
+        end
+    end
+    
+    -- 设置特定值
+    session.id = sessionId
+    session.type = sessionType or "private"
+    session.name = name
+    session.members = members or {}
+    
+    SessionManager.save(session)
+    return session
+end
+
+---删除会话
+---@param sessionId string 会话ID
+function SessionManager.delete(sessionId)
+    local key = makeKey("session", sessionId)
+    SetStrVar(key, "")
+    _G.phoneData.messages[sessionId] = nil
+    IndexManager.removeSession(sessionId)
+end
+
+---获取所有会话
+---@return table 会话数据列表
+function SessionManager.getAll()
+    local index = IndexManager.getSessionIndex()
+    local sessions = {}
+    for _, sessionId in ipairs(index) do
+        local session = SessionManager.get(sessionId)
+        if session then
+            tableInsert(sessions, session)
+        end
+    end
+    return sessions
+end
+
+---添加消息到会话
+---@param sessionId string 会话ID
+---@param message table 消息数据
+---@return boolean 成功返回true，失败返回false
+function SessionManager.addMessage(sessionId, message)
+    local session = SessionManager.get(sessionId)
+    if not session then return false end
+    
+    if not session.messages then session.messages = {} end
+    
+    -- 使用模板修复消息数据
+    message = fixDataWithTemplate(message, DataTemplates.message)
+    
+    message.id = "msg_" .. tostring(#session.messages + 1)
+    tableInsert(session.messages, message)
+    session.lastMessageTime = message.timestamp
+    
+    SessionManager.save(session)
+    return true
+end
+
+---设置会话未读数
+---@param sessionId string 会话ID
+---@param count number 未读数
+---@return boolean 成功返回true，失败返回false
+function SessionManager.setUnread(sessionId, count)
+    local session = SessionManager.get(sessionId)
+    if not session then return false end
+    
+    session.unread = count
+    SessionManager.save(session)
+    CS.GameShared.Instance:SendSceneMessage("phone_unread_update", "")
+    return true
+end
+
+---清空会话未读数
+---@param sessionId string 会话ID
+---@return boolean 成功返回true，失败返回false
+function SessionManager.clearUnread(sessionId)
+    return SessionManager.setUnread(sessionId, 0)
+end
+
+local CharacterManager = {}
+
+---加载角色数据
+---@param uid string 角色UID
+---@return table|nil 角色数据，不存在返回nil
+function CharacterManager.load(uid)
+    local key = makeKey("character", uid)
+    local data = GetStrVar(key)
+    local character = deserialize(data)
+    
+    -- 使用模板修复数据
+    if character then
+        character = fixDataWithTemplate(character, DataTemplates.character)
+        _G.phoneData.characters[uid] = character
+    end
+    
+    return character
+end
+
+---保存角色数据
+---@param character table 角色数据
+function CharacterManager.save(character)
+    if not character or not character.uid then return end
+    local key = makeKey("character", character.uid)
+    _G.phoneData.characters[character.uid] = character
+    SetStrVar(key, serialize(character))
+    IndexManager.addCharacter(character.uid)
+end
+
+---获取角色数据（优先从缓存获取）
+---@param uid string 角色UID
+---@return table|nil 角色数据，不存在返回nil
+function CharacterManager.get(uid)
+    if _G.phoneData.characters[uid] then
+        return _G.phoneData.characters[uid]
+    end
+    return CharacterManager.load(uid)
+end
+
+---创建新角色
+---@param uid string 角色UID
+---@param isFriend boolean 是否为好友
+---@return table 创建的角色数据
+function CharacterManager.create(uid, isFriend)
+    -- 基于模板创建角色
+    local character = {}
+    for key, value in pairs(DataTemplates.character) do
+        if type(value) == "table" then
+            character[key] = {}
+        else
+            character[key] = value
+        end
+    end
+    
+    -- 设置特定值
+    character.uid = uid
+    character.isFriend = isFriend or false
+    
+    CharacterManager.save(character)
+    return character
+end
+
+---获取或创建角色（如果不存在则创建）
+---@param uid string 角色UID
+---@param isFriend boolean 是否为好友
+---@return table 角色数据
+function CharacterManager.getOrCreate(uid, isFriend)
+    local character = CharacterManager.get(uid)
+    if character then
+        local oldIsFriend = character.isFriend
+        if oldIsFriend ~= isFriend then
+            character.isFriend = isFriend or false
+            CharacterManager.save(character)
+        end
+        return character
+    end
+    return CharacterManager.create(uid, isFriend)
+end
+
+---删除角色
+---@param uid string 角色UID
+function CharacterManager.delete(uid)
+    local key = makeKey("character", uid)
+    SetStrVar(key, "")
+    _G.phoneData.characters[uid] = nil
+    IndexManager.removeCharacter(uid)
+end
+
+---获取所有角色
+---@return table 角色数据列表
+function CharacterManager.getAll()
+    local index = IndexManager.getCharacterIndex()
+    local characters = {}
+    for _, uid in ipairs(index) do
+        local character = CharacterManager.get(uid)
+        if character then
+            tableInsert(characters, character)
+        end
+    end
+    return characters
+end
+
+---设置角色好友状态
+---@param uid string 角色UID
+---@param isFriend boolean 是否为好友
+---@return boolean 成功返回true，失败返回false
+function CharacterManager.setFriend(uid, isFriend)
+    local character = CharacterManager.get(uid)
+    if not character then return false end
+    
+    character.isFriend = isFriend
+    CharacterManager.save(character)
+    return true
+end
+
+---添加朋友圈动态
+---@param uid string 角色UID
+---@param moment table 朋友圈动态数据
+---@return boolean 成功返回true，失败返回false
+function CharacterManager.addMoment(uid, moment)
+    local character = CharacterManager.get(uid)
+    if not character then return false end
+    
+    if not character.moments then character.moments = {} end
+    
+    -- 使用模板修复动态数据
+    moment = fixDataWithTemplate(moment, DataTemplates.moment)
+    moment.id = "moment_" .. tostring(#character.moments + 1)
+    moment.ownerId = uid
+
+    tableInsert(character.moments, moment)
+    
+    CharacterManager.save(character)
+    return true
+end
+
+---删除朋友圈动态
+---@param uid string 角色UID
+---@param momentId string 动态ID
+---@return boolean 成功返回true，失败返回false
+function CharacterManager.deleteMoment(uid, momentId)
+    local character = CharacterManager.get(uid)
+    if not character or not character.moments then return false end
+    
+    for i, moment in ipairs(character.moments) do
+        if moment.id == momentId then
+            tableRemove(character.moments, i)
+            CharacterManager.save(character)
+            return true
+        end
+    end
+    return false
+end
+
+---添加评论到朋友圈动态
+---@param uid string 角色UID
+---@param momentId string 动态ID
+---@param content string 评论内容
+---@param sender string 评论者ID
+---@return boolean 成功返回true，失败返回false
+function CharacterManager.addComment(uid, momentId, content, sender)
+    local character = CharacterManager.get(uid)
+    if not character or not character.moments then return false end
+    
+    for _, moment in ipairs(character.moments) do
+        if moment.id == momentId then
+            if not moment.comments then moment.comments = {} end
+
+            tableInsert(moment.comments, {
+                uid = sender,
+                content = content,
+                timestamp = CS.WorldManager.Instance.curGameTime
+            })
+            CharacterManager.save(character)
+            return true
+        end
+    end
+    return false
+end
+
+---获取指定的朋友圈动态
+---@param uid string 发布者UID
+---@param momentId string 动态ID
+---@return table|nil 动态数据，不存在返回nil
+function CharacterManager.getMoment(uid, momentId)
+    local character = CharacterManager.get(uid)
+    if not character or not character.moments then return nil end
+    
+    for _, moment in ipairs(character.moments) do
+        if moment.id == momentId then
+            return moment
+        end
+    end
+    return nil
+end
+
+---保存朋友圈动态（更新已有动态）
+---@param uid string 发布者UID
+---@param moment table 动态数据
+---@return boolean 成功返回true，失败返回false
+function CharacterManager.saveMoment(uid, moment)
+    local character = CharacterManager.get(uid)
+    if not character or not character.moments then return false end
+    
+    for i, m in ipairs(character.moments) do
+        if m.id == moment.id then
+            character.moments[i] = moment
+            CharacterManager.save(character)
+            return true
+        end
+    end
+    return false
+end
+
+---设置朋友圈动态的触发器使用状态
+---@param uid string 发布者UID
+---@param momentId string 动态ID
+---@param triggerId string|nil 触发器ID，为nil表示清除触发器
+---@return boolean 成功返回true，失败返回false
+function CharacterManager.setMomentTriggerUsed(uid, momentId, triggerId)
+    local character = CharacterManager.get(uid)
+    if not character or not character.moments then return false end
+
+    for _, moment in ipairs(character.moments) do
+        if moment.id == momentId then
+            moment.triggerId = triggerId
+            CharacterManager.save(character)
+            return true
+        end
+    end
+    return false
+end
+
+---切换朋友圈动态的点赞状态
+---@param uid string 发布者UID
+---@param momentId string 动态ID
+---@param likerUid string 点赞者UID
+---@return boolean 返回当前是否已点赞
+function CharacterManager.toggleLike(uid, momentId, likerUid)
+    local character = CharacterManager.get(uid)
+    if not character or not character.moments then return false end
+    
+    for _, moment in ipairs(character.moments) do
+        if moment.id == momentId then
+            if not moment.likes then moment.likes = {} end
+            
+            for i, luid in ipairs(moment.likes) do
+                if luid == likerUid then
+                    tableRemove(moment.likes, i)
+                    CharacterManager.save(character)
+                    return false
+                end
+            end
+            
+            tableInsert(moment.likes, likerUid)
+            CharacterManager.save(character)
+            return true
+        end
+    end
+    return false
+end
+
+local SettingsManager = {}
+
+---加载用户设置
+---@return table 设置数据
+function SettingsManager.load()
+    local data = GetStrVar(makeKey("settings", "main"))
+    local settings = deserialize(data)
+    
+    -- 设置不使用固定模板，因为用户可以自定义任意设置
+    if not settings then
+        settings = {}
+    end
+    
+    _G.phoneData.settings = settings
+    return settings
+end
+
+---保存用户设置
+---@param settings table 设置数据
+function SettingsManager.save(settings)
+    _G.phoneData.settings = settings
+    SetStrVar(makeKey("settings", "main"), serialize(settings))
+end
+
+---获取用户设置（优先从缓存获取）
+---@return table 设置数据
+function SettingsManager.get()
+    if not _G.phoneData.settings or next(_G.phoneData.settings) == nil then
+        return SettingsManager.load()
+    end
+    return _G.phoneData.settings
+end
+
+---设置单个配置项
+---@param key string 配置键
+---@param value any 配置值
+function SettingsManager.set(key, value)
+    local settings = SettingsManager.get()
+    settings[key] = value
+    SettingsManager.save(settings)
+end
+
+local CacheManager = {}
+
+---获取缓存数据表
+---@return table 缓存数据
+function CacheManager.get()
+    return _G.phoneData.cache
+end
+
+---设置缓存数据
+---@param key string 缓存键
+---@param value any 缓存值
+function CacheManager.set(key, value)
+    _G.phoneData.cache[key] = value
+end
+
+---清空所有缓存
+function CacheManager.clear()
+    _G.phoneData.cache = {}
+end
+
+
+local PhoneDataManager = {
+    Profile = ProfileManager,
+    Session = SessionManager,
+    Character = CharacterManager,
+    Settings = SettingsManager,
+    Cache = CacheManager,
+    Index = IndexManager
+}
+
+---初始化手机数据管理器
+function PhoneDataManager.init()
+    initGlobalData()
+    ProfileManager.load()
+    SettingsManager.load()
+end
+
+---清空所有手机数据（慎用）
+function PhoneDataManager.clearAll()
+    local sessionIndex = IndexManager.getSessionIndex()
+    local characterIndex = IndexManager.getCharacterIndex()
+    
+    for _, sessionId in ipairs(sessionIndex) do
+        SetStrVar(makeKey("session", sessionId), "")
+    end
+    
+    for _, uid in ipairs(characterIndex) do
+        SetStrVar(makeKey("character", uid), "")
+    end
+    
+    SetStrVar(makeKey("profile", "main"), "")
+    SetStrVar(makeKey("settings", "main"), "")
+    SetStrVar(SESSION_INDEX_KEY, "")
+    SetStrVar(CHARACTER_INDEX_KEY, "")
+    
+    _G.phoneData = {
+        profile = {},
+        messages = {},
+        characters = {},
+        settings = {},
+        cache = {}
+    }
+end
+
+---获取所有会话的总未读数
+---@return number 总未读消息数
+function PhoneDataManager.getTotalUnreadCount()
+    local total = 0
+    local sessions = SessionManager.getAll()
+    for _, session in ipairs(sessions) do
+        total = total + (session.unread or 0)
+    end
+    return total
+end
+
+return PhoneDataManager

@@ -1,0 +1,281 @@
+local util = require("xlua.util")
+
+function GetSessionName(session)
+    local title
+    if session.type == "private" then
+        local role = CS.GameCoreHelper.GetRole(session.members[1])
+        title = "与 " .. (role and role:GetRoleName() or "未知") .. " 的聊天"
+    end
+    if title == nil or title == "" then
+        title = "聊天"
+    end
+
+    return title
+end
+
+function SetUIUnreadCount(component, count)
+    local unreadBadge = component:GetChild("unreadBadge")
+    local unreadText = component:GetChild("unreadCount").asTextField
+
+    if count > 0 then
+        unreadBadge.visible = true
+        unreadText.visible = true
+        unreadText.text = tostring(count)
+    else
+        unreadBadge.visible = false
+        unreadText.visible = false
+    end
+end
+
+---获取会话的最后一条消息
+---@param session table 会话数据
+---@return table|nil 最后一条消息，如果没有消息则返回nil
+function GetLastMessagePreview(session)
+    if not session or not session.messages or #session.messages == 0 then
+        return nil
+    end
+    
+    local lastIndex = #session.messages
+    -- 寻找最后一条非系统消息
+    for i = lastIndex, 1, -1 do
+        local message = session.messages[i]
+        if message and message.sender ~= "system" then
+            return message
+        end
+    end
+
+    return nil
+end
+
+function GetAvatarUrl(roleId)
+    if roleId == "system" then
+        return ""
+    end
+
+    local role = CS.GameCoreHelper.GetRole(roleId)
+    if role ~= nil then
+        return "role://" .. role.roleID
+    end
+    return ""
+end
+
+function GetRoleName(roleId)
+    if roleId == "system" then
+        return "系统"
+    end
+
+    if roleId == "主角" then
+        local profile = _G.phoneData.profile
+        if profile ~= nil and profile.nickname and profile.nickname ~= "" then
+            return profile.nickname
+        end
+    end
+
+    local role = CS.GameCoreHelper.GetRole(roleId)
+    if role ~= nil then
+        return role:GetRoleName()
+    end
+    return "未知"
+    
+end
+
+---启动协程
+---@param coroutineFunc function 协程函数
+function StartCoroutine(coroutineFunc)
+    local util = require("xlua/util")
+    
+    -- 使用 WorldManager 作为 MonoBehaviour 启动协程
+    if CS.WorldManager and CS.WorldManager.Instance then
+        CS.WorldManager.Instance:StartCoroutine(util.cs_generator(coroutineFunc))
+    else
+        -- 如果 WorldManager 不可用，直接执行
+        local co = coroutine.create(coroutineFunc)
+        local success, err = coroutine.resume(co)
+        if not success then
+            print("协程执行错误: " .. tostring(err))
+        end
+    end
+end
+
+---@param fromRole HanFramework.RoleRuntimeData
+---@param toRole HanFramework.RoleRuntimeData
+---@param actionMsg string 动作消息，如 "戳一戳"
+---@return string 格式化后的动作消息
+function GetActionMessage(fromRole, toRole, actionMsg)
+    local fromName
+    local toName
+
+    if fromRole:IsPlayer() then
+        fromName = "你"
+    else
+        fromName = fromRole:GetRoleName() or "未知"
+    end
+
+    if toRole:IsPlayer() then
+        toName = "你"
+    else
+        toName = toRole:GetRoleName() or "未知"
+    end
+
+    return "（" .. fromName .. " " .. actionMsg .. " " .. toName .. "）"
+end
+
+function GetFovMessage(toRole, num)
+    return "（与 " .. toRole:GetRoleName() .. " 的好感度提升了 " .. tostring(num) .. " 点）", "system"
+end
+
+---@param item HanFramework.GameItemData
+function GetGiftMessage(item)
+    local itemIcon = CS.GUIHelper.GetItemIconPathByName(item.ItemInfo.item_icon)
+    local itemName = CS.GUIHelper.ConvertAllColorStr(item:GetItemName())
+    return string.format("你送给对方一件礼物：\n%s <img src='%s' size='40'/> x%d", itemName, itemIcon, item.itemCount), "主角"
+end
+
+--- 检查当前是否处于协程环境
+---@return boolean isCoroutine 当前是否在协程中
+function Debug_IsInCoroutine()
+    local status = coroutine.status(coroutine.running())
+    if status == "running" then
+        print("[DEBUG] 当前在协程中。状态：" .. status)
+        return true
+    elseif status == "suspended" then
+        print("[DEBUG] 当前在协程中（挂起状态）。状态：" .. status)
+        return true
+    else
+        print("[DEBUG] 当前不在协程中。状态：" .. tostring(status))
+        return false
+    end
+end
+
+local unpack = unpack or table.unpack
+local function async_to_sync(async_func, callback_pos)
+    return function(...)
+        local _co = coroutine.running() or error ('this function must be run in coroutine')
+        local rets
+        local function cb_func(...)
+            rets = { ... }
+        end
+        local params = { ... }
+        table.insert(params, callback_pos or (#params + 1), cb_func)
+        async_func(unpack(params))
+        while rets == nil do
+            coroutine.yield()
+        end
+        
+        return unpack(rets)
+    end
+end
+
+local syncItemSelectorFunc = async_to_sync(CS.WorldManager.Instance.ShowItemSelectorDlg, 3)
+
+--- 打开送礼界面，协程处理，等待返回
+---@param title string 界面标题
+---@param selCount number 选择数量
+---@param filter string 过滤条件
+---@param tempID string 临时ID
+---@return HanFramework.GameItemData[] 选择的物品列表，C#列表
+---@async
+function ShowItemSelectorDlgAsync(title, selCount, filter, tempID)
+    CS.WorldManager.Instance.eventExecutor.curTempID = tempID
+
+    Debug_IsInCoroutine()
+    local items = syncItemSelectorFunc(CS.WorldManager.Instance, title, selCount, filter)
+    return items
+end
+
+local ReputationTarget = {
+    ---* 阵营
+    Camp = 0,
+    ---* 角色
+    Role = 1,
+    ---* 地点
+    Place = 2,
+}
+
+---@param queryRole HanFramework.RoleRuntimeData
+function GetActiveRelationRoles(queryRole)
+    local roles = {}
+    ---@param tagRole HanFramework.RoleRuntimeData
+    for key, tagRole in pairs(CS.GameCoreHelper.GetAllGameRoles()) do
+        if tagRole:IsPlayer() then
+            goto relation_continue
+        end
+
+        if tagRole == nil or tagRole == queryRole or tagRole.roleState ~= 0 then
+            goto relation_continue
+        end
+
+        local rep = tagRole:GetRep(ReputationTarget.Role, queryRole.roleID)
+        if rep > 30 then
+            table.insert(roles, {
+                roleID = tagRole.roleID,
+                role = tagRole,
+                rep = rep
+            })
+        end
+
+        ::relation_continue::
+    end
+
+    return roles
+end
+
+
+function ChangeFov(tagRoleId, addFov, isChain)
+    local tagRole = CS.GameCoreHelper.GetRole(tagRoleId)
+    local playerRole = CS.GameCoreHelper.GetPlayerRole()
+    CS.GameCoreHelper.ChangeRoleRelationVal(playerRole, tagRole, addFov, isChain)
+end
+
+
+-- [[第6棒：根据礼物价值计算增加好感度--]]
+function GetFovByGiftValue(giftValue)
+    local minValue = 200
+    local maxValue = 5000
+    local minFavor = 1
+    local maxFavor = 20
+    if giftValue < minValue then
+        return 0
+    else
+        local favChange
+        if giftValue > maxValue then
+            favChange = maxFavor
+        else
+            -- 计算比例并线性插值
+            local ratio = (giftValue - minValue) / (maxValue - minValue)
+            favChange = minFavor + ratio * (maxFavor - minFavor)
+        end
+        return math.floor(favChange + 0.5)
+    end
+end
+
+function AdjustFinalFov(curRole, tagRole, addFov)
+    local favChange = addFov
+
+    local curRoleFV = curRole:GetAbstractVal("1_" .. tagRole.roleID)
+    if curRoleFV < 0 then
+        curRoleFV = curRoleFV * -1
+    end
+
+    if curRoleFV >= 20 then
+        curRoleFV = math.floor(Clamp((curRoleFV * 2), 40, 99))
+    end
+
+    local curRoleFV2 = math.floor(Clamp((100 - curRoleFV), 1, 101))
+
+    favChange = math.floor(favChange * curRoleFV2 / 100)
+    favChange = math.max(favChange, 1)
+    
+    return favChange
+end
+
+
+function Clamp(oldVal, min, max)
+    if oldVal < min then
+        return min
+    elseif oldVal > max then
+        return max
+    else
+        return oldVal
+    end
+end

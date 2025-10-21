@@ -1,0 +1,302 @@
+fileFormatVersion: 2
+guid: c2bb61c3316562c478e417b39bc03284
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: B_Qunzi00
+    100002: B_Qunzi01
+    100004: B_Qunzi02
+    100006: B_Qunzi03
+    100008: B_Qunzi04
+    100010: B_Qunzi05
+    100012: BackWeaponmount
+    100014: Bip001
+    100016: Bip001 Footsteps
+    100018: Bip001 Head
+    100020: Bip001 HeadNub
+    100022: Bip001 L Calf
+    100024: Bip001 L Clavicle
+    100026: Bip001 L Foot
+    100028: Bip001 L Forearm
+    100030: Bip001 L Hand
+    100032: Bip001 L Thigh
+    100034: Bip001 L Toe0
+    100036: Bip001 L Toe0Nub
+    100038: Bip001 L UpperArm
+    100040: Bip001 Neck
+    100042: Bip001 Pelvis
+    100044: Bip001 R Calf
+    100046: Bip001 R Clavicle
+    100048: Bip001 R Foot
+    100050: Bip001 R Forearm
+    100052: Bip001 R Hand
+    100054: Bip001 R Thigh
+    100056: Bip001 R Toe0
+    100058: Bip001 R Toe0Nub
+    100060: Bip001 R UpperArm
+    100062: Bip001 Spine
+    100064: Bip001 Spine1
+    100066: Bone052
+    100068: Bone053
+    100070: Bone054
+    100072: Bone055
+    100074: Bone056
+    100076: Bone057
+    100078: duzu_wbody01
+    100080: duzu_whair01
+    100082: //RootNode
+    100084: F_Qunzi00
+    100086: F_Qunzi01
+    100088: F_Qunzi02
+    100090: F_Qunzi03
+    100092: HairA00
+    100094: HairA01
+    100096: HairA02
+    100098: HairA03
+    100100: HairA04
+    100102: HairA05
+    100104: HairA06
+    100106: HairB00
+    100108: HairB01
+    100110: HairB02
+    100112: HairB03
+    100114: HairB04
+    100116: HairC00
+    100118: HairC01
+    100120: HairC02
+    100122: HairC03
+    100124: HairD00
+    100126: HairD01
+    100128: HairD02
+    100130: HairD03
+    100132: HairD04
+    100134: HairD05
+    100136: L_Qunzi00
+    100138: L_Qunzi01
+    100140: L_Qunzi02
+    100142: L_Qunzi03
+    100144: L_Qunzi04
+    100146: L_Qunzi05
+    100148: L_Xiuzi00
+    100150: L_Xiuzi01
+    100152: L_Xiuzi02
+    100154: L_Xiuzi03
+    100156: LeftWeaponMount
+    100158: MaskMount
+    100160: Pifeng00
+    100162: Pifeng01
+    100164: Pifeng02
+    100166: Pifeng03
+    100168: Pifeng04
+    100170: Pifeng05
+    100172: Pifeng06
+    100174: R_Qunzi00
+    100176: R_Qunzi01
+    100178: R_Qunzi02
+    100180: R_Qunzi03
+    100182: R_Qunzi04
+    100184: R_Qunzi05
+    100186: R_Xiuzi00
+    100188: R_Xiuzi01
+    100190: R_Xiuzi02
+    100192: R_Xiuzi03
+    100194: RightWeaponMount
+    100196: Toushi00
+    100198: Toushi01
+    100200: Toushi02
+    100202: wq
+    400000: B_Qunzi00
+    400002: B_Qunzi01
+    400004: B_Qunzi02
+    400006: B_Qunzi03
+    400008: B_Qunzi04
+    400010: B_Qunzi05
+    400012: BackWeaponmount
+    400014: Bip001
+    400016: Bip001 Footsteps
+    400018: Bip001 Head
+    400020: Bip001 HeadNub
+    400022: Bip001 L Calf
+    400024: Bip001 L Clavicle
+    400026: Bip001 L Foot
+    400028: Bip001 L Forearm
+    400030: Bip001 L Hand
+    400032: Bip001 L Thigh
+    400034: Bip001 L Toe0
+    400036: Bip001 L Toe0Nub
+    400038: Bip001 L UpperArm
+    400040: Bip001 Neck
+    400042: Bip001 Pelvis
+    400044: Bip001 R Calf
+    400046: Bip001 R Clavicle
+    400048: Bip001 R Foot
+    400050: Bip001 R Forearm
+    400052: Bip001 R Hand
+    400054: Bip001 R Thigh
+    400056: Bip001 R Toe0
+    400058: Bip001 R Toe0Nub
+    400060: Bip001 R UpperArm
+    400062: Bip001 Spine
+    400064: Bip001 Spine1
+    400066: Bone052
+    400068: Bone053
+    400070: Bone054
+    400072: Bone055
+    400074: Bone056
+    400076: Bone057
+    400078: duzu_wbody01
+    400080: duzu_whair01
+    400082: //RootNode
+    400084: F_Qunzi00
+    400086: F_Qunzi01
+    400088: F_Qunzi02
+    400090: F_Qunzi03
+    400092: HairA00
+    400094: HairA01
+    400096: HairA02
+    400098: HairA03
+    400100: HairA04
+    400102: HairA05
+    400104: HairA06
+    400106: HairB00
+    400108: HairB01
+    400110: HairB02
+    400112: HairB03
+    400114: HairB04
+    400116: HairC00
+    400118: HairC01
+    400120: HairC02
+    400122: HairC03
+    400124: HairD00
+    400126: HairD01
+    400128: HairD02
+    400130: HairD03
+    400132: HairD04
+    400134: HairD05
+    400136: L_Qunzi00
+    400138: L_Qunzi01
+    400140: L_Qunzi02
+    400142: L_Qunzi03
+    400144: L_Qunzi04
+    400146: L_Qunzi05
+    400148: L_Xiuzi00
+    400150: L_Xiuzi01
+    400152: L_Xiuzi02
+    400154: L_Xiuzi03
+    400156: LeftWeaponMount
+    400158: MaskMount
+    400160: Pifeng00
+    400162: Pifeng01
+    400164: Pifeng02
+    400166: Pifeng03
+    400168: Pifeng04
+    400170: Pifeng05
+    400172: Pifeng06
+    400174: R_Qunzi00
+    400176: R_Qunzi01
+    400178: R_Qunzi02
+    400180: R_Qunzi03
+    400182: R_Qunzi04
+    400184: R_Qunzi05
+    400186: R_Xiuzi00
+    400188: R_Xiuzi01
+    400190: R_Xiuzi02
+    400192: R_Xiuzi03
+    400194: RightWeaponMount
+    400196: Toushi00
+    400198: Toushi01
+    400200: Toushi02
+    400202: wq
+    2100000: 'Material #11'
+    2100002: 'Material #10'
+    4300000: duzu_whair01
+    4300002: duzu_wbody01
+    9500000: //RootNode
+    13700000: duzu_wbody01
+    13700002: duzu_whair01
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 3
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 1
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 3
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

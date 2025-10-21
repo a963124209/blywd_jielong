@@ -1,0 +1,424 @@
+
+--[[部分来自官方DLC--]]
+---* 通用方法相关
+require("GameTools")
+require("GameUtils")
+
+----------------------------------------------变量缓存--------------------------------------------------
+
+local GameCoreHelper = CS.GameCoreHelper
+local StringFormat = GameCoreHelper.StringFormat
+local ArchiveData = CS.HanFramework.ArchiveData
+
+
+VAR_ID_TAG_VAL_RESULT="tag_val_result"
+---* 获取指定ID的变量值并转存到指定字符串中，默认存储到[%str_val:tag_val_result%]（由于[%str_val:ID%]和[%int_val:ID%]等查询指令无法再次嵌套查询指令，因此以LUA实现）
+---* 指令：RUN_SCRIPT_FUNC*Lua文件名称#GetValToStrVarByID#读取值的变量类型;读取值的变量ID/值范围;存储值的字符串ID;保留小数位数（若为数值，默认0位）
+---* 读取值的变量类型：str_val为字符串变量；int_val为数值变量；global_str为全局字符串变量；global_int为全局数值变量；game_str为游戏内文字；custom_cd为自定义CD的倒计时天数；is_custom_cd为自定义CD当前是否可用；event_timer是事件计时器的执行目标天数；event_timer_countdown_是事件计时器的执行天数倒计时；gametime_elapse为返回距上次设置的自定义游戏时间点ID过去的游戏时间；rnd_range为随机数，此时第二个参数为值范围（格式：下限,上限）；game_time为当前游戏天数
+---* 示例：RUN_SCRIPT_FUNC*YHCommon#GetValToStrVarByID#gametime_elapse;[$tagrole:id$]共度良辰时间点;TEMP;1
+function GetValToStrVarByID(_contextArgVal, _StrArgs)
+    local curInfoList = SplitStr(_StrArgs, ";")
+    local tagVarType = curInfoList[1]
+    local tagVarID = curInfoList[2]
+    local resultStrVarID = curInfoList[3] or VAR_ID_TAG_STR_VAL
+	local decimal = tonumber(curInfoList[4]) or 0
+
+	local format = "%." .. decimal .."f"
+
+	local tagVarVal = ""
+	if tagVarType == "str_val" then
+		tagVarVal = GameCoreHelper.GetStrVar(tagVarID)
+	elseif tagVarType == "int_val" then
+		tagVarVal = tostring(GameCoreHelper.GetIntVar(tagVarID))
+	elseif tagVarType == "global_str" then
+        tagVarVal = GameCoreHelper.GetGlobalString(tagVarID)
+	elseif tagVarType == "global_int" then
+		tagVarVal = tostring(GameCoreHelper.GetGlobalInt(tagVarID))
+	elseif tagVarType == "game_str" then
+        local paramList = SplitStr(tagVarID, ":")
+        local gameStrKey = paramList[1]
+        if paramList[2] then
+            local varList = SplitStr(paramList[2], ",")
+            tagVarVal = StringFormat(GameCoreHelper.GetGameString(gameStrKey), varList[1], varList[2], varList[3], varList[4], varList[5])
+        else
+            tagVarVal = GameCoreHelper.GetGameString(tagVarID)
+        end
+	elseif tagVarType == "custom_cd" then
+		tagVarVal = tostring(GameCoreHelper.GetCustomCD(tagVarID))
+	elseif tagVarType == "is_custom_cd" then
+		tagVarVal = GameCoreHelper.IsCustomCDReady(tagVarID) == true and "1" or "0"
+	elseif tagVarType == "event_timer" then
+		local curGameWorld = GameCoreHelper.GetCurGameWorld()
+		local eventTimer = curGameWorld:GetCustomEventTimer(tagVarID)
+		tagVarVal = string.format(format, eventTimer.tagGameTime)
+	elseif tagVarType == "event_timer_countdown" then
+		local curGameWorld = GameCoreHelper.GetCurGameWorld()
+		local eventTimer = curGameWorld:GetCustomEventTimer(tagVarID)
+		tagVarVal = string.format(format, eventTimer.tagGameTime - curGameWorld.curGameTime)
+	elseif tagVarType == "gametime_elapse" then
+		tagVarVal = string.format(format, ArchiveData.Current:getCustomGameTimeElapse(tagVarID))
+	elseif tagVarType == "rnd_range" then
+        local rangeList = SplitStr(tagVarID, ",")
+        local min = tonumber(rangeList[1]) or 0
+        local max = tonumber(rangeList[2]) ~= nil and tonumber(rangeList[2]) + 1 or 0
+		tagVarVal = GameCoreHelper.GetRandomInt(min, max)
+	elseif tagVarType == "game_time" then
+		local curGameWorld = GameCoreHelper.GetCurGameWorld()
+		tagVarVal = string.format(format, curGameWorld.curGameTime)
+	end
+    
+	GameCoreHelper.SetStrVar(resultStrVarID, tagVarVal)
+end
+
+---* 作用：更改特定战斗表的限制信息
+---* 格式：RUN_SCRIPT_FUNC*Lua文件名称#ChangeBattleLimitInfo#战斗ID;限制类型;限制信息;模式
+---* 模式：0或空为不重复增加；1为可重复添加；2为完全替换；3为指定替换（格式为[新的限制信息=旧的限制信息]）；4为移除
+---* 示例：RUN_SCRIPT_FUNC*YHCommon#ChangeBattleLimitInfo#[%str_val:TEMP%];player;主角|[%str_val:当前子嗣ID%];2
+function ChangeBattleLimitInfo(_contextArgVal, _StrArgs)
+	local paramList = SplitStr(_StrArgs, ";")
+	local battleID = paramList[1]
+	local limitType = paramList[2]
+    local tagLimitInfo = paramList[3]
+	local mode = tonumber(paramList[4]) or 0
+  
+    local DefinedBattles = getPojocs(CS.DefinedBattlePojo)
+	for i,v in ipairs(DefinedBattles) do
+        if battleID == v.battleID then
+            local resultLimitInfos = ""
+            local oriLimitInfos = v.limit_infos
+            if string.find(oriLimitInfos, limitType) == nil then
+                resultLimitInfos = oriLimitInfos == "" and limitType .. ":" .. tagLimitInfo or oriLimitInfos .. ";" .. limitType .. ":" .. tagLimitInfo 
+            else
+                local limitList = SplitStr(oriLimitInfos, ";")
+                for i2,v2 in ipairs(limitList) do
+                    local curInfoList = SplitStr(v2, ":")
+                    if curInfoList[1] == limitType then
+                        if mode == 0 then
+                            local isRepeat = false
+                            local info2 = curInfoList[2]
+                            if string.find(info2, tagLimitInfo) ~= nil then
+                                isRepeat = true
+                            else
+                                local unitList = SplitStr(info2, "|")
+                                for i3,v3 in ipairs(unitList) do
+                                    if tagLimitInfo == v3 then
+                                        isRepeat = true
+                                    end
+                                end
+                            end
+                            if isRepeat == false then
+                                v2 = IsEmptyOrNilStr(curInfoList[2]) and v2 .. tagLimitInfo or v2 .. "|" .. tagLimitInfo
+                            end
+                        elseif mode == 1 then
+                            v2 = IsEmptyOrNilStr(curInfoList[2]) and v2 .. tagLimitInfo or v2 .. "|" .. tagLimitInfo
+                        elseif mode == 2 then
+                            v2 = curInfoList[1] .. ":" .. tagLimitInfo
+                        elseif mode == 3 then
+                            local replaceList = SplitStr(tagLimitInfo, "=")
+                            local info2 = curInfoList[2]
+                            if string.find(info2, replaceList[1]) ~= nil then
+                                v2 = string.gsub(v2, replaceList[1], replaceList[2])
+                            end
+                        elseif mode == 4 then
+                            local info2 = curInfoList[2]
+                            if string.find(info2, tagLimitInfo) ~= nil then
+                                v2 = string.gsub(info2, tagLimitInfo, "")
+                            end
+                        end
+                    end
+                    resultLimitInfos = resultLimitInfos == "" and v2 or resultLimitInfos .. ";" .. v2 
+                end
+            end
+            v.limit_infos = resultLimitInfos
+        end
+	end
+end
+
+VAL_ID_SELECT_SKILLPAGE_ID_CODE = "skillpage_id_code_"
+---* 作用：打开技能页选择框，技能页ID值存储在[%str_val:skillpage_id_code_NUM%]中
+---* “NUM”对应选择项[%result_code%]值，如[%str_val:skillpage_id_code_1%]存储了[%result_code%][=]1时的技能页ID
+---* 若技能页不存在，则不会出现在选项中
+---* 格式：RUN_SCRIPT_FUNC*Lua文件名称#OpenSelectBySkillPagesInfo#对话角色ID;对话内容;选项格式;取消文本;技能页信息
+---* 技能页信息：以|分隔
+---* 选项格式：游戏内文字Key，技能页名称会作为参数{0}。为空时不设置格式，仅显示技能页名称
+---* 取消文本：不为空时出现相应的取消选项，code值为0
+---* 示例：RUN_SCRIPT_FUNC*YHCommon#OpenSelectBySkillPagesInfo#主角;请选择技能页;取消;T枪术|T荒沙战法
+function OpenSelectBySkillPagesInfo(_contextArgVal, _StrArgs)
+    local paramList = SplitStr(_StrArgs, ";")
+
+    local dialogueRoleID = paramList[1]
+    local dialogueStr = paramList[2]
+    local optionFormat = paramList[3]
+    local cancelStr = paramList[4] or ""
+    local pageSkillsInfo = paramList[5]
+    
+    local CMD_SELECT = "SELECT*" .. dialogueRoleID .. "#" .. dialogueStr .."#"
+    local curCode = 0
+    local skillPagesList = SplitStr(pageSkillsInfo, "|")
+    for key, pageid in ipairs(skillPagesList) do
+        local tagPage = GameCoreHelper.GetSkillPageInfo(pageid)
+        if tagPage then
+            curCode = curCode + 1
+            local optionStr = tagPage.display_name
+            if optionFormat ~= "" then
+                optionStr = StringFormat(GameCoreHelper.GetGameString(optionFormat), optionStr)
+            end
+            CMD_SELECT = CMD_SELECT .. curCode .. ":" .. optionStr .. ";"
+            GameCoreHelper.SetStrVar(VAL_ID_SELECT_SKILLPAGE_ID_CODE .. curCode, pageid)
+        end
+    end
+    if not IsEmptyOrNilStr(cancelStr) then
+        CMD_SELECT = CMD_SELECT .. "0:" .. cancelStr
+    end
+    GameCoreHelper.RunCmd(CMD_SELECT)
+end
+
+VAL_ID_REPLACE_STR_RESULT = "replace_str_result"
+---* 作用：替换字符串中的指定的子字符串为新的子字符串
+---* 格式：RUN_SCRIPT_FUNC*Lua文件名称#ReplaceStrToStrVar#StrVal=字符串;Pattern=需要替换的子字符串;ReplaceStr=替换后的子字符串;ResultStrVarID=存储替换结果的字符串ID
+---* 存储替换结果的字符串ID：若为空，则
+---* 示例：RUN_SCRIPT_FUNC*YHCommon#ReplaceStrToStrVar#StrVal=T火之巫术|T冰之巫术|T雷之巫术|T光之巫术|T暗影巫术|T炼金术士|T召唤使;Pattern=|,ReplaceStr=,;ResultStrVarID=TEMP
+function ReplaceStrToStrVar(_contextArgVal, _StrArgs)
+	local paramList = {
+		StrVal = "",
+        Pattern = "",
+		ReplaceStr = "",
+		ResultStrVarID = VAL_ID_REPLACE_STR_RESULT
+	}
+    local curInfoList = SplitStr(_StrArgs, ";")
+	for i,v in pairs(curInfoList) do
+		local varList = SplitStr(v, "=")
+		if not paramList[varList[1]] then
+			DebugError("错误：不存在的参数,id=" .. varList[1])
+			return
+		end
+		if not varList[2] then
+			DebugError("错误：参数格式不正确,id=" .. v)
+			return
+		end
+		paramList[varList[1]] = varList[2]
+	end
+
+    resultVal = string.gsub(paramList.StrVal, paramList.Pattern, paramList.ReplaceStr)
+    GameCoreHelper.SetStrVar(paramList.ResultStrVarID, resultVal)
+
+end
+
+VAR_ID_PLACES_INFO="places_info_result"
+---* 作用：根据条件获取地点ID列表
+---* 指令：RUN_SCRIPT_FUNC*Lua文件名称#GetValToStrVarByID#IsStronghold=是否据点类型;IsCity=是否城市;IsVillage=是否村庄;IsExplorePlace=是否探索地点;IsPlayerActive=玩家是否接触过;IsPlaceDefinedInMap=所在地图是否激活
+---* 是否：1为是，空为不做筛选，其他为否
+---* 示例：RUN_SCRIPT_FUNC*YHCommon#GetPlacesInfo#IsStronghold=1
+function GetPlacesInfo(_contextArgVal, _StrArgs)
+	local paramList = {
+		IsStronghold = "",
+		IsCity = "",
+		IsVillage = "",
+		IsExplorePlace = "",
+        IsPlayerActive = "",
+		IsPlaceDefinedInMap = "",
+        CampsInfo = "",
+        ExcludeCampsInfo = "",
+        LordRoleInfo = "",
+        IsInPlayerCamp = "",
+        ResultVar = VAR_ID_PLACES_INFO,
+	}
+    local curInfoList = SplitStr(_StrArgs, ";")
+	for i,v in pairs(curInfoList) do
+		local varList = SplitStr(v, "=")
+		if not paramList[varList[1]] then
+			DebugError("错误：不存在的参数,id=" .. varList[1])
+		end
+		if not varList[2] then
+			DebugError("错误：参数格式不正确,id=" .. v)
+			GameCoreHelper.SetStrVar(paramList.ResultVar, "")
+			return
+		end
+		paramList[varList[1]] = varList[2]
+	end
+
+    local placesInfo = ""
+
+    local placeList = GameCoreHelper.GetAllGamePlaces()
+	for index, place in pairs(placeList) do
+        if paramList.IsStronghold ~= "" and (paramList.IsStronghold == "1" and true or false) ~= place:IsStronghold() then goto cacheCampInfoContinue end
+        if paramList.IsCity ~= "" and (paramList.IsCity == "1" and true or false) ~= place:IsCity() then goto cacheCampInfoContinue end
+        if paramList.IsVillage ~= "" and (paramList.IsVillage == "1" and true or false) ~= place:IsVillage() then goto cacheCampInfoContinue end
+        if paramList.IsExplorePlace ~= "" and (paramList.IsExplorePlace == "1" and true or false) ~= place:IsExplorePlace() then goto cacheCampInfoContinue end
+        if paramList.IsPlayerActive ~= "" and (paramList.IsPlayerActive == "1" and true or false) ~= place:IsPlayerActive() then goto cacheCampInfoContinue end
+        if paramList.IsPlaceDefinedInMap ~= "" and (paramList.IsPlaceDefinedInMap == "1" and true or false) ~= place:IsPlaceDefinedInMap() then goto cacheCampInfoContinue end
+        local IsInPlayerCamp
+        if paramList.IsInPlayerCamp ~= "" then
+            IsInPlayerCamp = paramList.IsInPlayerCamp == "1" and true or false
+            local playerRole = GameCoreHelper.GetPlayerRole()
+            if IsInPlayerCamp == true and playerRole.CurRoleCampID ~= place.CurCamp then goto cacheCampInfoContinue end
+            else if IsInPlayerCamp == false and playerRole.CurRoleCampID == place.CurCamp then goto cacheCampInfoContinue end
+        end
+        if paramList.CampsInfo ~= "" then
+            local campIDList = SplitStr(paramList.CampsInfo, ";")
+            for index, campid in pairs(campIDList) do
+                if campid ~= place.CurCamp then goto cacheCampInfoContinue end
+            end
+        end
+        if paramList.ExcludeCampsInfo ~= "" then
+            local campIDList = SplitStr(paramList.ExcludeCampsInfo, ";")
+            for index, campid in pairs(campIDList) do
+                if campid == place.CurCamp and IsInPlayerCamp ~= true then goto cacheCampInfoContinue end
+            end
+        end
+        if paramList.LordRoleInfo ~= "" then
+            local roleIDList = SplitStr(paramList.LordRoleInfo, ";")
+            for index, roleid in pairs(roleIDList) do
+                if roleid ~= place.LordRoleID then goto cacheCampInfoContinue end
+            end
+        end
+
+        if placesInfo ~= "" then
+            placesInfo = placesInfo .. "|" .. place.PlaceID
+        else
+            placesInfo = place.PlaceID
+        end
+        ::cacheCampInfoContinue::
+	end
+    GameCoreHelper.SetStrVar(paramList.ResultVar, placesInfo)
+end
+
+VAL_ID_TAG_ITEM_INFO_IS_IN_INVENTORY = "tag_item_info_is_in_inventory"
+---* 作用：检查物品信息是否在背包中都存在，结果存储在指定的变量中，0为否，1为是，不指定则默认存储在[%str_val:tag_item_info_is_in_inventory%]中
+---* 指令：RUN_SCRIPT_FUNC*Lua文件名称#CheckInventoryForItemInfoToIntVar#物品信息;结果int变量ID
+---* 示例：RUN_SCRIPT_FUNC*YHCommon#CheckInventoryForItemInfoToIntVar#金钱,1200|玉石,10;TEMP
+function CheckInventoryForItemInfoToIntVar(_contextArgVal, _StrArgs)
+    local curInfoList = SplitStr(_StrArgs, ";")
+    local tagItemInfo = curInfoList[1]
+	local tagVarID = IsEmptyOrNilStr(curInfoList[2]) and VAL_ID_TAG_ITEM_INFO_IS_IN_INVENTORY or curInfoList[2]
+
+    local tagItemsList = GameCoreHelper.GetItemsListByInfo(tagItemInfo)
+	local tagVal = GameCoreHelper.CheckInventoryForItems(tagItemsList) == true and 1 or 0
+    GameCoreHelper.SetIntVar(tagVarID, tagVal)
+end
+
+VAL_ID_TAG_ITEM_INFO_DESC = "tag_item_info_desc"
+---* 作用：将物品信息转为物品信息描述，用于展示给玩家，值存储在指定的变量中，不指定则默认存储在[%str_val:tag_item_info_desc%]中
+---* 指令：RUN_SCRIPT_FUNC*Lua文件名称#ConvertItemInfoToItemInfoDesc#物品信息;str变量ID
+---* 示例：RUN_SCRIPT_FUNC*YHCommon#ConvertItemInfoToItemInfoDesc#金钱,1200|玉石,10;TEMP
+function ConvertItemInfoToItemInfoDesc(_contextArgVal, _StrArgs)
+    local curInfoList = SplitStr(_StrArgs, ";")
+    local tagItemInfo = curInfoList[1]
+	local tagVarID = IsEmptyOrNilStr(curInfoList[2]) and VAL_ID_TAG_ITEM_INFO_DESC or curInfoList[2]
+
+    local strMultiply = GetGameString("yh_item_info_desc_multiply")
+    local strSeparator = GetGameString("yh_item_info_desc_separator")
+    local itemInfoDesc = ""
+    local tagItemsList = GameCoreHelper.GetItemsListByInfo(tagItemInfo)
+	for i = 0, tagItemsList.Count - 1, 1 do
+		local curItem = tagItemsList[i]
+        if curItem then
+            if itemInfoDesc == "" then
+                itemInfoDesc = curItem:GetItemName() .. strMultiply .. curItem.itemCount
+            else
+                itemInfoDesc = itemInfoDesc .. strSeparator .. curItem:GetItemName() .. strMultiply .. curItem.itemCount
+            end
+        end
+	end
+    GameCoreHelper.SetStrVar(tagVarID, itemInfoDesc)
+end
+
+VAL_ID_TAG_ENEMY_EXP = "tag_enemy_exp"
+---* 作用：获取单位信息所获得的总经验，值存储在指定的变量中，不指定则默认存储在[%str_val:tag_item_info_desc%]中
+---* 指令：RUN_SCRIPT_FUNC*Lua文件名称#GetEnemyExpByUnitInfoToIntVar#单位信息;str变量ID
+---* 示例：RUN_SCRIPT_FUNC*YHCommon#GetEnemyExpByUnitInfoToIntVar#新_火魔巨斧战士,2|新_火魔射手,1;TEMP
+function GetEnemyExpByUnitInfoToIntVar(_contextArgVal, _StrArgs)
+    local curInfoList = SplitStr(_StrArgs, ";")
+    local tagUnitInfo = curInfoList[1]
+	local tagVarID = IsEmptyOrNilStr(curInfoList[2]) and VAL_ID_TAG_ENEMY_EXP or curInfoList[2]
+
+    local totalExp = 0
+    local unitInfoList = SplitStr(tagUnitInfo, "|")
+	for k, v in pairs(unitInfoList) do
+        local curList = SplitStr(v, ",")
+        local curLevel = tonumber(curList[2] or curList[1])
+        local tagLevelFacotor = CS.GameShared:GetLevelFactor(tagLevel)
+    end
+
+    GameCoreHelper.SetStrVar(tagVarID, itemInfoDesc)
+end
+
+---* 关闭当前打开的所有游戏UI
+---* 指令：RUN_SCRIPT_FUNC*Lua文件名称#CloseAllGameUI#
+---* 示例：RUN_SCRIPT_FUNC*YHCommon#CloseAllGameUI
+function CloseAllGameUI(_contextArgVal, _StrArgs)
+	CurGameWorld = GameCoreHelper.GetCurGameWorld()
+	CurGameWorld:CloseAllGameUI()
+end
+
+VAL_ID_TAG_PLAYERTEAM_CUR_MAP_ID = "player_team_cur_map_id"
+---* 获取角色所在的地图ID并存储到指定字符串变量中，不指定则默认存储在[%str_val:tag_role_cur_map_id]中
+---* 格式：RUN_SCRIPT_FUNC*Lua文件名称#GetPlayerTeamCurMapIDToStrVar#str变量ID
+---* 是否强制离开：1为是，其他为否
+---* 示例：RUN_SCRIPT_FUNC*Common#GetPlayerTeamCurMapIDToStrVar#TEMP
+function GetPlayerTeamCurMapIDToStrVar(_contextArgVal, _StrArgs)
+    local curInfoList = SplitStr(_StrArgs, ";")
+	local tagVarID = IsEmptyOrNilStr(curInfoList[1]) and VAL_ID_TAG_PLAYERTEAM_CUR_MAP_ID or curInfoList[1]
+
+    local playerTeam = CS.GameCoreHelper.GetPlayerTeam()
+    local resultVal = playerTeam.curMapID
+
+	GameCoreHelper.SetStrVar(tagVarID, resultVal)
+end
+
+
+VAL_ID_TAG_ROLE_CUR_MAP_ID = "tag_role_cur_map_id"
+---* 获取角色所在的地图ID并存储到指定字符串变量中，不指定则默认存储在[%str_val:tag_role_cur_map_id]中
+---* 格式：RUN_SCRIPT_FUNC*Lua文件名称#GetRoleCurMapIDToStrVar#角色ID;str变量ID
+---* 是否强制离开：1为是，其他为否
+---* 示例：RUN_SCRIPT_FUNC*SgCommon#SgGetRoleCurMapIDToStrVar#主角;TEMP
+function GetRoleCurMapIDToStrVar(_contextArgVal, _StrArgs)
+    local curInfoList = SplitStr(_StrArgs, ";")
+	local tagRoleID = curInfoList[1]
+	local tagVarID = IsEmptyOrNilStr(curInfoList[2]) and VAL_ID_TAG_ROLE_CUR_MAP_ID or curInfoList[2]
+
+	local tagRole = GameCoreHelper.GetRole(tagRoleID)
+	if not tagRole then return end
+
+	local resultVal = ""
+	local tagTeam = GetTeamByRole(tagRole)
+	if tagTeam then
+		resultVal = tagTeam.curMapID
+	else
+		
+	end
+
+	GameCoreHelper.SetStrVar(tagVarID, resultVal)
+end
+
+--根据角色对象获取其所在队伍
+function GetTeamByRole(tagRole)
+    local tagTeam
+    tagTeam = ArchiveData.Current:GetTeamByLeader(tagRole.roleID)
+    if not tagTeam then
+        local roleList = GameCoreHelper.GetAllGameRoles()
+        for index, role in pairs(roleList) do
+            local curTeam = ArchiveData.Current:GetTeamByLeader(role.roleID)
+            if curTeam then
+                if curTeam:ContainsRole(tagRole) then
+                    tagTeam = curTeam
+                    break
+                end
+            end
+        end
+    end
+    return tagTeam
+end
+
+---* 获取配置表信息的方法
+function getPojocs(CSType)
+	local bar_generic = xlua.get_generic_method(CS.HSFrameWork.ConfigTable.ConfigTable, 'GetAll')
+	local bar = bar_generic(CSType)
+	local list = bar()
+	local dic = list["<>3__source"]
+	local pojoList = {}
+	for index,item in pairs(dic) do
+		table.insert(pojoList,item)
+	end
+	return pojoList
+end

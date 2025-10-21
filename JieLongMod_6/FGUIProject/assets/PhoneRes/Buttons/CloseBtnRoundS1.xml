@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="72,72" extention="Button">
+  <controller name="button" pages="0,up,1,down,2,over,3,selectedOver" selected="0"/>
+  <displayList>
+    <image id="n0_bhdo" name="img_icon" src="tno21c" fileName="Images/ui_btn_closeround_s1_n.png" xy="36,36" pivot="0.5,0.5" anchor="true">
+      <gearDisplay controller="button" pages="0,1,2"/>
+      <relation target="" sidePair="width-width,height-height"/>
+    </image>
+    <image id="n1_9u9y" name="n1" src="tno21d" fileName="Images/ui_btn_closeround_s2_n.png" xy="8,8">
+      <gearDisplay controller="button" pages="2"/>
+      <relation target="" sidePair="width-width,height-height"/>
+    </image>
+    <image id="n2_9u9y" name="n2" src="tno21e" fileName="Images/ui_btn_closeround_s3_n.png" xy="8,8">
+      <gearDisplay controller="button" pages="1"/>
+      <relation target="" sidePair="width-width,height-height"/>
+    </image>
+    <image id="n3_tibh" name="sel_frame" src="tno211" fileName="Images/cm_itemslot_on.png" xy="12,12" size="49,48" visible="false"/>
+  </displayList>
+  <Button/>
+</component>

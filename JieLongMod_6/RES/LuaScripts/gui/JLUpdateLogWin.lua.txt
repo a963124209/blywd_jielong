@@ -1,0 +1,57 @@
+﻿require("gui/WindowUtils")
+
+local GameCoreHelper = CS.GameCoreHelper
+local GetGameString = GameCoreHelper.GetGameString
+local StringFormat = GameCoreHelper.StringFormat
+local ResourceLoader = CS.HanSquirrel.ResourceManager.ResourceLoader
+
+local contentPane
+
+local txtTitle
+local labelFrame
+local labelUpdate
+local btnClose
+
+local updateText = ""
+local isChineseLanguage = true
+
+local UpdateLogPath = "Assets/BuildSource/UpdateLog/"
+local UpdateLogFileName = "update_detail.txt"
+local UpdateLogFileNameEN = "update_detail_en.txt"
+
+--窗体初始化时
+function onInit()
+	contentPane = self.contentPane
+
+	local compObj
+	compObj = contentPane:GetChild("btn_close")
+	if compObj ~= nil then
+		--返回按钮
+		btnClose = compObj.asButton
+		--标题
+		txtTitle = contentPane:GetChild("title").asTextField
+		txtTitle.text = GetGameString("jl_ui_title_update_log")
+	else
+		labelFrame =  contentPane:GetChild("frame").asLabel
+		--返回按钮
+		btnClose = labelFrame:GetChild("closeButton").asButton
+		--标题
+		labelFrame.title = GetGameString("jl_ui_title_update_log")
+	end
+	self:SetCloseButton(btnClose)
+	--正文标签
+	labelUpdate = contentPane:GetChild("label").asLabel
+	--本地化处理
+	isChineseLanguage = CS.GameTools.IsChineseLanguage()
+
+	updateTextLog()
+end
+
+function updateTextLog()
+    if isChineseLanguage then
+        updateText = ResourceLoader.LoadText(UpdateLogPath .. UpdateLogFileName)
+    else
+        updateText = ResourceLoader.LoadText(UpdateLogPath .. UpdateLogFileNameEN)
+    end
+	labelUpdate.title = updateText
+end

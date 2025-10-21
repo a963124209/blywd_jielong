@@ -1,0 +1,69 @@
+local facade = require("Phone/PhoneFacade")
+local phoneDataMgr = require("Phone/PhoneDataManager")
+
+---* 初始化手机数据管理器 RUN_SCRIPT_FUNC*Phone/Command#Init
+function PhoneInit()
+    facade.Init()
+end
+
+
+--- 添加好友
+---* 指令 RUN_SCRIPT_FUNC*Phone/Command#AddFriend#role_id
+---@param context GameEventContext
+---@param args string
+function AddFriend(context, args)
+    facade.AddFriend(args)
+end
+
+--- 发送消息
+---* 指令 RUN_SCRIPT_FUNC*Phone/Command#SendMessage#role_id|message
+---@param context GameEventContext
+---@param args string
+function SendMessage(context, args)
+    local roleId, message = args:match("([^|]+)|([^|]+)")
+    facade.SendMessage(roleId, message, roleId)
+end
+
+--- 发送消息，主角发出
+---* 指令 RUN_SCRIPT_FUNC*Phone/Command#SendPlayerMessage#role_id|message
+---@param context GameEventContext
+---@param args string
+function SendPlayerMessage(context, args)
+    local roleId, message = args:match("([^|]+)|([^|]+)")
+    facade.SendMessage(roleId, message, "主角")
+end
+
+--- 发送消息，系统发出
+---* 指令 RUN_SCRIPT_FUNC*Phone/Command#SendSystemMessage#role_id|message
+---@param context GameEventContext
+---@param args string
+function SendSystemMessage(context, args)
+    local roleId, message = args:match("([^|]+)|([^|]+)")
+    facade.SendMessage(roleId, message, "system")
+end
+
+--- 每日触发角色对话
+---* 指令 RUN_SCRIPT_FUNC*Phone/Command#TriggerDailyChat
+function TriggerDailyChat()
+    facade.TriggerDailyChat()
+end
+
+--- 每小时触发角色对话
+---* 指令 RUN_SCRIPT_FUNC*Phone/Command#TriggerDailyChat
+function TriggerHourChat()
+    facade.TriggerHourChat()
+end
+
+--- 每日触发角色对话
+---* 指令 RUN_SCRIPT_FUNC*Phone/Command#TriggerDailyMoment
+function TriggerDailyMoment()
+    facade.TriggerDailyMoment()
+end
+
+--- 发送朋友圈动态
+---* 指令 RUN_SCRIPT_FUNC*Phone/Command#SendMoment#role_id|content
+function SendMoment(context, args)
+    local roleId, content = args:match("([^|]+)|([^|]+)")
+    facade.SendMoment(roleId, content)
+end
+

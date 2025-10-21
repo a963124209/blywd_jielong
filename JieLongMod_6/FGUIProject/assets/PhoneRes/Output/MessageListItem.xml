@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="580,80" extention="Button">
+  <controller name="button" pages="0,up,1,down,2,over,3,selectedOver" selected="0"/>
+  <displayList>
+    <image id="n0_msgi" name="bg" src="tno25" fileName="Images/ui_blank_image_0.png" xy="0,0" size="580,80" alpha="0.1">
+      <gearDisplay controller="button" pages="0,2"/>
+      <relation target="" sidePair="width-width,height-height"/>
+    </image>
+    <image id="n1_msgi" name="bgSelected" src="tno25" fileName="Images/ui_blank_image_0.png" xy="0,0" size="580,80" alpha="0.3" color="#666666">
+      <gearDisplay controller="button" pages="1,3"/>
+    </image>
+    <component id="n2_msgi" name="avatar" src="tno2h" fileName="Output/AvatarCom.xml" xy="10,10" size="60,60"/>
+    <richtext id="n4_msgi" name="userName" xy="80,15" size="200,30" fontSize="20" color="#ffffff" vAlign="middle" ubb="true" autoSize="none" text="用户名"/>
+    <richtext id="n5_msgi" name="lastMessage" xy="80,45" size="400,25" fontSize="16" color="#cebfa6" vAlign="middle" ubb="true" autoSize="ellipsis" singleLine="true" autoClearText="true" text="最后一条消息内容...">
+      <relation target="" sidePair="width-width"/>
+    </richtext>
+    <richtext id="n6_msgi" name="time" xy="490,15" size="80,25" fontSize="14" color="#cccccc" align="right" vAlign="middle" ubb="true" autoSize="none" autoClearText="true" text="12:30">
+      <relation target="" sidePair="right-right"/>
+    </richtext>
+    <image id="n7_msgi" name="unreadBadge" src="tno2k" fileName="Images/ui_blank_round_bg1.png" xy="55,5" size="20,20" color="#ff0000">
+      <gearDisplay controller="button" pages="0,1,2,3"/>
+    </image>
+    <richtext id="n8_msgi" name="unreadCount" xy="55,5" size="20,22" fontSize="14" color="#ffffff" align="center" vAlign="middle" ubb="true" autoSize="none" text="5"/>
+  </displayList>
+  <Button/>
+</component>

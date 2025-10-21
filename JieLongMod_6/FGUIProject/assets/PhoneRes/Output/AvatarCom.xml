@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="50,50" extention="Label">
+  <displayList>
+    <image id="n0_wdd1" name="avatar" src="tno2i" fileName="Images/ui_headbox64_s1_bg.png" xy="0,0" size="50,50">
+      <relation target="" sidePair="width-width,height-height"/>
+    </image>
+    <component id="n2_wdd1" name="icon" src="tno2j" fileName="Output/Avatar.xml" xy="2,2" size="46,46">
+      <relation target="" sidePair="width-width,height-height"/>
+    </component>
+  </displayList>
+</component>

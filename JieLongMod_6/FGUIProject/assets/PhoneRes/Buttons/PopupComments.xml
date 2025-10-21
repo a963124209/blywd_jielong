@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="480,289">
+  <displayList>
+    <graph id="n1_tno2" name="bg" xy="0,0" size="480,289" alpha="0.2" type="rect" lineSize="0">
+      <relation target="" sidePair="width-width,height-height"/>
+    </graph>
+    <list id="n0_tno2" name="list" xy="0,0" size="480,289" restrictSize="0,0,0,600" overflow="scroll" margin="5,5,5,5" lineGap="5" defaultItem="ui://qrms65xvtno21o">
+      <relation target="" sidePair="width-width"/>
+      <item/>
+      <item/>
+      <item/>
+      <item/>
+      <item/>
+      <item/>
+    </list>
+  </displayList>
+  <relation target="n0_tno2" sidePair="bottomext-bottom"/>
+</component>

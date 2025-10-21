@@ -1,0 +1,34 @@
+﻿ABS\Character\*> :\BuildSource\Character\*
+ABS\LuaScripts\* > :\BuildSource\LuaScripts\*
+ABS\HeadAvataNew\* > :\BuildSource\HeadAvataNew\*
+ABS\UIRes\* > :\BuildSource\UIRes\*
+ABS\Backgrounds\* > :\BuildSource\Backgrounds\*
+ABS\SkillData\* > :\BuildSource\SkillData\*
+ABS\MapPlugin\* > :\BuildSource\MapPlugin\*
+ABS\Audios\* > :\BuildSource\Audios\*
+ABS\role_models\* > :\BuildSource\role_models\*
+ABS\weapon_models\* > :\BuildSource\weapon_models\*
+ABS\battle_effects\* > :\BuildSource\battle_effects\*
+ABS\SkillIcons\* > :\BuildSource\SkillIcons\*
+ABS\Items\*>:\BuildSource\Items\*
+ABS\StoryImages\*>:\BuildSource\StoryImages\*
+ABS\Skills\* > :\BuildSource\Skills\*
+ABS\video\* > :\BuildSource\video\*
+ABS\camp_flags\* > :\BuildSource\camp_flags\*
+ABS\buildings\* > :\BuildSource\buildings\*
+
+RES\Character\*> :\BuildSource\Character\*
+RES\LuaScripts\* > :\BuildSource\LuaScripts\*
+RES\UIRes\* > :\BuildSource\UIRes\*
+RES\Backgrounds\* > :\BuildSource\Backgrounds\*
+RES\SkillData\* > :\BuildSource\SkillData\*
+RES\MapPlugin\* > :\BuildSource\MapPlugin\*
+RES\Audios\* > :\BuildSource\Audios\*
+RES\gamemap_res\* > :\BuildSource\gamemap_res\*
+RES\SkillIcons\* > :\BuildSource\SkillIcons\*
+RES\Items\*>:\BuildSource\Items\*
+RES\StoryCards\* > :\BuildSource\StoryCards\*
+RES\StoryImages\*>:\BuildSource\StoryImages\*
+RES\Backgrounds\* > :\BuildSource\Backgrounds\*
+RES\HomeScene\* > :\BuildSource\HomeScene\*
+RES\UpdateLog\* > :\BuildSource\UpdateLog\*

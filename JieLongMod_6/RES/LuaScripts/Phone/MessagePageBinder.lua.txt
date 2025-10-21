@@ -1,0 +1,196 @@
+-- MessagePageBinder.lua
+-- 消息页面绑定器
+require("Phone/Utils")
+local PhoneDataManager = require("Phone/PhoneDataManager")
+
+---@class MessagePageBinder 消息页面绑定器
+---@field component FairyGUI.GComponent 页面组件
+---@field title FairyGUI.GTextField 标题
+---@field messageList FairyGUI.GList 消息列表
+---@field sessions table 会话数据
+---@field sortedSessions table 排序后的会话数据
+---@field onSessionClicked function|nil 会话点击回调
+local MessagePageBinder = {}
+MessagePageBinder.__index = MessagePageBinder
+
+---创建消息页面绑定器实例
+---@param component FairyGUI.GComponent 消息页面组件
+---@return MessagePageBinder 绑定器实例
+function MessagePageBinder.New(component)
+    local self = setmetatable({}, MessagePageBinder)
+    
+    -- 组件引用
+    self.component = component
+    
+    -- 标题
+    self.title = component:GetChild("title").asTextField
+    
+    -- 消息列表
+    self.messageList = component:GetChild("messageList").asList
+    
+    -- 数据缓存
+    self.sessions = {}
+    self.sortedSessions = {}
+    self.onSessionClicked = nil
+    
+    -- 绑定渲染器
+    self.messageList.itemRenderer = function(index, item)
+        self:RenderMessageItem(index, item)
+    end
+    
+    -- 绑定列表项点击事件
+    self.messageList.onClickItem:Add(function(context)
+        self:OnItemClicked(context.data)
+    end)
+
+    self.messageList:SetVirtual()
+
+    self.messageList.numItems = 0
+    
+    return self
+end
+
+---渲染消息列表项
+---@param index number 列表索引
+---@param item FairyGUI.GObject 列表项对象
+function MessagePageBinder:RenderMessageItem(index, item)
+    local session = self.sortedSessions[index + 1] -- Lua索引从1开始
+    if not session then return end
+    
+    local itemCom = item.asCom
+    
+    local avatar = itemCom:GetChild("avatar").asLabel
+    if avatar ~= nil then
+        local character = PhoneDataManager.Character.get(session.members[1])
+        if character ~= nil then
+            avatar.icon = GetAvatarUrl(character.uid)
+        end
+    end
+    
+    -- 设置会话名称
+    local nameText = itemCom:GetChild("userName")
+    if nameText ~= nil then
+        nameText.asTextField.text = GetSessionName(session)
+    end
+    
+    -- 设置最后消息预览
+    local contentText = itemCom:GetChild("lastMessage").asRichTextField
+    if contentText ~= nil then
+        local lastMessage = GetLastMessagePreview(session)
+        if lastMessage ~= nil then
+            contentText.asTextField.text = GetRoleName(lastMessage.sender) .. ": " .. (lastMessage.content or "")
+        end
+    end
+    
+    -- 设置时间
+    local timeText = itemCom:GetChild("time").asRichTextField
+    if timeText ~= nil then
+        timeText.asTextField.text = MessagePageBinder.FormatTime(session.lastMessageTime)
+    end
+    
+    -- 设置未读数量
+    SetUIUnreadCount(itemCom, session.unread or 0)
+    
+    -- 保存会话ID到item的data中
+    item.data = session.id
+end
+
+---格式化时间戳（静态方法）
+---@param timestamp number 时间戳
+---@return string 格式化后的时间字符串
+function MessagePageBinder.FormatTime(timestamp)
+    if not timestamp or timestamp == 0 then
+        return ""
+    end
+    
+    -- 这里使用的是浮点数天数，每个数字代表 1 天
+    local currentTime = CS.WorldManager.Instance.curGameTime
+    local diff = currentTime - timestamp
+    
+    if diff < 1 then
+        return "刚刚"
+    elseif diff < 2 then
+        return "昨天"
+    else
+        -- x天前
+        return math.floor(diff) .. " 天前"
+    end
+end
+
+---列表项点击事件
+---@param tagItem FairyGUI.GButton
+function MessagePageBinder:OnItemClicked(tagItem)
+    local sessionId = tagItem.data
+    if not sessionId then return end
+    
+    PlayButtonSound()
+    
+    -- 触发回调
+    if self.onSessionClicked then
+        self.onSessionClicked(sessionId)
+    end
+end
+
+---加载所有会话数据
+function MessagePageBinder:LoadAllSessions()
+    self.sessions = PhoneDataManager.Session.getAll()
+    self:SortSessions()
+    self:RefreshList()
+end
+
+---对会话按时间排序
+function MessagePageBinder:SortSessions()
+    self.sortedSessions = {}
+    for _, session in pairs(self.sessions) do
+        table.insert(self.sortedSessions, session)
+    end
+    
+    -- 按最后消息时间倒序排序
+    table.sort(self.sortedSessions, function(a, b)
+        return (a.lastMessageTime or 0) > (b.lastMessageTime or 0)
+    end)
+end
+
+---刷新消息列表
+function MessagePageBinder:RefreshList()
+    if self.messageList then
+        self.messageList.numItems = #self.sortedSessions
+    end
+end
+
+---清空消息列表
+function MessagePageBinder:ClearList()
+    if self.messageList then
+        self.messageList.numItems = 0
+        self.sessions = {}
+        self.sortedSessions = {}
+    end
+end
+
+---设置会话点击回调
+---@param callback function 回调函数，参数为sessionId
+function MessagePageBinder:SetSessionClickCallback(callback)
+    self.onSessionClicked = callback
+end
+
+---更新单个会话
+---@param sessionId string 会话ID
+function MessagePageBinder:UpdateSession(sessionId)
+    self:LoadAllSessions()
+    local session = PhoneDataManager.Session.get(sessionId)
+    if session then
+        self:SortSessions()
+        self:RefreshList()
+    end
+end
+
+---删除会话
+---@param sessionId string 会话ID
+function MessagePageBinder:DeleteSession(sessionId)
+    PhoneDataManager.Session.delete(sessionId)
+    self:LoadAllSessions()
+    self:SortSessions()
+    self:RefreshList()
+end
+
+return MessagePageBinder

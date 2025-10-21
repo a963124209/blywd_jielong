@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="600,720">
+  <displayList>
+    <image id="n1_mom" name="headerBg" src="tno2o" fileName="Images/ui_listblank_line_1.png" xy="0,192" size="600,8"/>
+    <richtext id="n2_mom" name="title" xy="20,20" size="560,50" fontSize="28" color="#ffffff" align="center" vAlign="middle" autoSize="none" text="朋友圈"/>
+    <richtext id="n4_mom" name="userName" xy="90,160" size="400,40" fontSize="24" color="#ffffff" align="right" vAlign="middle" autoSize="none" text="用户名"/>
+    <list id="n5_mom" name="momentsList" xy="10,200" size="580,519" overflow="scroll" lineGap="10" defaultItem="ui://qrms65xvtno2p" autoClearItems="true">
+      <relation target="" sidePair="width-width,height-height"/>
+      <item/>
+      <item/>
+    </list>
+    <component id="n3_mom" name="avatar" src="tno2h" fileName="Output/AvatarCom.xml" xy="500,140" size="80,80"/>
+  </displayList>
+</component>

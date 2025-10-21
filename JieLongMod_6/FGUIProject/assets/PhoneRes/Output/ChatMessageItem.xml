@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="580,70">
+  <controller name="senderCtrl" pages="0,对方,1,我方,2,系统" selected="2"/>
+  <displayList>
+    <component id="n0_chatmsg" name="avatarLeft" src="tno2h" fileName="Output/AvatarCom.xml" xy="10,10" size="50,50">
+      <gearDisplay controller="senderCtrl" pages="0"/>
+    </component>
+    <image id="n2_chatmsg" name="bubbleLeft" src="tno213" fileName="Images/ui_talkbubble_style1_left.png" xy="70,10" size="214,45">
+      <gearDisplay controller="senderCtrl" pages="0"/>
+      <relation target="n3_chatmsg" sidePair="width-width,height-height,center-center,middle-middle"/>
+    </image>
+    <richtext id="n3_chatmsg" name="messageLeft" xy="93,20" size="180,24" restrictSize="0,360,0,0" fontSize="16" color="#333333" text="这是对方发送的消息内容">
+      <gearDisplay controller="senderCtrl" pages="0"/>
+    </richtext>
+    <component id="n4_chatmsg" name="avatarRight" src="tno2h" fileName="Output/AvatarCom.xml" xy="520,10" size="50,50">
+      <gearDisplay controller="senderCtrl" pages="1"/>
+      <relation target="" sidePair="right-right"/>
+    </component>
+    <image id="n6_chatmsg" name="bubbleRight" src="tno214" fileName="Images/ui_talkbubble_style1_right.png" xy="300,10" size="210,44" color="#95ec69">
+      <gearDisplay controller="senderCtrl" pages="1"/>
+      <relation target="n7_chatmsg" sidePair="width-width,height-height,center-center,middle-middle"/>
+    </image>
+    <richtext id="n7_chatmsg" name="messageRight" xy="490,20" pivot="1,0" anchor="true" size="180,24" restrictSize="0,360,0,0" fontSize="16" color="#333333" text="这是我方发送的消息内容">
+      <gearDisplay controller="senderCtrl" pages="1"/>
+      <relation target="" sidePair="right-right"/>
+    </richtext>
+    <graph id="n8_tno2" name="systemBg" xy="200,15" size="178,45" alpha="0.3" type="rect" lineSize="0" fillColor="#ff000000" corner="50">
+      <gearDisplay controller="senderCtrl" pages="2"/>
+      <relation target="" sidePair="width-width"/>
+      <relation target="n9_tno2" sidePair="width-width,height-height,center-center,middle-middle"/>
+    </graph>
+    <richtext id="n9_tno2" name="messageSystem" xy="221,25" size="138,24" restrictSize="0,460,0,0" fontSize="16" color="#ffffff" text="系统消息：123456">
+      <gearDisplay controller="senderCtrl" pages="2"/>
+      <relation target="" sidePair="center-center"/>
+    </richtext>
+  </displayList>
+  <relation target="n3_chatmsg" sidePair="height-height"/>
+  <relation target="n7_chatmsg" sidePair="height-height"/>
+  <relation target="n9_tno2" sidePair="height-height"/>
+</component>

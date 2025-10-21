@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="540,980" extention="Button">
+  <controller name="button" pages="0,up,1,down,2,over,3,selectedOver" selected="0"/>
+  <displayList>
+    <image id="n14_qr8k" name="img_storycard_bg" src="qr8k2f" fileName="Images_Custom/Mode/ui_btn_mode_back_s1.png" xy="0,5">
+      <relation target="" sidePair="width-width,height-height,center-center,middle-middle"/>
+    </image>
+    <loader id="n4_enie" name="icon" xy="0,0" size="533,971" url="ui://7l8qp3zoqr8k2d" fill="scaleFree">
+      <relation target="" sidePair="width-width,height-height,center-center,middle-middle"/>
+    </loader>
+    <richtext id="n11_enie" name="info" xy="48,791" size="450,164" fontSize="30" color="#cccccc" align="center" autoSize="shrink" shadowColor="#191613" shadowOffset="2,2" text="在本模式下，你将可以游玩到沙扎尔大漠的故事剧情，而世界的格局和未来将会因为你对剧情的选择而发生改变。">
+      <relation target="" sidePair="width-width%,height-height%,center-center,middle-middle%"/>
+    </richtext>
+    <text id="n8_enie" name="title" xy="15,192" size="366,79" font="STHupo" fontSize="60" color="#ffffff" letterSpacing="5" autoSize="height" text="故事模式">
+      <gearColor controller="button" pages="0,1,2,3" values="#ffffff,#666666|#ffffff,#333333|#ffecb1,#666666|#ffecb1,#000000" tween="true"/>
+      <relation target="" sidePair="width-width%,height-height%,middle-middle%,left-left"/>
+    </text>
+    <text id="n13_qr8k" name="title_sub" xy="15,269" size="366,104" font="MiSans" fontSize="20" color="#c7f603" leading="0" autoSize="none" text="STORY MODE">
+      <relation target="n8_enie" sidePair="bottom-bottom"/>
+    </text>
+    <image id="n1_enie" name="graph_shadow" src="qr8k2j" fileName="Images_Custom/Mode/ui_btn_mode_shadow_s2.png" xy="0,0" alpha="0.5" color="#000000">
+      <gearLook controller="button" pages="1,2,3" values="0,0,0,0|0,0,0,0|0,0,0,0" default="0.5,0,0,0" tween="true"/>
+      <relation target="" sidePair="width-width,height-height,center-center,middle-middle"/>
+    </image>
+  </displayList>
+  <Button mode="Radio"/>
+</component>

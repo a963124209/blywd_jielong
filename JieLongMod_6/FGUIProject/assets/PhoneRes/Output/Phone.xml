@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="640,840">
+  <displayList>
+    <image id="n0_wdd1" name="bg" src="tno21a" fileName="Images/ui_info_page_box_frame.png" xy="17,16" size="607,808">
+      <relation target="" sidePair="width-width,height-height"/>
+    </image>
+    <component id="n1_wdd1" name="main" src="tno21" fileName="Output/FriendCall.xml" xy="20,20">
+      <relation target="" sidePair="width-width,height-height"/>
+    </component>
+    <graph id="n3_wdd1" name="drag_area" xy="22,20" size="597,79" alpha="0" touchable="false" type="rect" lineSize="0">
+      <relation target="" sidePair="width-width"/>
+    </graph>
+    <component id="n2_wdd1" name="btn_close" src="tno21b" fileName="Buttons/CloseBtnRoundS1.xml" xy="565,3"/>
+  </displayList>
+</component>

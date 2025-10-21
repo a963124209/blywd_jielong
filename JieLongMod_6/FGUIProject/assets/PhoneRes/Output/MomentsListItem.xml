@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="580,235" extention="Label">
+  <controller name="button" pages="0,up,1,down,2,over,3,selectedOver" selected="0"/>
+  <displayList>
+    <image id="n0_moment" name="bg" src="tno25" fileName="Images/ui_blank_image_0.png" xy="0,0" size="580,235" alpha="0.2" color="#000000">
+      <gearDisplay controller="button" pages="0,2"/>
+      <relation target="" sidePair="width-width,height-height"/>
+    </image>
+    <richtext id="n4_moment" name="userName" xy="70,10" size="150,26" fontSize="18" color="#7f94cc" vAlign="middle" autoSize="none" text="用户名"/>
+    <richtext id="n5_moment" name="content" xy="70,40" size="500,23" fontSize="15" color="#ffffff" autoSize="height" text="这是朋友圈的文字内容，可以很长很长，支持自动换行显示多行文字内容。"/>
+    <richtext id="n7_moment" name="timeText" xy="70,71" size="200,20" fontSize="13" color="#cccccc" vAlign="middle" autoSize="none" text="2小时前">
+      <relation target="n5_moment" sidePair="top-bottom"/>
+    </richtext>
+    <image id="n9_moment" name="separator" src="tno2o" fileName="Images/ui_listblank_line_1.png" xy="70,315" size="500,2" alpha="0.3"/>
+    <image id="n10_moment" name="likesBg" src="tno2q" fileName="Images/ui_infobox_s2_bg.png" xy="70,98" size="500,32" alpha="0.5">
+      <gearDisplay controller="button" pages="0,1,2,3"/>
+      <relation target="n11_moment" sidePair="width-width,height-height,center-center,middle-middle"/>
+    </image>
+    <richtext id="n11_moment" name="likesText" xy="109,103" size="451,22" fontSize="14" color="#7f94cc" vAlign="middle" autoSize="none" singleLine="true" text="张三、李四、王五">
+      <relation target="n5_moment" sidePair="top-bottom"/>
+    </richtext>
+    <image id="n12_moment" name="commentsBg" src="tno2q" fileName="Images/ui_infobox_s2_bg.png" xy="70,141" size="500,82" alpha="0.5">
+      <gearDisplay controller="button" pages="0,1,2,3"/>
+      <relation target="n13_moment" sidePair="width-width,height-height,center-center,middle-middle"/>
+    </image>
+    <list id="n13_moment" name="commentsList" xy="78,147" size="483,72" margin="0,5,0,0" lineGap="3" defaultItem="ui://qrms65xvtno2r">
+      <relation target="n11_moment" sidePair="top-bottom"/>
+      <item/>
+      <item/>
+      <item url="ui://qrms65xvtno21o"/>
+    </list>
+    <component id="n14_wdd1" name="btnLike" src="tno2s" fileName="Output/BtnPraise1.xml" xy="69,93">
+      <relation target="n5_moment" sidePair="top-bottom"/>
+    </component>
+    <component id="n15_wdd1" name="avatar" src="tno2h" fileName="Output/AvatarCom.xml" xy="9,9"/>
+  </displayList>
+  <relation target="n13_moment" sidePair="bottomext-bottom"/>
+</component>

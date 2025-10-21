@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="800,512" extention="Label" initName="frame">
+  <displayList>
+    <image id="n0_hr84" name="bg" src="qr8k2x" fileName="Images_Custom/ui_frame_bg_s1.png" xy="0,0" size="800,512">
+      <relation target="" sidePair="width-width,height-height"/>
+    </image>
+    <component id="n2_hr84" name="closeButton" src="qr8k2q" fileName="Components_Custom/WindowCloseBtn1.xml" xy="57,47" size="80,52" aspect="true">
+      <relation target="" sidePair="right-left,top-top"/>
+    </component>
+    <text id="n3_qr8k" name="title" xy="169,13" pivot="0.5,0.5" size="450,54" font="STHupo" fontSize="40" color="#ffffff" align="center" vAlign="middle" letterSpacing="5" autoSize="none" autoClearText="true" text="标题">
+      <relation target="" sidePair="center-center,top-top"/>
+    </text>
+  </displayList>
+</component>

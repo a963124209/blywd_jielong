@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<packageDescription id="7l8qp3zo" hasFavorites="true">
+  <resources>
+    <component id="jlzz0" name="CommonWindowFrame1.xml" path="/Components/"/>
+    <image id="jlzz1" name="common_windowframe_1.png" path="/Images/" scale="9grid" scale9grid="8,8,16,16"/>
+    <image id="jlzz2" name="common_win_header_darkbg_0.png" path="/Images/" scale="9grid" scale9grid="10,10,12,12"/>
+    <image id="jlzz3" name="common_win_header_gradient_1.png" path="/Images/"/>
+    <image id="jlzz4" name="common_win_tribals_l.png" path="/Images/"/>
+    <image id="jlzz5" name="common_win_tribals_r.png" path="/Images/"/>
+    <image id="jlzz6" name="common_win_header_borderline_side.png" path="/Images/" scale="9grid" scale9grid="2,0,4,4"/>
+    <component id="jlzz7" name="WindowCloseBtn1.xml" path="/Components/"/>
+    <image id="jlzz8" name="common_btn_close_1.png" path="/Images/"/>
+    <image id="jlzz9" name="common_btn_darkmask_0.png" path="/Images/"/>
+    <image id="jlzza" name="common_btn_lightmask_0.png" path="/Images/"/>
+    <component id="jlzzb" name="ScrollBarV0M.xml" path="/Components/"/>
+    <image id="jlzzc" name="ui_blank_image_0.png" path="/Images/" scale="9grid" scale9grid="8,8,16,16"/>
+    <component id="jlzzd" name="TextWindowLabel1.xml" path="/Components/"/>
+    <component id="jlzze" name="FuncNormalBtn3.xml" path="/Components/" favorite="true"/>
+    <image id="jlzzf" name="cm_actionbar4_bg.png" path="/Images/" scale="9grid" scale9grid="24,24,16,16"/>
+    <component id="jlzzg" name="CheckBox1.xml" path="/Components/"/>
+    <image id="jlzzh" name="cm_actionbar2_bg.png" path="/Images/" scale="9grid" scale9grid="16,16,32,32"/>
+    <image id="jlzzi" name="cm_btn_close_1.png" path="/Images/"/>
+    <font id="jlzzj" name="Alimama_DongFangDaKai_Regular.ttf" path="/Fonts/" exported="true" renderMode="" samplePointSize="16"/>
+    <component id="jlzzk" name="DifficultyButton.xml" path="/Components/"/>
+    <image id="jlzzl" name="cm_squarebox_bg1.png" path="/Images/" scale="9grid" scale9grid="18,18,28,28"/>
+    <image id="jlzzm" name="cm_itemslot_light.png" path="/Images/" scale="9grid" scale9grid="23,23,46,46"/>
+    <component id="jlzzn" name="OptionBtn.xml" path="/Components_Custom/"/>
+    <image id="jlzz17" name="cm_mapbox_bg.png" path="/Images/" scale="9grid" scale9grid="16,16,32,32"/>
+    <image id="jlzz1i" name="ui_btn_01.png" path="/Images_Custom/"/>
+    <image id="jlzz1k" name="background_2.png" path="/Images_Custom/"/>
+    <component id="jlzz1l" name="MainPage.xml" path="/Windows_Custom/" exported="true"/>
+    <component id="jlzz1m" name="TextWindow.xml" path="/Windows_Custom/" exported="true"/>
+    <component id="jlzz1n" name="GameModeSelWindow.xml" path="/Windows_Custom/" exported="true"/>
+    <image id="jlzz1p" name="ui_btn_s1.png" path="/Images_Custom/" scale="9grid" scale9grid="40,40,369,2"/>
+    <image id="jlzz1q" name="ui_btn_s1_cover.png" path="/Images_Custom/" scale="9grid" scale9grid="39,40,369,10"/>
+    <image id="jlzz1r" name="ui_btn_round_s1.png" path="/Images_Custom/" scale9grid="18,18,36,36"/>
+    <image id="jlzz1s" name="ui_btn_round_s1_cover.png" path="/Images_Custom/"/>
+    <component id="jlzz1t" name="OptionBtnRound.xml" path="/Components_Custom/"/>
+    <image id="jlzz1u" name="ui_btn_round_s2.png" path="/Images_Custom/"/>
+    <image id="jlzz1v" name="ui_icon_s1.png" path="/Images_Custom/"/>
+    <image id="jlzz1w" name="ui_icon_s2.png" path="/Images_Custom/"/>
+    <image id="jlzz22" name="ui_text_title.png" path="/Images_Custom/"/>
+    <component id="jlzz23" name="OptionBtnExit.xml" path="/Components_Custom/"/>
+    <image id="jlzz25" name="ui_icon_back_s1.png" path="/Images_Custom/"/>
+    <image id="jlzz29" name="ui_btn_back_s1.png" path="/Images_Custom/"/>
+    <image id="jlzz2b" name="ui_btn_back_s1_cover.png" path="/Images_Custom/"/>
+    <component id="qr8k2c" name="GameModeButton.xml" path="/Components_Custom/"/>
+    <image id="qr8k2d" name="ui_btn_mode_s1.png" path="/Images_Custom/Mode/"/>
+    <image id="qr8k2e" name="ui_btn_mode_s2.png" path="/Images_Custom/Mode/"/>
+    <image id="qr8k2f" name="ui_btn_mode_back_s1.png" path="/Images_Custom/Mode/"/>
+    <image id="qr8k2h" name="ui_btn_mode_shadow_s1.png" path="/Images_Custom/Mode/"/>
+    <image id="qr8k2j" name="ui_btn_mode_shadow_s2.png" path="/Images_Custom/Mode/"/>
+    <image id="qr8k2l" name="ui_btn_bg_s1.png" path="/Images_Custom/" scale="9grid" scale9grid="43,0,286,100"/>
+    <component id="qr8k2m" name="ComboBox1_item.xml" path="/Components_Custom/"/>
+    <component id="qr8k2n" name="ComboBox1_popup.xml" path="/Components_Custom/"/>
+    <component id="qr8k2o" name="ComboBox1.xml" path="/Components_Custom/" exported="true"/>
+    <image id="qr8k2p" name="ui_btn_close.png" path="/Images_Custom/"/>
+    <component id="qr8k2q" name="WindowCloseBtn1.xml" path="/Components_Custom/"/>
+    <image id="qr8k2r" name="ui_btn_close_cover.png" path="/Images_Custom/"/>
+    <image id="qr8k2t" name="ui_icon_btn_close.png" path="/Images_Custom/"/>
+    <image id="qr8k2u" name="background.jpg" path="/Images_Custom/"/>
+    <component id="qr8k2v" name="CommonWindowFrame1.xml" path="/Components_Custom/"/>
+    <image id="qr8k2x" name="ui_frame_bg_s1.png" path="/Images_Custom/" scale="9grid" scale9grid="43,45,286,10"/>
+    <image id="qr8k2z" name="ui_icon_s3.png" path="/Images_Custom/"/>
+    <image id="l8z430" name="ui_cmb_pop_s1.png" path="/Images_Custom/" scale="9grid" scale9grid="39,40,369,10"/>
+    <image id="l8z431" name="ui_text_title_s2.png" path="/Images_Custom/"/>
+  </resources>
+  <publish name=""/>
+</packageDescription>

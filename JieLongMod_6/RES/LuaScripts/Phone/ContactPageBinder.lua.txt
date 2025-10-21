@@ -1,0 +1,238 @@
+-- ContactPageBinder.lua
+-- 通讯录页面绑定器
+
+local PhoneDataManager = require("Phone/PhoneDataManager")
+
+---@class ContactPageBinder 通讯录页面绑定器
+---@field component FairyGUI.GComponent 页面组件
+---@field title FairyGUI.GTextField 标题
+---@field searchBg FairyGUI.GObject 搜索框背景
+---@field searchText FairyGUI.GTextInput 搜索输入框
+---@field contactList FairyGUI.GList 联系人列表
+---@field allCharacters table 所有角色数据
+---@field filteredCharacters table 过滤后的角色数据
+---@field searchKeyword string 搜索关键词
+---@field onContactClicked function|nil 联系人点击回调
+local ContactPageBinder = {}
+ContactPageBinder.__index = ContactPageBinder
+
+---创建通讯录页面绑定器实例
+---@param component FairyGUI.GComponent 通讯录页面组件
+---@return ContactPageBinder 绑定器实例
+function ContactPageBinder.New(component)
+    local self = setmetatable({}, ContactPageBinder)
+    
+    -- 组件引用
+    self.component = component
+    
+    -- 标题
+    self.title = component:GetChild("title").asTextField
+    
+    -- 搜索框
+    self.searchBg = component:GetChild("searchBg")
+    self.searchText = component:GetChild("searchText").asTextInput
+    
+    -- 联系人列表
+    self.contactList = component:GetChild("contactList").asList
+    
+    -- 数据缓存
+    self.allCharacters = {}
+    self.filteredCharacters = {}
+    self.searchKeyword = ""
+    
+    -- 绑定渲染器
+    self.contactList.itemRenderer = function(index, item)
+        self:RenderContactItem(index, item)
+    end
+    
+    -- 绑定列表项点击事件
+    self.contactList.onClickItem:Add(function(context)
+        self:OnItemClicked(context.data)
+    end)
+
+    self.contactList:SetVirtual()
+    
+    self.contactList.numItems = 0
+    
+    -- 绑定搜索事件（使用Changed事件）
+    self.searchText.onChanged:Add(function()
+        self:OnSearchTextChanged()
+    end)
+    
+    return self
+end
+
+---渲染联系人列表项
+---@param index number 列表索引
+---@param item FairyGUI.GObject 列表项对象
+function ContactPageBinder:RenderContactItem(index, item)
+    local character = self.filteredCharacters[index + 1] -- Lua索引从1开始
+    if not character then return end
+    
+    local role = CS.GameCoreHelper.GetRole(character.uid)
+    if role == nil then
+        return
+    end
+
+    local itemCom = item.asCom
+    
+    -- 设置头像
+    local avatar = itemCom:GetChild("avatar").asLabel
+    if avatar ~= nil then
+        avatar.icon = GetAvatarUrl(character.uid)
+    end
+    
+    -- 设置名称
+    local nameText = itemCom:GetChild("userName").asRichTextField
+    if nameText ~= nil then
+        nameText.text = role:GetRoleName() or "未知"
+    end
+
+    -- 设置未读数量
+    SetUIUnreadCount(itemCom, 0)
+    
+    -- 保存角色UID到item的data中
+    item.data = character.uid
+end
+
+---列表项点击事件
+---@param tagItem FairyGUI.GButton
+function ContactPageBinder:OnItemClicked(tagItem)
+    local uid = tagItem.data
+    if not uid then return end
+
+    PlayButtonSound()
+    
+    -- 触发回调
+    if self.onContactClicked then
+        self.onContactClicked(uid)
+    end
+end
+
+---搜索文本变化事件
+function ContactPageBinder:OnSearchTextChanged()
+    local searchText = self.searchText.text or ""
+    self.searchKeyword = searchText
+    
+    if searchText == "" then
+        self:ShowAllContacts()
+    else
+        self:FilterContacts(searchText)
+    end
+end
+
+---加载所有联系人
+function ContactPageBinder:LoadAllContacts()
+    self.allCharacters = PhoneDataManager.Character.getAll()
+    self:SortContacts()
+    self:ShowAllContacts()
+end
+
+---对联系人排序
+function ContactPageBinder:SortContacts()
+    -- 按名称排序
+    table.sort(self.allCharacters, function(a, b)
+        return (a.name or "") < (b.name or "")
+    end)
+end
+
+---显示所有联系人
+function ContactPageBinder:ShowAllContacts()
+    self.filteredCharacters = self.allCharacters
+    self:RefreshList()
+end
+
+---过滤联系人
+---@param searchText string 搜索文本
+function ContactPageBinder:FilterContacts(searchText)
+    self.filteredCharacters = {}
+    local lowerSearch = string.lower(searchText)
+    
+    for _, character in ipairs(self.allCharacters) do
+        local role = CS.GameCoreHelper.GetRole(character.uid)
+        if role == nil then
+            goto filter_continue
+        end
+        local name = role:GetRoleName()
+        local lowerName = string.lower(name)
+
+        if string.find(lowerName, lowerSearch, 1, true) then
+            table.insert(self.filteredCharacters, character)
+        end
+
+        ::filter_continue::
+    end
+    
+    self:RefreshList()
+end
+
+---刷新联系人列表
+function ContactPageBinder:RefreshList()
+    if self.contactList then
+        self.contactList.numItems = #self.filteredCharacters
+    end
+end
+
+---清空联系人列表
+function ContactPageBinder:ClearList()
+    if self.contactList then
+        self.contactList.numItems = 0
+        self.allCharacters = {}
+        self.filteredCharacters = {}
+    end
+end
+
+---设置联系人点击回调
+---@param callback function 回调函数，参数为uid
+function ContactPageBinder:SetContactClickCallback(callback)
+    self.onContactClicked = callback
+end
+
+---添加新联系人
+---@param uid string 角色UID
+---@param isFriend boolean 是否为好友
+function ContactPageBinder:AddContact(uid, isFriend)
+    -- 使用getOrCreate确保角色存在
+    PhoneDataManager.Character.getOrCreate(uid, isFriend)
+    self:LoadAllContacts()
+end
+
+---删除联系人
+---@param uid string 角色UID
+function ContactPageBinder:DeleteContact(uid)
+    PhoneDataManager.Character.delete(uid)
+    self:LoadAllContacts()
+end
+
+---更新联系人信息
+---@param uid string 角色UID
+function ContactPageBinder:UpdateContact(uid)
+    local character = PhoneDataManager.Character.get(uid)
+    if character then
+        -- 更新缓存中的数据
+        for i, char in ipairs(self.allCharacters) do
+            if char.uid == uid then
+                self.allCharacters[i] = character
+                break
+            end
+        end
+        self:SortContacts()
+        
+        -- 如果在搜索模式下，重新应用过滤
+        if self.searchKeyword ~= "" then
+            self:FilterContacts(self.searchKeyword)
+        else
+            self:ShowAllContacts()
+        end
+    end
+end
+
+---设置好友状态
+---@param uid string 角色UID
+---@param isFriend boolean 是否为好友
+function ContactPageBinder:SetFriendStatus(uid, isFriend)
+    PhoneDataManager.Character.setFriend(uid, isFriend)
+    self:UpdateContact(uid)
+end
+
+return ContactPageBinder

@@ -1,0 +1,305 @@
+-- ChatPageBinder.lua
+-- 聊天页面绑定器
+
+require("Phone/Utils")
+local PhoneDataManager = require("Phone/PhoneDataManager")
+local PhoneTriggerManager = require("Phone/PhoneTriggerManager")
+local GUIPopupOptions = require("Phone/GUIPopupOptions")
+
+-- 频繁访问的方法缓存
+local osTime = os.time
+local osDate = os.date
+local stringFormat = string.format
+local tableInsert = table.insert
+
+---@class ChatPageBinder 聊天页面绑定器
+local ChatPageBinder = {}
+ChatPageBinder.__index = ChatPageBinder
+
+---创建聊天页面绑定器实例
+---@param component FairyGUI.GComponent 聊天页面组件
+---@return ChatPageBinder 绑定器实例
+function ChatPageBinder.New(component)
+    local self = setmetatable({}, ChatPageBinder)
+    
+    self.component = component
+    self.currentSessionId = nil
+    self.currentSession = nil
+    self.messageClickCallback = nil
+    self.backCallback = nil
+    
+    -- 获取UI组件
+    self.bg = component:GetChild("bg")
+    self.bgMask = component:GetChild("bg_mask")
+    self.topBar = component:GetChild("topBar")
+    self.title = component:GetChild("title").asRichTextField
+    self.btnBack = component:GetChild("btnBack").asButton
+    self.chatMessageList = component:GetChild("chatMessageList").asList
+    self.inputBg = component:GetChild("inputBg")
+    self.btnSend = component:GetChild("btnSend").asButton
+    
+    -- 绑定事件
+    self.btnBack.onClick:Add(function()
+        self:OnBackClicked()
+    end)
+    
+    self.btnSend.onClick:Add(function()
+        self:OnSendClicked()
+    end)
+    
+    -- 列表项渲染
+    self.chatMessageList.itemRenderer = function(index, item)
+        self:RenderMessageItem(index, item)
+    end
+    
+    return self
+end
+
+---设置返回按钮回调
+---@param callback function 回调函数
+function ChatPageBinder:SetBackCallback(callback)
+    self.backCallback = callback
+end
+
+---设置消息点击回调
+---@param callback function 回调函数
+function ChatPageBinder:SetMessageClickCallback(callback)
+    self.messageClickCallback = callback
+end
+
+---加载会话聊天记录
+---@param sessionId string 会话ID
+function ChatPageBinder:LoadSession(sessionId)
+    self.currentSessionId = sessionId
+    
+    -- 加载会话数据
+    local session = PhoneDataManager.Session.get(sessionId)
+    if not session then
+        print("ChatPageBinder: 会话不存在 - " .. sessionId)
+        return
+    end
+    
+    self.currentSession = session
+    self.title.text = GetSessionName(session) or "聊天"
+    
+    -- 加载消息列表
+    self:RefreshMessageList()
+end
+
+---刷新消息列表
+function ChatPageBinder:RefreshMessageList()
+    if not self.currentSession then
+        self.chatMessageList.numItems = 0
+        return
+    end
+    
+    local messages = self.currentSession.messages or {}
+    self.chatMessageList.numItems = #messages
+    
+    local newMessageIndex = #messages - 1
+    if newMessageIndex < 0 then
+        return
+    end
+
+    -- 滚动到底部显示最新消息
+    self.chatMessageList:ScrollToView(newMessageIndex, false, true)
+end
+
+---渲染消息列表项
+---@param index number 列表项索引（从0开始）
+---@param item FairyGUI.GComponent 列表项组件
+function ChatPageBinder:RenderMessageItem(index, item)
+    if not self.currentSession then return end
+    
+    local messages = self.currentSession.messages or {}
+    local message = messages[index + 1] -- Lua索引从1开始
+    
+    if not message then return end
+
+    local currentUserUid = "主角"
+    local isOwnMessage = (message.sender == currentUserUid)
+    local isSystemMessage = (message.sender == "system")
+    
+    -- 设置消息显示状态（左侧或右侧）
+    local ctrl = item:GetController("senderCtrl")
+    
+    -- 获取组件
+    local txtMessageLeft = item:GetChild("messageLeft").asRichTextField
+    local txtMessageRight = item:GetChild("messageRight").asRichTextField
+    local avatarLeft = item:GetChild("avatarLeft")
+    local avatarRight = item:GetChild("avatarRight")
+    local txtSystem = item:GetChild("messageSystem").asRichTextField
+    
+    -- 设置消息内容
+    if isSystemMessage then
+        ctrl.selectedIndex = 2
+        txtSystem.text = message.content or ""
+    elseif isOwnMessage then
+        ctrl.selectedIndex = 1
+        txtMessageRight.text = message.content or ""
+        local avatarUrl = GetAvatarUrl(message.sender)
+        avatarRight.icon = avatarUrl
+    else
+        ctrl.selectedIndex = 0
+        txtMessageLeft.text = message.content or ""
+        local avatarUrl = GetAvatarUrl(message.sender)
+        avatarLeft.icon = avatarUrl
+    end
+    
+    -- 设置点击事件
+    item.onClick:Clear()
+    item.onClick:Add(function()
+        if self.messageClickCallback ~= nil then
+            self.messageClickCallback(message)
+        end
+    end)
+end
+
+---格式化消息时间（静态方法）
+---@param timestamp number 时间戳
+---@return string 格式化后的时间字符串
+function ChatPageBinder.FormatMessageTime(timestamp)
+    if not timestamp or timestamp == 0 then
+        return ""
+    end
+    
+    -- 这里使用的是浮点数天数，每个数字代表 1 天
+    local currentTime = CS.WorldManager.Instance.curGameTime
+    local diff = currentTime - timestamp
+    
+    if diff < 1 then
+        return "刚刚"
+    elseif diff < 2 then
+        return "昨天"
+    else
+        -- x天前
+        return math.floor(diff) .. " 天前"
+    end
+end
+
+---发送文本消息
+---@param content string 消息内容
+---@return boolean 是否发送成功
+function ChatPageBinder:SendTextMessage(content)
+    if not self.currentSessionId or not content or content == "" then
+        return false
+    end
+
+    local currentUserUid = "主角"
+    
+    -- 创建消息对象
+    local message = {
+        sender = currentUserUid,
+        content = content,
+        timestamp = CS.WorldManager.Instance.curGameTime,
+        type = "text"
+    }
+    
+    -- 添加到会话
+    local success = PhoneDataManager.Session.addMessage(self.currentSessionId, message)
+    
+    if success then
+        -- 刷新消息列表
+        self:RefreshMessageList()
+    end
+    
+    return success
+end
+
+---接收消息（用于模拟收到消息）
+---@param senderUid string 发送者UID
+---@param content string 消息内容
+---@param messageType string 消息类型 "text"|"image"|"voice"
+---@return boolean 是否接收成功
+function ChatPageBinder:ReceiveMessage(senderUid, content, messageType)
+    if not self.currentSessionId then
+        return false
+    end
+    
+    messageType = messageType or "text"
+    
+    -- 创建消息对象
+    local message = {
+        id = "msg_" .. osTime() .. "_" .. math.random(1000, 9999),
+        sender = senderUid,
+        content = content,
+        timestamp = CS.WorldManager.Instance.curGameTime,
+        type = messageType
+    }
+    
+    -- 添加到会话
+    local success = PhoneDataManager.Session.addMessage(self.currentSessionId, message)
+    
+    if success then
+        -- 刷新消息列表
+        self:RefreshMessageList()
+    end
+    
+    return success
+end
+
+---返回按钮点击事件
+function ChatPageBinder:OnBackClicked()
+    if self.backCallback then
+        self.backCallback()
+    end
+end
+
+---发送按钮点击事件
+function ChatPageBinder:OnSendClicked()
+    self:BuildPopupOptions()
+end
+
+---清空聊天记录
+function ChatPageBinder:ClearMessages()
+    if not self.currentSessionId then return end
+    
+    local session = PhoneDataManager.Session.get(self.currentSessionId)
+    if session then
+        session.messages = {}
+        PhoneDataManager.Session.save(session)
+        self:RefreshMessageList()
+    end
+end
+
+---获取当前会话ID
+---@return string|nil 当前会话ID
+function ChatPageBinder:GetCurrentSessionId()
+    return self.currentSessionId
+end
+
+function ChatPageBinder:BuildPopupOptions()
+    local roleId = self.currentSession.members[1]
+    ---@type PhoneTrigger[]
+    local triggers = PhoneTriggerManager.getReplyTriggers(roleId)
+    local options = {}
+    for _, v in ipairs(triggers) do
+        table.insert(options, {
+            label = v.bindArgs,
+            action = function()
+                StartCoroutine(function()
+                    local info = PhoneTriggerManager.buildTriggerInfo(roleId)
+                    local context = PhoneTriggerManager.createTriggerContext(info)
+                    v.event(context)
+                end)
+            end
+        })
+    end
+
+    ---@type FairyGUI.GObject
+    local popup = CS.GUIHelper.CreateFGUIObj("PhoneRes", "PopupOptions")
+    
+    -- 创建弹出菜单实例
+    GUIPopupOptions.New(popup, options)
+    
+    CS.FairyGUI.GRoot.inst:ShowPopup(popup, self.btnSend, CS.FairyGUI.PopupDirection.Up)
+end
+
+function ChatPageBinder:MarkUnreadAsRead()
+    if not self.currentSessionId then return end
+
+    PhoneDataManager.Session.setUnread(self.currentSessionId, 0)
+end
+
+return ChatPageBinder
+

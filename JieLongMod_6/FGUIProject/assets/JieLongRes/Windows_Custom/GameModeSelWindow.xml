@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="1920,1080">
+  <controller name="hide_shadow" pages="0,,1," selected="1"/>
+  <displayList>
+    <loader id="n30_qr8k" name="bg" xy="0,0" size="1920,1080" url="ui://7l8qp3zoqr8k2u" fill="scaleFree" clearOnPublish="true">
+      <relation target="" sidePair="width-width,height-height,center-center,middle-middle"/>
+    </loader>
+    <graph id="n26_jlzz" name="frame_back_1" xy="0,0" pivot="0.5,0" size="1920,130" group="n29_qr8k" type="rect" fillColor="#ff000000">
+      <gearSize controller="hide_shadow" pages="0,1" values="1920,130,1,0|1920,130,1,1" tween="true"/>
+      <relation target="" sidePair="width-width,center-center,top-top"/>
+    </graph>
+    <graph id="n27_jlzz" name="frame_back_2" xy="0,950" pivot="0.5,1" size="1920,130" group="n29_qr8k" alpha="0.6" type="rect" fillColor="#ff000000">
+      <gearSize controller="hide_shadow" pages="0,1" values="1920,130,1,0|1920,130,1,1" tween="true"/>
+      <relation target="" sidePair="width-width,center-center,bottom-bottom"/>
+    </graph>
+    <group id="n29_qr8k" name="group_shadow" xy="0,0" size="1920,1080"/>
+    <component id="n24_jlzz" name="btn_start" src="jlzzn" fileName="Components_Custom/OptionBtn.xml" xy="1499,959">
+      <relation target="" sidePair="right-right,bottom-bottom"/>
+      <Button title="开始游戏"/>
+    </component>
+    <richtext id="n23_tz34" name="txt_diff" xy="1365,180" size="495,316" font="STHupo" fontSize="40" color="#cccccc" vAlign="bottom" leading="15" autoSize="shrink" shadowColor="#191613" shadowOffset="2,2" autoClearText="true" text="推荐新手玩家游玩。&#xD;&#xA;-在该模式下AI的入侵频率较低&#xD;&#xA;-你可以招募、升级特殊士兵与巫术生物，士兵编队全部重伤后也不会解散，同时他们在饥饿状态下也不会受到行军惩罚&#xD;&#xA;-主角在该难度下受到的伤害降低50%，队伍其他士兵受到的伤害降低25%，NPC好感度下降时有30%概率可以直接避免&#xD;&#xA;-在战斗中你可以使用任意次数的翻滚动作">
+      <relation target="" sidePair="width-width%,height-height%,center-center%,middle-middle%"/>
+    </richtext>
+    <component id="n25_jlzz" name="btn_exit" src="jlzz23" fileName="Components_Custom/OptionBtnExit.xml" xy="39,12"/>
+    <component id="n34_qr8k" name="btn_mode_1" src="qr8k2c" fileName="Components_Custom/GameModeButton.xml" xy="130,167" size="463,740">
+      <Button icon="ui://7l8qp3zoqr8k2e"/>
+    </component>
+    <component id="n36_qr8k" name="btn_mode_2" src="qr8k2c" fileName="Components_Custom/GameModeButton.xml" xy="734,167" size="463,740" aspect="true">
+      <Button icon="ui://7l8qp3zoqr8k2d"/>
+    </component>
+    <component id="n38_qr8k" name="comb_hardlevel" src="qr8k2o" fileName="Components_Custom/ComboBox1.xml" xy="1597,518" size="272,90">
+      <ComboBox visibleItemCount="10">
+        <item title="普通"/>
+        <item title="困难"/>
+        <item title="史诗"/>
+      </ComboBox>
+    </component>
+    <component id="n39_qr8k" name="comb_expert" src="qr8k2o" fileName="Components_Custom/ComboBox1.xml" xy="1595,647" size="272,90">
+      <ComboBox visibleItemCount="10">
+        <item title="关闭"/>
+        <item title="开启"/>
+      </ComboBox>
+    </component>
+  </displayList>
+</component>
