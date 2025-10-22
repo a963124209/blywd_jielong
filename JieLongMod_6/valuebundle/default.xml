@@ -11,7 +11,10 @@
 	<include file="J角色属性字段接力第一棒.xlsx" />
 	<include file="J剧本设定接力第一棒.xlsx" />
 	<include file="R人物立绘信息接力第一棒.xlsx" />
-	<include file="J剧情接力第一棒.xlsx" />
+	<include file="J剧情_空洞.xlsx" />
+	<include file="J剧情_巧活.xlsx" />
+	<include file="J剧情_通用.xlsx" />
+	<include file="J剧情_主线.xlsx" />
 	<include file="R人物列表接力第一棒.xlsx" />
 	<include file="Y音频播放列表.xlsx" />
 	<include file="Y音频项目表.xlsx" />

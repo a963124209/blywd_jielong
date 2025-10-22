@@ -11,7 +11,10 @@
 	<convert reg="statu_field_pojo_new.xml" from="J角色属性字段接力第一棒.xlsx" />
 	<convert reg="story_mode_pojo_new.xml" from="J剧本设定接力第一棒.xlsx" />
 	<convert reg="character_new.xml" from="R人物立绘信息接力第一棒.xlsx" />
-	<convert reg="storyevent_pojo_new.xml" from="J剧情接力第一棒.xlsx" />
+	<convert reg="storyevent_pojo_new.xml" from="J剧情_空洞.xlsx" />
+	<convert reg="storyevent_pojo_new.xml" from="J剧情_巧活.xlsx" />
+	<convert reg="storyevent_pojo_new.xml" from="J剧情_通用.xlsx" />
+	<convert reg="storyevent_pojo_new.xml" from="J剧情_主线.xlsx" />
 	<convert reg="role_template_pojo_new.xml" from="R人物列表接力第一棒.xlsx" />
 	<convert reg="audio_playlist_pojo_new.xml" from="Y音频播放列表.xlsx" />
 	<convert reg="audio_item_pojo_new.xml" from="Y音频项目表.xlsx" />
