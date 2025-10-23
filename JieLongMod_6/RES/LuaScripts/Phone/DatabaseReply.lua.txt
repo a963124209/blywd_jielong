@@ -36,8 +36,10 @@ function databaseReply.InitReply()
                 end
             else
                 --[[第6棒：提示冷却时间--]]
-                local cdValue = math.floor(CS.GameCoreHelper.GetCustomCD(cdKey))
-                context.SendMessageRaw(context.info.roleId, string.format("（对方好像暂时没空回复，等%s天后再说吧。）", cdValue), "system")
+                -- 按小时提醒冷却时间
+                local cdValue = CS.GameCoreHelper.GetCustomCD(cdKey)
+                cdValue = math.ceil(cdValue * 24)
+                context.SendMessageRaw(context.info.roleId, string.format("（对方好像暂时没空回复，等%s小时后再说吧。）", cdValue), "system")
             end
         end
     })
@@ -7208,7 +7210,8 @@ function databaseReply.InitGift()
                 CS.GameCoreHelper.RemoveItemsFromPlayerInvByList(items)
             else
                 --[[第6棒：提示冷却时间--]]
-                local cdValue = math.floor(CS.GameCoreHelper.GetCustomCD(cdKey))
+                local cdValue = CS.GameCoreHelper.GetCustomCD(cdKey)
+                cdValue = math.ceil(cdValue)
                 -- context.SendMessageRaw(context.info.roleId, string.format("（对方暂时不想要更多礼物了，等%7。）", "system")
                 context.SendMessageRaw(context.info.roleId, string.format("（对方暂时不想要更多礼物了，等%s天后再说吧。）", cdValue), "system")
             end

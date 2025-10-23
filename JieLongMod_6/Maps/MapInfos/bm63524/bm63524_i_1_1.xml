@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<blend_map_tileinfo xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" blend_weight="1" need_tex_file="1">
+  <tile_tex tex_id="1" scale_x="1" scale_y="1" rotate="0" />
+  <tile_tex tex_id="99" scale_x="1" scale_y="1" rotate="0" />
+  <tile_obj obj_id="1" obj_type="0" tileset_id="亚空间风暴" layer_index="2" pos_x="736" pos_y="320" offset_z="0" arg_x="0.5" arg_y="0.5" arg_z="0" visible="1" is_locked="0" x_flip="0" obj_infos="" bind_tag="" control_info="" />
+  <tile_areas area_id="7" bind_info_type="5" center_map_x="552.785339" center_map_y="1039.082" width="60" height="60" rotate="0" aabb_state="1" aabb_min_x="-35" aabb_min_y="-20" aabb_max_x="35" aabb_max_y="20">
+    <pts_info>-30,-30;30,-30;30,30;-30,30</pts_info>
+    <properties>
+      <property name="dummy_id" value="战斗修女4" />
+      <property name="model_id" value="战斗修女" />
+      <property name="role_id" value="" />
+      <property name="interactive" value="0" />
+      <property name="move_info" value="WANDER,100" />
+      <property name="move_speed" value="20" />
+      <property name="camp_id" value="" />
+      <property name="init_state" value="0" />
+      <property name="orders" value="" />
+      <property name="bb_info" value="" />
+    </properties>
+  </tile_areas>
+  <tile_areas area_id="26" bind_info_type="6" center_map_x="1089.66687" center_map_y="1210.31128" width="60" height="60" rotate="0" aabb_state="1" aabb_min_x="-35" aabb_min_y="-20" aabb_max_x="35" aabb_max_y="20">
+    <pts_info>-30,-30;30,-30;30,30;-30,30</pts_info>
+    <properties>
+      <property name="monster_id" value="奸奇恶魔1" />
+      <property name="m_group" value="奸奇恶魔" />
+      <property name="min_lv" value="1" />
+      <property name="max_lv" value="10" />
+      <property name="guard_radius" value="450" />
+      <property name="always_chase" value="1" />
+      <property name="move_info" value="WANDER,100" />
+      <property name="move_speed" value="20" />
+      <property name="init_state" value="0" />
+    </properties>
+  </tile_areas>
+  <tile_areas area_id="28" bind_info_type="6" center_map_x="715.6668" center_map_y="1029.64465" width="60" height="60" rotate="0" aabb_state="1" aabb_min_x="-35" aabb_min_y="-20" aabb_max_x="35" aabb_max_y="20">
+    <pts_info>-30,-30;30,-30;30,30;-30,30</pts_info>
+    <properties>
+      <property name="monster_id" value="奸奇恶魔3" />
+      <property name="m_group" value="奸奇恶魔" />
+      <property name="min_lv" value="1" />
+      <property name="max_lv" value="10" />
+      <property name="guard_radius" value="450" />
+      <property name="always_chase" value="1" />
+      <property name="move_info" value="WANDER,100" />
+      <property name="move_speed" value="20" />
+      <property name="init_state" value="0" />
+    </properties>
+  </tile_areas>
+  <tile_areas area_id="11" bind_info_type="5" center_map_x="649.6197" center_map_y="1186.83325" width="60" height="60" rotate="0" aabb_state="1" aabb_min_x="-35" aabb_min_y="-20" aabb_max_x="35" aabb_max_y="20">
+    <pts_info>-30,-30;30,-30;30,30;-30,30</pts_info>
+    <properties>
+      <property name="dummy_id" value="战斗修女8" />
+      <property name="model_id" value="战斗修女" />
+      <property name="role_id" value="" />
+      <property name="interactive" value="0" />
+      <property name="move_info" value="WANDER,100" />
+      <property name="move_speed" value="20" />
+      <property name="camp_id" value="" />
+      <property name="init_state" value="0" />
+      <property name="orders" value="" />
+      <property name="bb_info" value="" />
+    </properties>
+  </tile_areas>
+  <tile_areas area_id="12" bind_info_type="5" center_map_x="856.042969" center_map_y="1143.3269" width="60" height="60" rotate="0" aabb_state="1" aabb_min_x="-35" aabb_min_y="-20" aabb_max_x="35" aabb_max_y="20">
+    <pts_info>-30,-30;30,-30;30,30;-30,30</pts_info>
+    <properties>
+      <property name="dummy_id" value="战斗修女9" />
+      <property name="model_id" value="战斗修女" />
+      <property name="role_id" value="" />
+      <property name="interactive" value="0" />
+      <property name="move_info" value="WANDER,100" />
+      <property name="move_speed" value="20" />
+      <property name="camp_id" value="" />
+      <property name="init_state" value="0" />
+      <property name="orders" value="" />
+      <property name="bb_info" value="" />
+    </properties>
+  </tile_areas>
+</blend_map_tileinfo>

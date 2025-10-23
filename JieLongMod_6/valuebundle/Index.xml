@@ -2,7 +2,9 @@
 <root xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<convert reg="chest_info_pojo_new.xml" from="B宝箱信息表_Chests_jielong.xlsx" />
 	<convert reg="legacy_pojo_new.xml" from="C传承_Legacy.xlsx" />
-	<convert reg="event_trigger_pojo_new.xml" from="C触发器_Triggers_jielong.xlsx" />
+	<convert reg="event_trigger_pojo_new.xml" from="C触发器_空洞_Triggers.xlsx" />
+	<convert reg="event_trigger_pojo_new.xml" from="C触发器_巧活_Triggers.xlsx" />
+	<convert reg="event_trigger_pojo_new.xml" from="C触发器_通用_Triggers.xlsx" />
 	<convert reg="scriptstring_pojo.xml" from="J剧情内文字翻译.xlsx" />
 	<convert reg="rolemodel_pojo_new.xml" from="D单位模型定义接力第一棒.xlsx" />
 	<convert reg="game_item_pojo_new.xml" from="D道具列表接力第一棒.xlsx" />
@@ -35,5 +37,6 @@
 	<convert reg="building_pojo_new.xml" from="S设施列表_Buildings.xlsx" />
 	<convert reg="project_effect_pojo_new.xml" from="X项目效果_Projects.xlsx" />
 	<convert reg="map_building_spot_new.xml" from="Y野外建筑点配置_BuildingSpots.xlsx" />
+	<convert reg="quest_pojo_new.xml" from="R任务列表_主线_Quests.xlsx" />
 	<convert reg="scriptstring_pojo.xml" from="Localization/english/J剧情内文字翻译_hotfix.xlsx" />
 </root>

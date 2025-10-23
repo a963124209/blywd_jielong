@@ -2,7 +2,9 @@
 <root xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<include file="B宝箱信息表_Chests_jielong.xlsx" />
 	<include file="C传承_Legacy.xlsx" />
-	<include file="C触发器_Triggers_jielong.xlsx" />
+	<include file="C触发器_空洞_Triggers.xlsx" />
+	<include file="C触发器_巧活_Triggers.xlsx" />
+	<include file="C触发器_通用_Triggers.xlsx" />
 	<include file="J剧情内文字翻译.xlsx" />
 	<include file="D单位模型定义接力第一棒.xlsx" />
 	<include file="D道具列表接力第一棒.xlsx" />
@@ -35,4 +37,5 @@
 	<include file="S设施列表_Buildings.xlsx" />
 	<include file="X项目效果_Projects.xlsx" />
 	<include file="Y野外建筑点配置_BuildingSpots.xlsx" />
+	<include file="R任务列表_主线_Quests.xlsx" />
 </root>
